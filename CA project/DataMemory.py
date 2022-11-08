@@ -4,7 +4,7 @@ class DataMemory:
         self.memory = {}
         self.Data_write = "0"*32
 
-        for i in range(2**14):
+        for i in range(2**14 + 5):
             addr = format(i, "032b")
             self.memory[addr] = "0"*32              # 4 byte addressable
 

@@ -88,7 +88,7 @@ class Decode:
             Dict["instruction"] = "LOADNOC"
         if funct3 == "100":
             Dict["instruction"] = "STORENOC"
-            Dict["rs1"] = "0"*31 + "1" 
+            Dict["rs1"] = format(1, "032b")
             Dict["rs2"] = format(4010, "032b")
             Dict["imm"] = "0"*11
         return Dict
