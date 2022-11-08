@@ -2,19 +2,11 @@
 
 class InstructionMemory:
 
-    def __init__(self):
+    def __init__(self, delay):
+
         self.num_blocks = pow(2, 14) 
         self.memory = ['0' * 32] * self.num_blocks
-        print('Enter Instruction Memory Delay (in clock cyles): ')
-        self.clock_cycle_time = 0.5  # in seconds. Value must be taken from Clock class
-        # input(self.delay)
-
-    def read_block(self, PC):
-        # assuming (PC)program_counter is a binary address in string form.
-        # returns a string of size 4 bytes
-        
-        # sleep(self.delay * self.clock_cycle_time)
-        return self.memory[int(PC.getValue(), 2)]
+        self.delay = delay
 
     def put_data(self, data): 
         #assuming data is a list of strings, with each string of size 32 bits

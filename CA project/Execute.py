@@ -65,7 +65,7 @@ class Execute:
             val2 = int(rs2, 2)
             imm = int(set["imm"], 2)
             if (set["instruction"] == "SW"):
-                result = self.ADDI(val2,imm)
+                result = self.ADDI(val1,imm)
             if (set["instruction"] == "STORENOC"):
                 result = format((2**14) + 4, "032b")
             if(set["instruction"] == "LOADNOC"):

@@ -33,16 +33,13 @@ class CPU:
         self.M = Memory.Memory()
         self.W = WriteBack.WriteBack()
 
-        self.instn_mem = InstructionMemory.InstructionMemory()
-        self.data_mem = DataMemory.DataMemory()
-
 
     def printRegisterFile(self):
 
         for i in range(len(self.RegisterFile)):
             print(self.RegisterFile[i].name, self.RegisterFile[i].getValue())
 
-    def simulate(self, program):
+    def simulate(self, program, instn_mem, data_mem):
         
 
 
@@ -52,15 +49,12 @@ class CPU:
         executeDict = []
         memoryDict = []
 
-        #loading program
-        self.instn_mem.put_data(program)
-
         while True:
 
             #print("cycle", clk.getCycle(), "PC", self.PC.getValue())
             
             # running Fetch
-            fetchList = self.F.fetch(self.instn_mem, self.PC)
+            fetchList = self.F.fetch(instn_mem, self.PC)
             #print("f")
             # self.PC = fetchList[1]
             
@@ -81,7 +75,7 @@ class CPU:
             # running Memory
             if (clk.getCycle() > 2):
                 #print("m")
-                value = self.M.Memory(memory_input, self.data_mem)
+                value = self.M.Memory(memory_input, data_mem)
                 memoryDict = memory_input
                 if (value != -1):
                     memoryDict["memValue"] = value
@@ -103,8 +97,12 @@ class CPU:
 
 
 cpu = CPU()
+delay = int(input('Enter Instruction Memory Delay (in clock cyles): '))
+instn_mem = InstructionMemory.InstructionMemory(delay)
+delay = int(input('Enter Data Memory Delay (in clock cyles): '))
+data_mem = DataMemory.DataMemory(delay)
 
-file = open('CA project/test_binary.txt', 'r')
+file = open('test_binary.txt', 'r')
 program = []
 
 for instn in file:
@@ -113,7 +111,9 @@ for instn in file:
     else:
         program.append(instn)
 
-cpu.simulate(program)
-# mem = DataMemory()
+#loading program
+instn_mem.put_data(program)
+
+cpu.simulate(program, instn_mem, data_mem)
 print(cpu.printRegisterFile())
-print("memory", cpu.data_mem.memory[format(15, "032b")])
+print("memory", data_mem.memory[format(15, "032b")])
