@@ -4,7 +4,8 @@ class WriteBack:
     def writeback(self, RegisterFile, ex_o): #EXECUTE OUTPUT is the input parameter here
         #Assuming that EXECUTE_OUTPUT is a set {"instruction" : "...", "rd" : '...'}
         # sleep(0.25)
-
+        if ex_o is None:
+            return None
         if ex_o["instruction"] not in ["BEQ", "SW"]:
 
             if ex_o["instruction"] == "LW":

@@ -15,6 +15,8 @@ class DataMemory:
         # input(self.delay)
         
     def Memory(self, set):
+        if set is None:
+            return -1
 
         if (set["instruction"] == "LW"):
             # Load operation

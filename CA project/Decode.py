@@ -8,7 +8,8 @@
 class Decode: 
 
     def decode(self, inst, RegisterFile):
-        
+        if inst == "0"*32 :
+            return None
         # sleep(0.25)
         opcode = inst[-7 : ]
         if opcode == '0110011':

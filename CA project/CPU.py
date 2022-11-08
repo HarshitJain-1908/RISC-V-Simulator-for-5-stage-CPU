@@ -66,11 +66,13 @@ class CPU:
             if (clk.getCycle() > 0):
                 #print("d")
                 decodeDict = self.D.decode(decode_input, self.RegisterFile)
+                print("decode dict", decodeDict)
                 
             # running Execute
             if (clk.getCycle() > 1):
                 #print("e")
                 executeDict = self.X.execute(execute_input)
+                print("exec dic", executeDict)
                 
             # running Memory
             if (clk.getCycle() > 2):
@@ -89,8 +91,9 @@ class CPU:
             execute_input = decodeDict
             memory_input = executeDict
             writeback_input = memoryDict
-
+            #self.printRegisterFile()
             clk.setCycle()
+            #if int(self.PC.getValue(), 2) == len(program):
             if int(self.PC.getValue(), 2) == 10:
                 break
 

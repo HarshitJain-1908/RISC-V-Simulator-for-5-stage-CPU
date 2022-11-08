@@ -15,8 +15,11 @@ class Execute:
     Stype = ["SW"]
     Btype = ["BEQ"]
         
-    
+
     def execute(self, set):
+
+        if set is None :
+            return None
 
         if (set["instruction"] in self.Itype):
             rs1 = set["rs1"]
