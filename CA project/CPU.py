@@ -55,22 +55,26 @@ class CPU:
             #loading program
             self.instn_mem.put_data(program)
 
-            print("cycle", clk.getCycle(), "PC", self.PC.getValue())
+            #print("cycle", clk.getCycle(), "PC", self.PC.getValue())
             
             # running Fetch
             fetchList = self.F.fetch(self.instn_mem, self.PC)
+            #print("f")
             # self.PC = fetchList[1]
             
             # running Decode
             if (clk.getCycle() > 0):
+                #print("d")
                 decodeDict = self.D.decode(decode_input, self.RegisterFile)
-                print(decodeDict)
+                
             # running Execute
             if (clk.getCycle() > 1):
+                #print("e")
                 executeDict = self.X.execute(execute_input)
-            
+                
             # running Memory
             if (clk.getCycle() > 2):
+                #print("m")
                 value = self.M.Memory(memory_input)
                 memoryDict = memory_input
                 if (value != -1):
@@ -78,6 +82,7 @@ class CPU:
 
             # running Writeback
             if (clk.getCycle() > 3):
+                #print("w")
                 self.W.writeback(self.RegisterFile, writeback_input)
 
             decode_input = fetchList[0]
@@ -86,7 +91,7 @@ class CPU:
             writeback_input = memoryDict
 
             clk.setCycle()
-            if int(self.PC.getValue(), 2) == len(program):
+            if int(self.PC.getValue(), 2) == 10:
                 break
 
 

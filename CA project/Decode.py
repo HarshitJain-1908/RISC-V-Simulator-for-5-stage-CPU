@@ -10,7 +10,6 @@ class Decode:
     def decode(self, inst, RegisterFile):
         
         # sleep(0.25)
-
         opcode = inst[-7 : ]
         if opcode == '0110011':
             return self.R_type(inst[ : -7], RegisterFile)
@@ -33,7 +32,6 @@ class Decode:
         Dict["rd"] = inst[-5 : ]
         Dict['rs1'] = RegisterFile[int(inst[-13: -8], 2)].getValue()
         Dict['rs2'] = RegisterFile[int(inst[-18:-13], 2)].getValue()
-
         funct3 = inst[-8 : -5]
         if funct3 == '111':
             Dict["instruction"] = "AND"
