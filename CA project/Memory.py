@@ -4,12 +4,13 @@ class Memory:
         if set is None:
             return -1
 
-        if (set["instruction"] == "LW"):
+        if (set["instruction"] == "LW" or set["instruction"] == "LOADNOC"):
             # Load operation
             addr = set["result"]
             return self.Load(addr, dataMem)
 
-        elif (set["instruction"] == "SW"):
+
+        elif (set["instruction"] == "SW" or set["instruction"] == "STORENOC"):
             # Store operation
             addr = set["result"]
             data = set["rs1"]

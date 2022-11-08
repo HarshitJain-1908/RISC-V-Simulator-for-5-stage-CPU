@@ -22,6 +22,8 @@ imm[11:0]          | rs1 | 010 | rd        |0000011      (LW)
 imm[11:5]    | rs2 | rs1 | 010 | imm[4:0]  |0100011      (SW)
 0000000      | rs2 | rs1 | 001 | rd        |0110011      (SLL)
 0100000      | rs2 | rs1 | 101 | rd        |0110011      (SRA)
+imm[11:5]    | rs2 | rs1 | 011 | imm[4:0]  |0100011      (LOADNOC)
+imm[11:5]    | rs2 | rs1 | 100 | imm[4:0]  |0100011      (STORENOC)
 
 
 There are 2^5 = 32 registers(32 bit each?), numbered from 00000 to 11111.

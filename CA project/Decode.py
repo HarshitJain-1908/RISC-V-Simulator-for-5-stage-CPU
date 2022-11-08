@@ -78,10 +78,19 @@ class Decode:
 
     def SW(self, inst, RegisterFile):
         Dict = {}
-        Dict["instruction"] = "SW"
+        funct3 = inst[-8 : -5]
         Dict["rs1"] = RegisterFile[int(inst[-13:-8], 2)].getValue()
         Dict["rs2"] = RegisterFile[int(inst[-18:-13], 2)].getValue()
         Dict["imm"] = inst[0:6] + inst[-5:]
+        if funct3 == "010":
+            Dict["instruction"] = "SW"
+        if funct3 == "011":
+            Dict["instruction"] = "LOADNOC"
+        if funct3 == "100":
+            Dict["instruction"] = "STORENOC"
+            Dict["rs1"] = "0"*31 + "1" 
+            Dict["rs2"] = format(4010, "032b")
+            Dict["imm"] = "0"*11
         return Dict
 
     def BEQ(self, inst, RegisterFile):

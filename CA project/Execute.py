@@ -12,7 +12,7 @@ class Execute:
 
     Itype = ["ADDI", "LW"]
     Rtype = ["AND", "OR", "ADD", "SUB", "SLL", "SRA"]
-    Stype = ["SW"]
+    Stype = ["SW", "LOADNOC", "STORENOC"]
     Btype = ["BEQ"]
         
 
@@ -59,11 +59,18 @@ class Execute:
             return set                           #result in string 32 bit binary 
         
         elif (set["instruction"] in self.Stype):
+            rs1 = set["rs1"]
+            val1 = int(rs1, 2)
             rs2 = set["rs2"]
             val2 = int(rs2, 2)
             imm = int(set["imm"], 2)
             if (set["instruction"] == "SW"):
                 result = self.ADDI(val2,imm)
+            if (set["instruction"] == "STORENOC"):
+                result = format(4010, "032b")
+            if(set["instruction"] == "LOADNOC"):
+                result = self.ADDI(val1,imm)
+            
             set["result"] = result
             return set
         
