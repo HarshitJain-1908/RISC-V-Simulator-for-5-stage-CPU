@@ -67,7 +67,7 @@ class Execute:
             if (set["instruction"] == "SW"):
                 result = self.ADDI(val2,imm)
             if (set["instruction"] == "STORENOC"):
-                result = format(4010, "032b")
+                result = format((2**14) + 4, "032b")
             if(set["instruction"] == "LOADNOC"):
                 result = self.ADDI(val1,imm)
             
