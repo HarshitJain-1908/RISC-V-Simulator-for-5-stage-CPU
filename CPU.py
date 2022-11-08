@@ -9,6 +9,7 @@ import InstructionMemory
 import DataMemory
 
 class CPU:  
+
     def __init__(self):
         self.RegisterFile = []
         
@@ -36,7 +37,8 @@ class CPU:
 
     def logRegisterFile(self, log):
         for i in range(len(self.RegisterFile)):
-            log.write("\t\t"+ self.RegisterFile[i].name + " "+  str(int(self.RegisterFile[i].getValue(), 2)) + "\n")
+            reg = "R" + str(int(self.RegisterFile[i].name, 2))
+            log.write("\t\t"+ reg + ": "+  str(int(self.RegisterFile[i].getValue(), 2)) + "\n")
         log.write("\n")
     
     def log_write(self, log, stage_name, inst_num, dict):
@@ -135,11 +137,10 @@ if __name__ == '__main__':
 
     cpu = CPU()
     
-    #delay = int(input('Enter Instruction Memory Delay (in clock cyles): '))
-    delay = 0
+    delay = int(input('Enter Instruction Memory Delay (in clock cyles): '))
     instn_mem = InstructionMemory.InstructionMemory(delay)
-    
-    #delay = int(input('Enter Data Memory Delay (in clock cyles): '))
+
+    delay = int(input('Enter Data Memory Delay (in clock cyles): '))
     
     data_mem = DataMemory.DataMemory(delay)
 
