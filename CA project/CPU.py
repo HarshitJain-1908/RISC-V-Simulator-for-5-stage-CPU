@@ -3,6 +3,7 @@ import Register
 import Fetch
 import Decode
 import Execute
+import Memory
 import WriteBack
 import InstructionMemory
 import DataMemory
@@ -29,10 +30,11 @@ class CPU:
         self.F = Fetch.Fetch()
         self.D = Decode.Decode()
         self.X = Execute.Execute()
-        self.M = DataMemory.DataMemory()
+        self.M = Memory.Memory()
         self.W = WriteBack.WriteBack()
 
         self.instn_mem = InstructionMemory.InstructionMemory()
+        self.data_mem = DataMemory.DataMemory()
 
 
     def printRegisterFile(self):
@@ -50,10 +52,10 @@ class CPU:
         executeDict = []
         memoryDict = []
 
-        while True:
+        #loading program
+        self.instn_mem.put_data(program)
 
-            #loading program
-            self.instn_mem.put_data(program)
+        while True:
 
             #print("cycle", clk.getCycle(), "PC", self.PC.getValue())
             
@@ -65,8 +67,10 @@ class CPU:
             # running Decode
             if (clk.getCycle() > 0):
                 #print("d")
+                # print("R1", self.RegisterFile[1].getValue())
+                # print("R2", self.RegisterFile[2].getValue())
                 decodeDict = self.D.decode(decode_input, self.RegisterFile)
-                print("decode dict", decodeDict)
+                # print("decode dict", decodeDict)
                 
             # running Execute
             if (clk.getCycle() > 1):
@@ -77,7 +81,7 @@ class CPU:
             # running Memory
             if (clk.getCycle() > 2):
                 #print("m")
-                value = self.M.Memory(memory_input)
+                value = self.M.Memory(memory_input, self.data_mem)
                 memoryDict = memory_input
                 if (value != -1):
                     memoryDict["memValue"] = value
@@ -91,19 +95,25 @@ class CPU:
             execute_input = decodeDict
             memory_input = executeDict
             writeback_input = memoryDict
-            #self.printRegisterFile()
-            clk.setCycle()
-            #if int(self.PC.getValue(), 2) == len(program):
-            if int(self.PC.getValue(), 2) == 10:
+
+            if clk.getCycle()+1 == (4+len(program)):
                 break
+
+            clk.setCycle()
 
 
 cpu = CPU()
 
-file = open('test_binary.txt', 'r')
+file = open('CA project/test_binary.txt', 'r')
 program = []
+
 for instn in file:
-    program.append(instn[:-1])
-print(len(program))
+    if len(instn) == 33:
+        program.append(instn[:-1])
+    else:
+        program.append(instn)
+
 cpu.simulate(program)
-# print(cpu.printRegisterFile())
+# mem = DataMemory()
+print(cpu.printRegisterFile())
+print("memory", cpu.data_mem.memory[format(15, "032b")])

@@ -3,7 +3,7 @@
 class InstructionMemory:
 
     def __init__(self):
-        self.num_blocks = pow(2, 16) 
+        self.num_blocks = pow(2, 14) 
         self.memory = ['0' * 32] * self.num_blocks
         print('Enter Instruction Memory Delay (in clock cyles): ')
         self.clock_cycle_time = 0.5  # in seconds. Value must be taken from Clock class
