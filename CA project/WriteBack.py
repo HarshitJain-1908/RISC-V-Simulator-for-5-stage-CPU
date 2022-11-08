@@ -6,12 +6,10 @@ class WriteBack:
         # sleep(0.25)
         if ex_o is None:
             return None
-        if ex_o["instruction"] not in ["BEQ", "SW", "STORENOC"]:
+        if ex_o["instruction"] not in ["BEQ", "SW", "STORENOC", "LOADNOC"]:
 
             if ex_o["instruction"] == "LW":
                 RegisterFile[int(ex_o["rd"], 2)].setValue(ex_o["memValue"]) 
-            if ex_o["instruction"] == "LOADNOC":
-                RegisterFile[int(ex_o["rs2"], 2)].setValue(ex_o["memValue"]) 
             else:
                 RegisterFile[int(ex_o["rd"], 2)].setValue(ex_o["result"]) 
 
