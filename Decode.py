@@ -80,7 +80,7 @@ class Decode:
         funct3 = inst[-8 : -5]
         Dict["rs1"] = RegisterFile[int(inst[-13:-8], 2)].getValue()
         Dict["rs2"] = RegisterFile[int(inst[-18:-13], 2)].getValue()
-        Dict["imm"] = inst[0:6] + inst[-5:]
+        Dict["imm"] = inst[0:7] + inst[-5:]
         if funct3 == "010":
             Dict["instruction"] = "SW"
         if funct3 == "100":
@@ -94,7 +94,7 @@ class Decode:
         Dict = {}
         Dict["rs1"] = RegisterFile[int(inst[-13:-8], 2)].getValue()
         Dict["rs2"] = RegisterFile[int(inst[-18:-13], 2)].getValue()
-        Dict["imm"] = inst[0:6] + inst[-8:]
+        Dict["imm"] = inst[0:7] + inst[-8:]
         Dict["instruction"] = "LOADNOC"
         return Dict
 
