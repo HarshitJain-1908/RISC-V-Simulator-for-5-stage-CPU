@@ -22,7 +22,6 @@ class Memory:
             addr = set["result"]
             data = set["rs2"]
             self.Store(addr, data, dataMem)
-            print(data)
             return -1
 
         else:

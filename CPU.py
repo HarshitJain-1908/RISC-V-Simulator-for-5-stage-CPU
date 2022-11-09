@@ -112,7 +112,9 @@ class CPU:
             # running Writeback
             if (self.clk.getCycle() > 3 and writeback_input != None):
                 self.W.writeback(self.RegisterFile, writeback_input[0])
-                log.write("WRITEBACK: Inst " + str(writeback_input[1]) + ": (Register File printed below. Format <reg_num_base2> <reg_val_base10>)\n")
+                self.log_write(log, "WRITEBACK", str(writeback_input[1]), writeback_input[0])
+                log.write("Register File printed below. Format <reg_num_base2> <reg_val_base10>\n")
+
                 self.logRegisterFile(log)
             else:
                 log.write("WRITEBACK: -\n")
@@ -164,11 +166,13 @@ if __name__ == '__main__':
             program.append(instn)
 
     log = open('log.txt', "w")
+    
     print("\nStarting Simulation...")
     cpu.simulate(program, log, instn_mem, data_mem)
     log.write("\nProgram execution completed\n---------------------------------------------------------------------------")
     log.write("\nMemory state after the execution of program; Format <mem_addr_base2>\t<mem_val_base10>\n")
     log.write("---------------------------------------------------------------------------\n")
+
     for i in range(0, len(data_mem.memory)):
         addr = format(i, "032b")
         log.write("\t\t"+addr[-15: ] + "\t" + str(int(data_mem.memory[addr], 2)) + "\n")
