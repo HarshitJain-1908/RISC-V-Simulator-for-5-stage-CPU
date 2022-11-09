@@ -1,4 +1,5 @@
-Run 'cpu.py' to run the simulator.
+Run 'cpu.py' to run the simulator and a file named 'log.txt' is created 
+containing the required contents of log file. Test file is in 'test_binary.txt'.
 
 AND rd, rs1, rs2
 OR rd, rs1, rs2
