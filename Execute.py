@@ -70,7 +70,7 @@ class Execute:
                 result = format((2**14) + 4, "032b")
             if(set["instruction"] == "LOADNOC"):
                 result = self.ADDI(val1,imm)
-                if int(result, 2) < 2^14 or int(result) > 2^14 +3:
+                if (int(result, 2) < (2**14)) or (int(result,2) > (2**14)+3):
                     result = "invalid"
             
             set["result"] = result

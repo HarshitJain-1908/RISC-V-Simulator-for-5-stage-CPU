@@ -842,7 +842,7 @@ Cycle = 23
 ---------------------------------------------------------------------------
 FETCH:     -
 DECODE: Inst 22: rs1: 1    rs2: 4010    imm: 0    STORENOC    
-EXECUTE: Inst 21: rs1: 4    rs2: 23    imm: 16383    LOADNOC    invalid    
+EXECUTE: Inst 21: rs1: 4    rs2: 23    imm: 16383    LOADNOC    result: 16387    
 MEMORY: Inst 20: LW    rd_num: 01100    rs1: 4    imm: 15    result: 19    memValue: 0    
 WRITEBACK: Inst 19: (Register File printed below. Format <reg_num_base2> <reg_val_base10>)
 		R0: 0
@@ -885,7 +885,7 @@ Cycle = 24
 FETCH:     -
 DECODE:    -
 EXECUTE: Inst 22: rs1: 1    rs2: 4010    imm: 0    STORENOC    result: 16388    
-MEMORY: Inst 21: rs1: 4    rs2: 23    imm: 16383    LOADNOC    invalid    
+MEMORY: Inst 21: rs1: 4    rs2: 23    imm: 16383    LOADNOC    result: 16387    
 WRITEBACK: Inst 20: (Register File printed below. Format <reg_num_base2> <reg_val_base10>)
 		R0: 0
 		R1: 5
@@ -17396,5 +17396,5 @@ Memory state after the execution of program; Format <mem_addr_base2>	<mem_val_ba
 		100000000000000	0
 		100000000000001	0
 		100000000000010	0
-		100000000000011	0
+		100000000000011	23
 		100000000000100	4010
