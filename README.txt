@@ -8,7 +8,8 @@ LW rd, rs1, imm         (store 32 bit value to mem)(mem addr = [rs1] + imm(12 bi
 SW rs1, rs2, imm        (stores 32 bit value to mem)(mem addr = [rs1] + imm(12 bit))
 SLL rd, rs1, rs2        (Shift logical left: performs logical shift left on the value in rs1 by the shift amount held in the lower 5 bits of rs2.)
 SRA rd, rs1, rs2        (Shift Right Arithmetic: performs arithmetic shift right on the value in rs1 by the shift amount held in the lower 5 bits of rs2.)
-
+LOADNOC rs2, rs1, imm
+STORENOC rs2, rs1, imm  (will always be = 00000000000000000010000000100011 )
 All these instructions are 32 bit each.
 
 _7bits_      |_5bts|5bts_|_3bts|5bts       |_7bits_
@@ -22,6 +23,9 @@ imm[11:0]          | rs1 | 010 | rd        |0000011      (LW)
 imm[11:5]    | rs2 | rs1 | 010 | imm[4:0]  |0100011      (SW)
 0000000      | rs2 | rs1 | 001 | rd        |0110011      (SLL)
 0100000      | rs2 | rs1 | 101 | rd        |0110011      (SRA)
+imm[11:5]    | rs2 | rs1 |    imm[7:0]     |0000001      (LOADNOC)
+imm[11:5]    | rs2 | rs1 | 100 | imm[4:0]  |0100011      (STORENOC)
+
 
 
 There are 2^5 = 32 registers(32 bit each?), numbered from 00000 to 11111.
