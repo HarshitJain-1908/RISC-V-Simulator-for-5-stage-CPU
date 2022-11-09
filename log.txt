@@ -6,41 +6,41 @@ General Instructions:
 ---------------------------------------------------------------------------
 Cycle = 0
 ---------------------------------------------------------------------------
-FETCH: Inst 0: 00000000011100001000000010010011
+FETCH: Inst 0: 00000000001000010000000110010011
 
 ---------------------------------------------------------------------------
 Cycle = 1
 ---------------------------------------------------------------------------
-FETCH: Inst 1: 00000000010100010000000100010011
-DECODE: Inst 0: ADDI    rd_num: 00001    rs1: 0    imm: 7    
+FETCH: Inst 1: 00000000000100001000000010010011
+DECODE: Inst 0: ADDI    rd_num: 00011    rs1: 0    imm: 2    
 
 ---------------------------------------------------------------------------
 Cycle = 2
 ---------------------------------------------------------------------------
-FETCH: Inst 2: 00000000111100100000001000010011
-DECODE: Inst 1: ADDI    rd_num: 00010    rs1: 0    imm: 5    
-EXECUTE: Inst 0: ADDI    rd_num: 00001    rs1: 0    imm: 7    result: 7    
+FETCH: Inst 2: 00000000010100010000000100010011
+DECODE: Inst 1: ADDI    rd_num: 00001    rs1: 0    imm: 1    
+EXECUTE: Inst 0: ADDI    rd_num: 00011    rs1: 0    imm: 2    result: 2    
 
 ---------------------------------------------------------------------------
 Cycle = 3
 ---------------------------------------------------------------------------
-FETCH: Inst 3: 00000001000000101000001010010011
-DECODE: Inst 2: ADDI    rd_num: 00100    rs1: 0    imm: 15    
-EXECUTE: Inst 1: ADDI    rd_num: 00010    rs1: 0    imm: 5    result: 5    
-MEMORY: Inst 0: ADDI    rd_num: 00001    rs1: 0    imm: 7    result: 7    
+FETCH: Inst 3: 00000000111100100000001000010011
+DECODE: Inst 2: ADDI    rd_num: 00010    rs1: 0    imm: 5    
+EXECUTE: Inst 1: ADDI    rd_num: 00001    rs1: 0    imm: 1    result: 1    
+MEMORY: Inst 0: ADDI    rd_num: 00011    rs1: 0    imm: 2    result: 2    
 
 ---------------------------------------------------------------------------
 Cycle = 4
 ---------------------------------------------------------------------------
 FETCH: Inst 4: 00000001000000101000001010010011
-DECODE: Inst 3: ADDI    rd_num: 00101    rs1: 0    imm: 16    
-EXECUTE: Inst 2: ADDI    rd_num: 00100    rs1: 0    imm: 15    result: 15    
-MEMORY: Inst 1: ADDI    rd_num: 00010    rs1: 0    imm: 5    result: 5    
+DECODE: Inst 3: ADDI    rd_num: 00100    rs1: 0    imm: 15    
+EXECUTE: Inst 2: ADDI    rd_num: 00010    rs1: 0    imm: 5    result: 5    
+MEMORY: Inst 1: ADDI    rd_num: 00001    rs1: 0    imm: 1    result: 1    
 WRITEBACK: Inst 0: (Register File printed below. Format <reg_num_base2> <reg_val_base10>)
 		R0: 0
-		R1: 7
+		R1: 0
 		R2: 0
-		R3: 0
+		R3: 2
 		R4: 0
 		R5: 0
 		R6: 0
@@ -74,15 +74,15 @@ WRITEBACK: Inst 0: (Register File printed below. Format <reg_num_base2> <reg_val
 ---------------------------------------------------------------------------
 Cycle = 5
 ---------------------------------------------------------------------------
-FETCH: Inst 5: 00000001000000101000001010010011
+FETCH: Inst 5: 00000000010001110000011100010011
 DECODE: Inst 4: ADDI    rd_num: 00101    rs1: 0    imm: 16    
-EXECUTE: Inst 3: ADDI    rd_num: 00101    rs1: 0    imm: 16    result: 16    
-MEMORY: Inst 2: ADDI    rd_num: 00100    rs1: 0    imm: 15    result: 15    
+EXECUTE: Inst 3: ADDI    rd_num: 00100    rs1: 0    imm: 15    result: 15    
+MEMORY: Inst 2: ADDI    rd_num: 00010    rs1: 0    imm: 5    result: 5    
 WRITEBACK: Inst 1: (Register File printed below. Format <reg_num_base2> <reg_val_base10>)
 		R0: 0
-		R1: 7
-		R2: 5
-		R3: 0
+		R1: 1
+		R2: 0
+		R3: 2
 		R4: 0
 		R5: 0
 		R6: 0
@@ -116,16 +116,16 @@ WRITEBACK: Inst 1: (Register File printed below. Format <reg_num_base2> <reg_val
 ---------------------------------------------------------------------------
 Cycle = 6
 ---------------------------------------------------------------------------
-FETCH: Inst 6: 00000001000000101000001010010011
-DECODE: Inst 5: ADDI    rd_num: 00101    rs1: 0    imm: 16    
+FETCH: Inst 6: 00000001011111001000110010010011
+DECODE: Inst 5: ADDI    rd_num: 01110    rs1: 0    imm: 4    
 EXECUTE: Inst 4: ADDI    rd_num: 00101    rs1: 0    imm: 16    result: 16    
-MEMORY: Inst 3: ADDI    rd_num: 00101    rs1: 0    imm: 16    result: 16    
+MEMORY: Inst 3: ADDI    rd_num: 00100    rs1: 0    imm: 15    result: 15    
 WRITEBACK: Inst 2: (Register File printed below. Format <reg_num_base2> <reg_val_base10>)
 		R0: 0
-		R1: 7
+		R1: 1
 		R2: 5
-		R3: 0
-		R4: 15
+		R3: 2
+		R4: 0
 		R5: 0
 		R6: 0
 		R7: 0
@@ -158,17 +158,18 @@ WRITEBACK: Inst 2: (Register File printed below. Format <reg_num_base2> <reg_val
 ---------------------------------------------------------------------------
 Cycle = 7
 ---------------------------------------------------------------------------
-FETCH: Inst 7: 00000000001000001000000110110011
-DECODE: Inst 6: ADDI    rd_num: 00101    rs1: 0    imm: 16    
-EXECUTE: Inst 5: ADDI    rd_num: 00101    rs1: 0    imm: 16    result: 16    
+FETCH: Inst 7: 00000000001000001010010000100011 
+
+DECODE: Inst 6: ADDI    rd_num: 11001    rs1: 0    imm: 23    
+EXECUTE: Inst 5: ADDI    rd_num: 01110    rs1: 0    imm: 4    result: 4    
 MEMORY: Inst 4: ADDI    rd_num: 00101    rs1: 0    imm: 16    result: 16    
 WRITEBACK: Inst 3: (Register File printed below. Format <reg_num_base2> <reg_val_base10>)
 		R0: 0
-		R1: 7
+		R1: 1
 		R2: 5
-		R3: 0
+		R3: 2
 		R4: 15
-		R5: 16
+		R5: 0
 		R6: 0
 		R7: 0
 		R8: 0
@@ -200,15 +201,15 @@ WRITEBACK: Inst 3: (Register File printed below. Format <reg_num_base2> <reg_val
 ---------------------------------------------------------------------------
 Cycle = 8
 ---------------------------------------------------------------------------
-FETCH: Inst 8: 00000000001000001010010000100011
-DECODE: Inst 7: rd_num: 00011    rs1: 7    rs2: 5    ADD    
-EXECUTE: Inst 6: ADDI    rd_num: 00101    rs1: 0    imm: 16    result: 16    
-MEMORY: Inst 5: ADDI    rd_num: 00101    rs1: 0    imm: 16    result: 16    
+FETCH: Inst 8: 00000000001100001001101000110011 
+
+EXECUTE: Inst 6: ADDI    rd_num: 11001    rs1: 0    imm: 23    result: 23    
+MEMORY: Inst 5: ADDI    rd_num: 01110    rs1: 0    imm: 4    result: 4    
 WRITEBACK: Inst 4: (Register File printed below. Format <reg_num_base2> <reg_val_base10>)
 		R0: 0
-		R1: 7
+		R1: 1
 		R2: 5
-		R3: 0
+		R3: 2
 		R4: 15
 		R5: 16
 		R6: 0
@@ -242,15 +243,14 @@ WRITEBACK: Inst 4: (Register File printed below. Format <reg_num_base2> <reg_val
 ---------------------------------------------------------------------------
 Cycle = 9
 ---------------------------------------------------------------------------
-FETCH: Inst 9: 00000000000000100010001100000011
-DECODE: Inst 8: rs1: 7    rs2: 5    imm: 8    SW    
-EXECUTE: Inst 7: rd_num: 00011    rs1: 7    rs2: 5    ADD    result: 12    
-MEMORY: Inst 6: ADDI    rd_num: 00101    rs1: 0    imm: 16    result: 16    
+FETCH: Inst 9: 01000000001000001000001110110011 
+
+MEMORY: Inst 6: ADDI    rd_num: 11001    rs1: 0    imm: 23    result: 23    
 WRITEBACK: Inst 5: (Register File printed below. Format <reg_num_base2> <reg_val_base10>)
 		R0: 0
-		R1: 7
+		R1: 1
 		R2: 5
-		R3: 0
+		R3: 2
 		R4: 15
 		R5: 16
 		R6: 0
@@ -261,7 +261,7 @@ WRITEBACK: Inst 5: (Register File printed below. Format <reg_num_base2> <reg_val
 		R11: 0
 		R12: 0
 		R13: 0
-		R14: 0
+		R14: 4
 		R15: 0
 		R16: 0
 		R17: 0
@@ -284,14 +284,13 @@ WRITEBACK: Inst 5: (Register File printed below. Format <reg_num_base2> <reg_val
 ---------------------------------------------------------------------------
 Cycle = 10
 ---------------------------------------------------------------------------
-DECODE: Inst 9: LW    rd_num: 00110    rs1: 15    imm: 0    
-EXECUTE: Inst 8: rs1: 7    rs2: 5    imm: 8    SW    result: 15    
-MEMORY: Inst 7: rd_num: 00011    rs1: 7    rs2: 5    ADD    result: 12    
+FETCH: Inst 10: 00000000001000001000000110110011 
+
 WRITEBACK: Inst 6: (Register File printed below. Format <reg_num_base2> <reg_val_base10>)
 		R0: 0
-		R1: 7
+		R1: 1
 		R2: 5
-		R3: 0
+		R3: 2
 		R4: 15
 		R5: 16
 		R6: 0
@@ -302,7 +301,7 @@ WRITEBACK: Inst 6: (Register File printed below. Format <reg_num_base2> <reg_val
 		R11: 0
 		R12: 0
 		R13: 0
-		R14: 0
+		R14: 4
 		R15: 0
 		R16: 0
 		R17: 0
@@ -313,7 +312,7 @@ WRITEBACK: Inst 6: (Register File printed below. Format <reg_num_base2> <reg_val
 		R22: 0
 		R23: 0
 		R24: 0
-		R25: 0
+		R25: 23
 		R26: 0
 		R27: 0
 		R28: 0
@@ -325,13 +324,13 @@ WRITEBACK: Inst 6: (Register File printed below. Format <reg_num_base2> <reg_val
 ---------------------------------------------------------------------------
 Cycle = 11
 ---------------------------------------------------------------------------
-EXECUTE: Inst 9: LW    rd_num: 00110    rs1: 15    imm: 0    result: 15    
-MEMORY: Inst 8: rs1: 7    rs2: 5    imm: 8    SW    result: 15    
+FETCH: Inst 11: 01000000001000001000001100110011 
+
 WRITEBACK: Inst 7: (Register File printed below. Format <reg_num_base2> <reg_val_base10>)
 		R0: 0
-		R1: 7
+		R1: 1
 		R2: 5
-		R3: 12
+		R3: 2
 		R4: 15
 		R5: 16
 		R6: 0
@@ -342,7 +341,7 @@ WRITEBACK: Inst 7: (Register File printed below. Format <reg_num_base2> <reg_val
 		R11: 0
 		R12: 0
 		R13: 0
-		R14: 0
+		R14: 4
 		R15: 0
 		R16: 0
 		R17: 0
@@ -353,7 +352,7 @@ WRITEBACK: Inst 7: (Register File printed below. Format <reg_num_base2> <reg_val
 		R22: 0
 		R23: 0
 		R24: 0
-		R25: 0
+		R25: 23
 		R26: 0
 		R27: 0
 		R28: 0
@@ -365,12 +364,13 @@ WRITEBACK: Inst 7: (Register File printed below. Format <reg_num_base2> <reg_val
 ---------------------------------------------------------------------------
 Cycle = 12
 ---------------------------------------------------------------------------
-MEMORY: Inst 9: LW    rd_num: 00110    rs1: 15    imm: 0    result: 15    memValue: 7    
+FETCH: Inst 12: 00000000001001110111011110110011 
+
 WRITEBACK: Inst 8: (Register File printed below. Format <reg_num_base2> <reg_val_base10>)
 		R0: 0
-		R1: 7
+		R1: 1
 		R2: 5
-		R3: 12
+		R3: 2
 		R4: 15
 		R5: 16
 		R6: 0
@@ -381,7 +381,7 @@ WRITEBACK: Inst 8: (Register File printed below. Format <reg_num_base2> <reg_val
 		R11: 0
 		R12: 0
 		R13: 0
-		R14: 0
+		R14: 4
 		R15: 0
 		R16: 0
 		R17: 0
@@ -392,7 +392,7 @@ WRITEBACK: Inst 8: (Register File printed below. Format <reg_num_base2> <reg_val
 		R22: 0
 		R23: 0
 		R24: 0
-		R25: 0
+		R25: 23
 		R26: 0
 		R27: 0
 		R28: 0
@@ -404,14 +404,16 @@ WRITEBACK: Inst 8: (Register File printed below. Format <reg_num_base2> <reg_val
 ---------------------------------------------------------------------------
 Cycle = 13
 ---------------------------------------------------------------------------
+FETCH: Inst 13: 00000000000000100010001100000011 
+
 WRITEBACK: Inst 9: (Register File printed below. Format <reg_num_base2> <reg_val_base10>)
 		R0: 0
-		R1: 7
+		R1: 1
 		R2: 5
-		R3: 12
+		R3: 2
 		R4: 15
 		R5: 16
-		R6: 7
+		R6: 0
 		R7: 0
 		R8: 0
 		R9: 0
@@ -419,7 +421,7 @@ WRITEBACK: Inst 9: (Register File printed below. Format <reg_num_base2> <reg_val
 		R11: 0
 		R12: 0
 		R13: 0
-		R14: 0
+		R14: 4
 		R15: 0
 		R16: 0
 		R17: 0
@@ -430,7 +432,521 @@ WRITEBACK: Inst 9: (Register File printed below. Format <reg_num_base2> <reg_val
 		R22: 0
 		R23: 0
 		R24: 0
-		R25: 0
+		R25: 23
+		R26: 0
+		R27: 0
+		R28: 0
+		R29: 0
+		R30: 0
+		R31: 0
+
+
+---------------------------------------------------------------------------
+Cycle = 14
+---------------------------------------------------------------------------
+FETCH: Inst 14: 00000000010100001110011110110011 
+
+WRITEBACK: Inst 10: (Register File printed below. Format <reg_num_base2> <reg_val_base10>)
+		R0: 0
+		R1: 1
+		R2: 5
+		R3: 2
+		R4: 15
+		R5: 16
+		R6: 0
+		R7: 0
+		R8: 0
+		R9: 0
+		R10: 0
+		R11: 0
+		R12: 0
+		R13: 0
+		R14: 4
+		R15: 0
+		R16: 0
+		R17: 0
+		R18: 0
+		R19: 0
+		R20: 0
+		R21: 0
+		R22: 0
+		R23: 0
+		R24: 0
+		R25: 23
+		R26: 0
+		R27: 0
+		R28: 0
+		R29: 0
+		R30: 0
+		R31: 0
+
+
+---------------------------------------------------------------------------
+Cycle = 15
+---------------------------------------------------------------------------
+FETCH: Inst 15: 01000000011100011101011000110011 
+
+WRITEBACK: Inst 11: (Register File printed below. Format <reg_num_base2> <reg_val_base10>)
+		R0: 0
+		R1: 1
+		R2: 5
+		R3: 2
+		R4: 15
+		R5: 16
+		R6: 0
+		R7: 0
+		R8: 0
+		R9: 0
+		R10: 0
+		R11: 0
+		R12: 0
+		R13: 0
+		R14: 4
+		R15: 0
+		R16: 0
+		R17: 0
+		R18: 0
+		R19: 0
+		R20: 0
+		R21: 0
+		R22: 0
+		R23: 0
+		R24: 0
+		R25: 23
+		R26: 0
+		R27: 0
+		R28: 0
+		R29: 0
+		R30: 0
+		R31: 0
+
+
+---------------------------------------------------------------------------
+Cycle = 16
+---------------------------------------------------------------------------
+FETCH: Inst 16: 00000001100101111000111001100011 
+
+WRITEBACK: Inst 12: (Register File printed below. Format <reg_num_base2> <reg_val_base10>)
+		R0: 0
+		R1: 1
+		R2: 5
+		R3: 2
+		R4: 15
+		R5: 16
+		R6: 0
+		R7: 0
+		R8: 0
+		R9: 0
+		R10: 0
+		R11: 0
+		R12: 0
+		R13: 0
+		R14: 4
+		R15: 0
+		R16: 0
+		R17: 0
+		R18: 0
+		R19: 0
+		R20: 0
+		R21: 0
+		R22: 0
+		R23: 0
+		R24: 0
+		R25: 23
+		R26: 0
+		R27: 0
+		R28: 0
+		R29: 0
+		R30: 0
+		R31: 0
+
+
+---------------------------------------------------------------------------
+Cycle = 17
+---------------------------------------------------------------------------
+FETCH: Inst 17: 00000001000000100000001010010011  
+
+WRITEBACK: Inst 13: (Register File printed below. Format <reg_num_base2> <reg_val_base10>)
+		R0: 0
+		R1: 1
+		R2: 5
+		R3: 2
+		R4: 15
+		R5: 16
+		R6: 0
+		R7: 0
+		R8: 0
+		R9: 0
+		R10: 0
+		R11: 0
+		R12: 0
+		R13: 0
+		R14: 4
+		R15: 0
+		R16: 0
+		R17: 0
+		R18: 0
+		R19: 0
+		R20: 0
+		R21: 0
+		R22: 0
+		R23: 0
+		R24: 0
+		R25: 23
+		R26: 0
+		R27: 0
+		R28: 0
+		R29: 0
+		R30: 0
+		R31: 0
+
+
+---------------------------------------------------------------------------
+Cycle = 18
+---------------------------------------------------------------------------
+FETCH: Inst 18: 00000010000011101000010010010011 
+
+WRITEBACK: Inst 14: (Register File printed below. Format <reg_num_base2> <reg_val_base10>)
+		R0: 0
+		R1: 1
+		R2: 5
+		R3: 2
+		R4: 15
+		R5: 16
+		R6: 0
+		R7: 0
+		R8: 0
+		R9: 0
+		R10: 0
+		R11: 0
+		R12: 0
+		R13: 0
+		R14: 4
+		R15: 0
+		R16: 0
+		R17: 0
+		R18: 0
+		R19: 0
+		R20: 0
+		R21: 0
+		R22: 0
+		R23: 0
+		R24: 0
+		R25: 23
+		R26: 0
+		R27: 0
+		R28: 0
+		R29: 0
+		R30: 0
+		R31: 0
+
+
+---------------------------------------------------------------------------
+Cycle = 19
+---------------------------------------------------------------------------
+FETCH: Inst 19: 00000000010101111000110000010011 
+
+WRITEBACK: Inst 15: (Register File printed below. Format <reg_num_base2> <reg_val_base10>)
+		R0: 0
+		R1: 1
+		R2: 5
+		R3: 2
+		R4: 15
+		R5: 16
+		R6: 0
+		R7: 0
+		R8: 0
+		R9: 0
+		R10: 0
+		R11: 0
+		R12: 0
+		R13: 0
+		R14: 4
+		R15: 0
+		R16: 0
+		R17: 0
+		R18: 0
+		R19: 0
+		R20: 0
+		R21: 0
+		R22: 0
+		R23: 0
+		R24: 0
+		R25: 23
+		R26: 0
+		R27: 0
+		R28: 0
+		R29: 0
+		R30: 0
+		R31: 0
+
+
+---------------------------------------------------------------------------
+Cycle = 20
+---------------------------------------------------------------------------
+FETCH: Inst 20: 00000000010001110010011000000011 
+
+WRITEBACK: Inst 16: (Register File printed below. Format <reg_num_base2> <reg_val_base10>)
+		R0: 0
+		R1: 1
+		R2: 5
+		R3: 2
+		R4: 15
+		R5: 16
+		R6: 0
+		R7: 0
+		R8: 0
+		R9: 0
+		R10: 0
+		R11: 0
+		R12: 0
+		R13: 0
+		R14: 4
+		R15: 0
+		R16: 0
+		R17: 0
+		R18: 0
+		R19: 0
+		R20: 0
+		R21: 0
+		R22: 0
+		R23: 0
+		R24: 0
+		R25: 23
+		R26: 0
+		R27: 0
+		R28: 0
+		R29: 0
+		R30: 0
+		R31: 0
+
+
+---------------------------------------------------------------------------
+Cycle = 21
+---------------------------------------------------------------------------
+FETCH: Inst 21: 11111110111001111001111110100011 
+
+WRITEBACK: Inst 17: (Register File printed below. Format <reg_num_base2> <reg_val_base10>)
+		R0: 0
+		R1: 1
+		R2: 5
+		R3: 2
+		R4: 15
+		R5: 16
+		R6: 0
+		R7: 0
+		R8: 0
+		R9: 0
+		R10: 0
+		R11: 0
+		R12: 0
+		R13: 0
+		R14: 4
+		R15: 0
+		R16: 0
+		R17: 0
+		R18: 0
+		R19: 0
+		R20: 0
+		R21: 0
+		R22: 0
+		R23: 0
+		R24: 0
+		R25: 23
+		R26: 0
+		R27: 0
+		R28: 0
+		R29: 0
+		R30: 0
+		R31: 0
+
+
+---------------------------------------------------------------------------
+Cycle = 22
+---------------------------------------------------------------------------
+FETCH: Inst 22: 00000000000001000100010000100011
+WRITEBACK: Inst 18: (Register File printed below. Format <reg_num_base2> <reg_val_base10>)
+		R0: 0
+		R1: 1
+		R2: 5
+		R3: 2
+		R4: 15
+		R5: 16
+		R6: 0
+		R7: 0
+		R8: 0
+		R9: 0
+		R10: 0
+		R11: 0
+		R12: 0
+		R13: 0
+		R14: 4
+		R15: 0
+		R16: 0
+		R17: 0
+		R18: 0
+		R19: 0
+		R20: 0
+		R21: 0
+		R22: 0
+		R23: 0
+		R24: 0
+		R25: 23
+		R26: 0
+		R27: 0
+		R28: 0
+		R29: 0
+		R30: 0
+		R31: 0
+
+
+---------------------------------------------------------------------------
+Cycle = 23
+---------------------------------------------------------------------------
+DECODE: Inst 22: rs1: 1    rs2: 4010    imm: 0    STORENOC    
+WRITEBACK: Inst 19: (Register File printed below. Format <reg_num_base2> <reg_val_base10>)
+		R0: 0
+		R1: 1
+		R2: 5
+		R3: 2
+		R4: 15
+		R5: 16
+		R6: 0
+		R7: 0
+		R8: 0
+		R9: 0
+		R10: 0
+		R11: 0
+		R12: 0
+		R13: 0
+		R14: 4
+		R15: 0
+		R16: 0
+		R17: 0
+		R18: 0
+		R19: 0
+		R20: 0
+		R21: 0
+		R22: 0
+		R23: 0
+		R24: 0
+		R25: 23
+		R26: 0
+		R27: 0
+		R28: 0
+		R29: 0
+		R30: 0
+		R31: 0
+
+
+---------------------------------------------------------------------------
+Cycle = 24
+---------------------------------------------------------------------------
+EXECUTE: Inst 22: rs1: 1    rs2: 4010    imm: 0    STORENOC    result: 16388    
+WRITEBACK: Inst 20: (Register File printed below. Format <reg_num_base2> <reg_val_base10>)
+		R0: 0
+		R1: 1
+		R2: 5
+		R3: 2
+		R4: 15
+		R5: 16
+		R6: 0
+		R7: 0
+		R8: 0
+		R9: 0
+		R10: 0
+		R11: 0
+		R12: 0
+		R13: 0
+		R14: 4
+		R15: 0
+		R16: 0
+		R17: 0
+		R18: 0
+		R19: 0
+		R20: 0
+		R21: 0
+		R22: 0
+		R23: 0
+		R24: 0
+		R25: 23
+		R26: 0
+		R27: 0
+		R28: 0
+		R29: 0
+		R30: 0
+		R31: 0
+
+
+---------------------------------------------------------------------------
+Cycle = 25
+---------------------------------------------------------------------------
+MEMORY: Inst 22: rs1: 1    rs2: 4010    imm: 0    STORENOC    result: 16388    
+WRITEBACK: Inst 21: (Register File printed below. Format <reg_num_base2> <reg_val_base10>)
+		R0: 0
+		R1: 1
+		R2: 5
+		R3: 2
+		R4: 15
+		R5: 16
+		R6: 0
+		R7: 0
+		R8: 0
+		R9: 0
+		R10: 0
+		R11: 0
+		R12: 0
+		R13: 0
+		R14: 4
+		R15: 0
+		R16: 0
+		R17: 0
+		R18: 0
+		R19: 0
+		R20: 0
+		R21: 0
+		R22: 0
+		R23: 0
+		R24: 0
+		R25: 23
+		R26: 0
+		R27: 0
+		R28: 0
+		R29: 0
+		R30: 0
+		R31: 0
+
+
+---------------------------------------------------------------------------
+Cycle = 26
+---------------------------------------------------------------------------
+WRITEBACK: Inst 22: (Register File printed below. Format <reg_num_base2> <reg_val_base10>)
+		R0: 0
+		R1: 1
+		R2: 5
+		R3: 2
+		R4: 15
+		R5: 16
+		R6: 0
+		R7: 0
+		R8: 0
+		R9: 0
+		R10: 0
+		R11: 0
+		R12: 0
+		R13: 0
+		R14: 4
+		R15: 0
+		R16: 0
+		R17: 0
+		R18: 0
+		R19: 0
+		R20: 0
+		R21: 0
+		R22: 0
+		R23: 0
+		R24: 0
+		R25: 23
 		R26: 0
 		R27: 0
 		R28: 0
@@ -458,7 +974,7 @@ Memory state after the execution of program; Format <mem_addr_base2>	<mem_val_ba
 		000000000001100	0
 		000000000001101	0
 		000000000001110	0
-		000000000001111	7
+		000000000001111	0
 		000000000010000	0
 		000000000010001	0
 		000000000010010	0
@@ -16831,4 +17347,4 @@ Memory state after the execution of program; Format <mem_addr_base2>	<mem_val_ba
 		100000000000001	0
 		100000000000010	0
 		100000000000011	0
-		100000000000100	0
+		100000000000100	1
