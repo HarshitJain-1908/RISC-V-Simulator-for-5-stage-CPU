@@ -77,20 +77,27 @@ class CPU:
             fetchList = self.F.fetch(instn_mem, self.PC)
             if (int(fetchList[0], 2) == 0):
                 fetchList = None
+                log.write("FETCH:     -\n")
             else:
                 log.write("FETCH: Inst " + str(fetchList[1]) + ": " + fetchList[0] + "\n")
             
             # running Decode
             if (self.clk.getCycle() > 0 and decode_input != None):
+                # log.write(str(decode_input))
                 decodeDict = self.D.decode(decode_input[0], self.RegisterFile)
                 decodeDict = [decodeDict, decode_input[1]]
+                # log.write("decode" + str(decodeDict))
                 self.log_write(log, "DECODE", str(decode_input[1]), decodeDict[0])
+            else:
+                log.write("DECODE:    -\n")
                 
             # running Execute
             if (self.clk.getCycle() > 1 and execute_input != None):
                 executeDict = self.X.execute(execute_input[0])
                 executeDict = [executeDict, execute_input[1]]
                 self.log_write(log, "EXECUTE", str(execute_input[1]), executeDict[0])
+            else:
+                log.write("EXECUTE:   -\n")
                 
             # running Memory
             if (self.clk.getCycle() > 2 and memory_input != None):
@@ -99,13 +106,16 @@ class CPU:
                 if (value != -1):
                     memoryDict[0]["memValue"] = value
                 self.log_write(log, "MEMORY", str(memory_input[1]), memoryDict[0])
+            else:
+                log.write("MEMORY:    -\n")
 
             # running Writeback
             if (self.clk.getCycle() > 3 and writeback_input != None):
                 self.W.writeback(self.RegisterFile, writeback_input[0])
-
                 log.write("WRITEBACK: Inst " + str(writeback_input[1]) + ": (Register File printed below. Format <reg_num_base2> <reg_val_base10>)\n")
                 self.logRegisterFile(log)
+            else:
+                log.write("WRITEBACK: -\n")
             
             if (self.clk.getCycle() < len(program)):
                 decode_input = fetchList
@@ -152,7 +162,7 @@ if __name__ == '__main__':
             program.append(instn[:-1])
         else:
             program.append(instn)
-    
+
     log = open('log.txt', "w")
     print("\nStarting Simulation...")
     cpu.simulate(program, log, instn_mem, data_mem)
