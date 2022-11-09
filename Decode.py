@@ -28,6 +28,8 @@ class Decode:
         elif opcode == '1100011':
             return self.BEQ(inst[ : -7], RegisterFile)
 
+        elif opcode == '0000001':
+            return self.LOADNOC(inst[ : -7], RegisterFile)
 
     def R_type(self, inst, RegisterFile):
         Dict = {}
@@ -81,13 +83,19 @@ class Decode:
         Dict["imm"] = inst[0:6] + inst[-5:]
         if funct3 == "010":
             Dict["instruction"] = "SW"
-        if funct3 == "011":
-            Dict["instruction"] = "LOADNOC"
         if funct3 == "100":
             Dict["instruction"] = "STORENOC"
             Dict["rs1"] = format(1, "032b")
             Dict["rs2"] = format(4010, "032b")
             Dict["imm"] = "0"*11
+        return Dict
+    
+    def LOADNOC(self, inst, RegisterFile):
+        Dict = {}
+        Dict["rs1"] = RegisterFile[int(inst[-13:-8], 2)].getValue()
+        Dict["rs2"] = RegisterFile[int(inst[-18:-13], 2)].getValue()
+        Dict["imm"] = inst[0:6] + inst[-8:]
+        Dict["instruction"] = "LOADNOC"
         return Dict
 
     def BEQ(self, inst, RegisterFile):
