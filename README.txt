@@ -1,3 +1,5 @@
+Run 'cpu.py' to run the simulator.
+
 AND rd, rs1, rs2
 OR rd, rs1, rs2
 ADD rd, rs1, rs2
@@ -28,4 +30,4 @@ imm[11:5]    | rs2 | rs1 | 100 | imm[4:0]  |0100011      (STORENOC)
 
 
 
-There are 2^5 = 32 registers(32 bit each?), numbered from 00000 to 11111.
+There are 2^5 = 32 registers(32 bit each), numbered from 00000 to 11111.

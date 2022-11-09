@@ -113,9 +113,7 @@ class CPU:
             if (self.clk.getCycle() > 3 and writeback_input != None):
                 self.W.writeback(self.RegisterFile, writeback_input[0])
                 self.log_write(log, "WRITEBACK", str(writeback_input[1]), writeback_input[0])
-                log.write("Register File printed below. Format <reg_num_base2> <reg_val_base10>\n")
-
-                self.logRegisterFile(log)
+                
             else:
                 log.write("WRITEBACK: -\n")
             
@@ -141,6 +139,9 @@ class CPU:
 
             if self.clk.getCycle()+1 == (4+len(program)):
                 break
+            
+            log.write("Register File printed below. Format <reg_num_base2> <reg_val_base10>\n")
+            self.logRegisterFile(log)
 
             self.clk.setCycle()
 
@@ -169,7 +170,8 @@ if __name__ == '__main__':
     
     print("\nStarting Simulation...")
     cpu.simulate(program, log, instn_mem, data_mem)
-    log.write("\nProgram execution completed\n---------------------------------------------------------------------------")
+    log.write("\nProgram execution completed in " + str(cpu.clk.getCycle()+1) + 
+    " cycles.\n---------------------------------------------------------------------------")
     log.write("\nMemory state after the execution of program; Format <mem_addr_base2>\t<mem_val_base10>\n")
     log.write("---------------------------------------------------------------------------\n")
 

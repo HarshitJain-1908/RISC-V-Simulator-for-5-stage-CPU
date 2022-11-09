@@ -11,6 +11,40 @@ DECODE:    -
 EXECUTE:   -
 MEMORY:    -
 WRITEBACK: -
+Register File printed below. Format <reg_num_base2> <reg_val_base10>
+		R0: 0
+		R1: 0
+		R2: 0
+		R3: 0
+		R4: 0
+		R5: 0
+		R6: 0
+		R7: 0
+		R8: 0
+		R9: 0
+		R10: 0
+		R11: 0
+		R12: 0
+		R13: 0
+		R14: 0
+		R15: 0
+		R16: 0
+		R17: 0
+		R18: 0
+		R19: 0
+		R20: 0
+		R21: 0
+		R22: 0
+		R23: 0
+		R24: 0
+		R25: 0
+		R26: 0
+		R27: 0
+		R28: 0
+		R29: 0
+		R30: 0
+		R31: 0
+
 
 ---------------------------------------------------------------------------
 Cycle = 1
@@ -20,6 +54,40 @@ DECODE: Inst 0: ADDI    rd_num: 00011    rs1: 0    imm: 2
 EXECUTE:   -
 MEMORY:    -
 WRITEBACK: -
+Register File printed below. Format <reg_num_base2> <reg_val_base10>
+		R0: 0
+		R1: 0
+		R2: 0
+		R3: 0
+		R4: 0
+		R5: 0
+		R6: 0
+		R7: 0
+		R8: 0
+		R9: 0
+		R10: 0
+		R11: 0
+		R12: 0
+		R13: 0
+		R14: 0
+		R15: 0
+		R16: 0
+		R17: 0
+		R18: 0
+		R19: 0
+		R20: 0
+		R21: 0
+		R22: 0
+		R23: 0
+		R24: 0
+		R25: 0
+		R26: 0
+		R27: 0
+		R28: 0
+		R29: 0
+		R30: 0
+		R31: 0
+
 
 ---------------------------------------------------------------------------
 Cycle = 2
@@ -29,6 +97,40 @@ DECODE: Inst 1: ADDI    rd_num: 00001    rs1: 0    imm: 5
 EXECUTE: Inst 0: ADDI    rd_num: 00011    rs1: 0    imm: 2    result: 2    
 MEMORY:    -
 WRITEBACK: -
+Register File printed below. Format <reg_num_base2> <reg_val_base10>
+		R0: 0
+		R1: 0
+		R2: 0
+		R3: 0
+		R4: 0
+		R5: 0
+		R6: 0
+		R7: 0
+		R8: 0
+		R9: 0
+		R10: 0
+		R11: 0
+		R12: 0
+		R13: 0
+		R14: 0
+		R15: 0
+		R16: 0
+		R17: 0
+		R18: 0
+		R19: 0
+		R20: 0
+		R21: 0
+		R22: 0
+		R23: 0
+		R24: 0
+		R25: 0
+		R26: 0
+		R27: 0
+		R28: 0
+		R29: 0
+		R30: 0
+		R31: 0
+
 
 ---------------------------------------------------------------------------
 Cycle = 3
@@ -38,6 +140,40 @@ DECODE: Inst 2: ADDI    rd_num: 00010    rs1: 0    imm: 7
 EXECUTE: Inst 1: ADDI    rd_num: 00001    rs1: 0    imm: 5    result: 5    
 MEMORY: Inst 0: ADDI    rd_num: 00011    rs1: 0    imm: 2    result: 2    
 WRITEBACK: -
+Register File printed below. Format <reg_num_base2> <reg_val_base10>
+		R0: 0
+		R1: 0
+		R2: 0
+		R3: 0
+		R4: 0
+		R5: 0
+		R6: 0
+		R7: 0
+		R8: 0
+		R9: 0
+		R10: 0
+		R11: 0
+		R12: 0
+		R13: 0
+		R14: 0
+		R15: 0
+		R16: 0
+		R17: 0
+		R18: 0
+		R19: 0
+		R20: 0
+		R21: 0
+		R22: 0
+		R23: 0
+		R24: 0
+		R25: 0
+		R26: 0
+		R27: 0
+		R28: 0
+		R29: 0
+		R30: 0
+		R31: 0
+
 
 ---------------------------------------------------------------------------
 Cycle = 4
@@ -993,42 +1129,8 @@ DECODE:    -
 EXECUTE:   -
 MEMORY:    -
 WRITEBACK: Inst 22: rs1: 0    rs2: 1    imm: 0    STORENOC    result: 16388    
-Register File printed below. Format <reg_num_base2> <reg_val_base10>
-		R0: 0
-		R1: 5
-		R2: 7
-		R3: 12
-		R4: 15
-		R5: 31
-		R6: 0
-		R7: 2
-		R8: 0
-		R9: 32
-		R10: 0
-		R11: 0
-		R12: 0
-		R13: 0
-		R14: 4
-		R15: 21
-		R16: 0
-		R17: 0
-		R18: 0
-		R19: 0
-		R20: 20
-		R21: 0
-		R22: 0
-		R23: 0
-		R24: 26
-		R25: 23
-		R26: 0
-		R27: 0
-		R28: 0
-		R29: 0
-		R30: 0
-		R31: 0
 
-
-Program execution completed
+Program execution completed in 27 cycles.
 ---------------------------------------------------------------------------
 Memory state after the execution of program; Format <mem_addr_base2>	<mem_val_base10>
 ---------------------------------------------------------------------------
