@@ -20,8 +20,9 @@ class Memory:
         elif (set["instruction"] == "SW" or set["instruction"] == "STORENOC"):
             # Store operation
             addr = set["result"]
-            data = set["rs1"]
+            data = set["rs2"]
             self.Store(addr, data, dataMem)
+            print(data)
             return -1
 
         else:
