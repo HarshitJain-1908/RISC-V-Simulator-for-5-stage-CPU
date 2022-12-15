@@ -22,11 +22,6 @@ class CPU:
 
         self.clk = Clock.Clock()
 
-        self.data_read = "0"*32
-        self.data_write = "0"*32
-        self.addr_read = "0"*32
-        self.data_write = "0"*32
-
         # Pipeline elements
         self.F = Fetch.Fetch()
         self.D = Decode.Decode()
@@ -37,8 +32,13 @@ class CPU:
 
     def logRegisterFile(self, log):
         for i in range(len(self.RegisterFile)):
+            if (i in [5, 10, 15, 20, 25, 30]):
+                log.write("\n")
             reg = "R" + str(int(self.RegisterFile[i].name, 2))
-            log.write("\t\t"+ reg + ": "+  str(int(self.RegisterFile[i].getValue(), 2)) + "\n")
+            if (i >=0 and i <= 9):
+                log.write("\t\t"+ reg + ":  "+  str(int(self.RegisterFile[i].getValue(), 2)) + "  ")
+            else:
+                log.write("\t\t"+ reg + ": "+  str(int(self.RegisterFile[i].getValue(), 2)) + "  ")
         log.write("\n")
     
     def log_write(self, log, stage_name, inst_num, dict):
@@ -53,23 +53,35 @@ class CPU:
         if (stage_name == "WRITEBACK"):
             log.write(stage_name + ": " + "Inst " + inst_num + ": ")
         for key in dict:
+            if key in  ["_rd", "_rs1", "_rs2"]:
+                continue
             if dict[key].isdigit() != True:
                 if (key=="BranchTaken?"):
                     log.write(key + ": " + dict[key])
                 else:
                     log.write(str(dict[key]) + "    ")
             else:
+                
                 if key == "rd":
-                    log.write("rd_num: " + dict[key] + "    ")
+                    log.write(key + ": " + dict["_rd"] + "    ")
+                    
+                    #log.write("rd_num: " + dict[key] + "    ")
                 else:
-                    log.write(key + ": " + str(int(dict[key], 2)) + "    ")
+                    if key == "rs1":
+                        log.write(dict["_rs1"] + ": " + str(int(dict[key], 2)) + "    ")
+                        
+                    elif key == "rs2":
+                        log.write(dict["_rs2"] + ": " + str(int(dict[key], 2)) + "    ")
+                        
+                    else:
+                        log.write(key + ": " + str(int(dict[key], 2)) + "    ")
         log.write("\n")
     
     def simulate(self, program, log, instn_mem, data_mem):
         log.write("""General Instructions:
         \tAll register values are given in integers in base 10.
         \tRegisters are numbered from 0 to 31.
-        \trd_num gives the destination register number in an instruction that uses it.
+        \trd gives the destination register in an instruction that uses it.
         \tresult field gives the output after the EXECUTE unit executes the given instruction.""")
         decodeDict = []
         executeDict = []
@@ -79,9 +91,9 @@ class CPU:
         instn_mem.put_data(program)
         bto = 0 #This will eventually store the cumulative sum of all branch target offsets in the program
         while True:
-            log.write("\n---------------------------------------------------------------------------\n")
+            log.write("\n-------------------------------------------------------------------------------\n")
             log.write("Cycle = " + str(self.clk.getCycle()) )
-            log.write("\n---------------------------------------------------------------------------\n")
+            log.write("\n-------------------------------------------------------------------------------\n")
 
             # Fetch
             fetchList = self.F.fetch(instn_mem, self.PC)
@@ -158,7 +170,7 @@ class CPU:
             if self.clk.getCycle() + 1 == (4 + len(program) - bto):
                 break
             
-            log.write("Register File printed below. Format <reg_name> <reg_val_decimal>\n")
+            log.write("\nRegister File printed below. Format <reg_name>: <reg_val_decimal>\n")
             self.logRegisterFile(log)
 
             self.clk.setCycle()
@@ -191,12 +203,13 @@ if __name__ == '__main__':
     log.write("\n---------------------------------------------------------------------------"+
     "\nProgram execution completed in " + str(cpu.clk.getCycle()+1) + 
     " cycles.\n---------------------------------------------------------------------------")
-    log.write("\nMemory state after the execution of program; Format <mem_addr_base2>\t<mem_val_base10>\n")
+    log.write("\nMemory state after the execution of program; Format <mem_addr_base16>: <mem_val_base10>\n")
     log.write("---------------------------------------------------------------------------\n")
 
     for i in range(0, len(data_mem.memory)):
-        addr = format(i, "032b")
-        log.write("\t\t"+addr[-15: ] + "\t" + str(int(data_mem.memory[addr], 2)) + "\n")
+        if (i % 5 == 0):
+            log.write("\n")
+        log.write("\t\t"+ hex(i) + ": " + str(int(data_mem.memory[format(i, "032b")], 2)) + "\t")
 
     print("\nSimulation successful.\nLog file generated: log.txt.")
     log.close()

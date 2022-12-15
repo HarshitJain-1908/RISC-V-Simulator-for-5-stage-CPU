@@ -33,10 +33,7 @@ class Decode:
 
     def R_type(self, inst, RegisterFile):
         Dict = {}
-        Dict["rd"] = inst[-5 : ]
-        Dict['rs1'] = RegisterFile[int(inst[-13: -8], 2)].getValue()
-        Dict['rs2'] = RegisterFile[int(inst[-18:-13], 2)].getValue()
-        
+
         funct3 = inst[-8 : -5]
         if funct3 == '111':
             Dict["instruction"] = "AND"
@@ -57,6 +54,13 @@ class Decode:
         elif funct3 == '101':
             Dict["instruction"] = "SRA"
         
+        Dict["rd"] = inst[-5 : ]
+        Dict['rs1'] = RegisterFile[int(inst[-13: -8], 2)].getValue()
+        Dict['rs2'] = RegisterFile[int(inst[-18:-13], 2)].getValue()
+        Dict['_rs1'] = "R" + str(int(RegisterFile[int(inst[-13: -8], 2)].name, 2))
+        Dict['_rs2'] = "R" + str(int(RegisterFile[int(inst[-18:-13], 2)].name, 2))
+        Dict ["_rd"] = "R" + str(int(RegisterFile[int(inst[-5 : ], 2)].name, 2))
+        
         return Dict
 
     def ADDI(self, inst, RegisterFile):
@@ -65,6 +69,9 @@ class Decode:
         Dict["rd"] = inst[-5:]
         Dict["rs1"] = RegisterFile[int(inst[-13:-8], 2)].getValue()
         Dict["imm"] = inst[0 : 12]
+        Dict["_rd"] = "R" + str(int(RegisterFile[int(inst[-5:], 2)].name, 2))
+        Dict["_rs1"] = "R" + str(int(RegisterFile[int(inst[-13:-8], 2)].name, 2))
+
         return Dict
 
     def LW(self, inst, RegisterFile):
@@ -73,29 +80,37 @@ class Decode:
         Dict["rd"] = inst[-5:]
         Dict["rs1"] = RegisterFile[int(inst[-13:-8], 2)].getValue()
         Dict["imm"] = RegisterFile[int(inst[0:12], 2)].getValue()
+        Dict["_rd"] = "R" + str(int(RegisterFile[int(inst[-5:], 2)].name, 2))
+        Dict["_rs1"] = "R" + str(int(RegisterFile[int(inst[-13:-8], 2)].name, 2))
         return Dict
 
     def SW(self, inst, RegisterFile):
         Dict = {}
         funct3 = inst[-8 : -5]
-        Dict["rs1"] = RegisterFile[int(inst[-13:-8], 2)].getValue()
-        Dict["rs2"] = RegisterFile[int(inst[-18:-13], 2)].getValue()
-        Dict["imm"] = inst[0:7] + inst[-5:]
         if funct3 == "010":
             Dict["instruction"] = "SW"
+            Dict["rs1"] = RegisterFile[int(inst[-13:-8], 2)].getValue()
+            Dict["rs2"] = RegisterFile[int(inst[-18:-13], 2)].getValue()
+            Dict["imm"] = inst[0:7] + inst[-5:]
+            Dict["_rs1"] = "R" + str(int(RegisterFile[int(inst[-13:-8], 2)].name, 2))
+            Dict['_rs2'] = "R" + str(int(RegisterFile[int(inst[-18:-13], 2)].name, 2))
         if funct3 == "100":
             Dict["instruction"] = "STORENOC"
             Dict["rs1"] = format(0, "032b")
-            Dict["rs2"] = format(1, "032b")
+            Dict["rs2"] = format(1, "032b")  
+            Dict["_rs1"] = "R" + str(int(RegisterFile[int(inst[-13:-8], 2)].name, 2))
+            Dict['_rs2'] = "R" + str(int(RegisterFile[int(inst[-18:-13], 2)].name, 2))
             Dict["imm"] = "0"*12
         return Dict
     
     def LOADNOC(self, inst, RegisterFile):
         Dict = {}
+        Dict["instruction"] = "LOADNOC"
         Dict["rs1"] = RegisterFile[int(inst[-13:-8], 2)].getValue()
         Dict["rs2"] = RegisterFile[int(inst[-18:-13], 2)].getValue()
+        Dict["_rs1"] = "R" + str(int(RegisterFile[int(inst[-13:-8], 2)].name, 2))
+        Dict['_rs2'] = "R" + str(int(RegisterFile[int(inst[-18:-13], 2)].name, 2))
         Dict["imm"] = inst[0:7] + inst[-8:]
-        Dict["instruction"] = "LOADNOC"
         return Dict
 
     def BEQ(self, inst, RegisterFile):
@@ -103,6 +118,8 @@ class Decode:
         Dict["instruction"] = "BEQ"
         Dict["rs1"] = RegisterFile[int(inst[-13:-8], 2)].getValue()
         Dict["rs2"] = RegisterFile[int(inst[-18:-13], 2)].getValue()
+        Dict["_rs1"] = "R" + str(int(RegisterFile[int(inst[-13:-8], 2)].name, 2))
+        Dict['_rs2'] = "R" + str(int(RegisterFile[int(inst[-18:-13], 2)].name, 2))
         Dict["BranchOffset"] = inst[0] + inst[-1] + inst[1:7]  + inst[-5:-1] +'0'
         if Dict["rs1"] == Dict["rs2"]:
             #branch_target should change the PC value to [(current PC) +  Dict["BranchOffset"]]
