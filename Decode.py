@@ -103,10 +103,11 @@ class Decode:
         Dict["instruction"] = "BEQ"
         Dict["rs1"] = RegisterFile[int(inst[-13:-8], 2)].getValue()
         Dict["rs2"] = RegisterFile[int(inst[-18:-13], 2)].getValue()
-        Dict["imm"] = inst[0] + inst[-1] + inst[1:7]  + inst[-5:-1] +'0'
-        if Dict["rs1"] == Dict["rs2"]: #check equality
-            # Main.branch_target(Dict["imm"]) # branch_target should change the PC value to PC + 4 + Dict["imm"]
-            #The next instruction should be executed
-            return None
+        Dict["BranchOffset"] = inst[0] + inst[-1] + inst[1:7]  + inst[-5:-1] +'0'
+        if Dict["rs1"] == Dict["rs2"]:
+            #branch_target should change the PC value to [(current PC) +  Dict["BranchOffset"]]
+            Dict["BranchTaken?"] = "YES";
         else:
-            return Dict
+            Dict["BranchTaken?"] = "NO";
+        
+        return Dict
