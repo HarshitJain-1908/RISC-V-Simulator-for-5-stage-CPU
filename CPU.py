@@ -7,7 +7,7 @@ import Memory
 import WriteBack
 import InstructionMemory
 import DataMemory
-
+import GraphPlotter
 
 class CPU:
     def __init__(self):
@@ -41,6 +41,7 @@ class CPU:
                 log.write("\t\t"+ reg + ": "+  str(int(self.RegisterFile[i].getValue(), 2)) + "  ")
         log.write("\n")
     
+
     def log_write(self, log, stage_name, inst_num, dict):
         if dict == None:
             return
@@ -55,6 +56,9 @@ class CPU:
         for key in dict:
             if key in  ["_rd", "_rs1", "_rs2"]:
                 continue
+            if (dict[key] == "STORENOC"):
+                log.write("STORENOC   store 1 in (0x4004)MMR4")
+                break
             if dict[key].isdigit() != True:
                 if (key=="BranchTaken?"):
                     log.write(key + ": " + dict[key])
@@ -64,8 +68,6 @@ class CPU:
                 
                 if key == "rd":
                     log.write(key + ": " + dict["_rd"] + "    ")
-                    
-                    #log.write("rd_num: " + dict[key] + "    ")
                 else:
                     if key == "rs1":
                         log.write(dict["_rs1"] + ": " + str(int(dict[key], 2)) + "    ")
@@ -77,22 +79,29 @@ class CPU:
                         log.write(key + ": " + str(int(dict[key], 2)) + "    ")
         log.write("\n")
     
+
     def simulate(self, program, log, instn_mem, data_mem):
-        log.write("""General Instructions:
-        \tAll register values are given in integers in base 10.
+        log.write("""Instructions:
         \tRegisters are numbered from 0 to 31.
         \trd gives the destination register in an instruction that uses it.
-        \tresult field gives the output after the EXECUTE unit executes the given instruction.""")
+        \tresult field gives the output after the EXECUTE unit executes the given instruction.
+        \tFormat of register file printing is <reg_name>: <reg_val_base10>\n""")
         decodeDict = []
         executeDict = []
         memoryDict = []
 
         #storing program in instruction memory
         instn_mem.put_data(program)
+        
         bto = 0 #This will eventually store the cumulative sum of all branch target offsets in the program
+        
+        log.write("\nRegister File before cycle 0:\n")
+        self.logRegisterFile(log)
+
         while True:
+
             log.write("\n-------------------------------------------------------------------------------\n")
-            log.write("Cycle = " + str(self.clk.getCycle()) )
+            log.write("Cycle " + str(self.clk.getCycle()) )
             log.write("\n-------------------------------------------------------------------------------\n")
 
             # Fetch
@@ -166,18 +175,19 @@ class CPU:
                 writeback_input = memoryDict
             else:
                 writeback_input = None
+            
+            log.write("\n-------------------------------------------------------------------------------")
+            log.write("\nRegister File after cycle " + str(self.clk.getCycle())+ ":\n")
+            self.logRegisterFile(log)
 
             if self.clk.getCycle() + 1 == (4 + len(program) - bto):
                 break
-            
-            log.write("\nRegister File printed below. Format <reg_name>: <reg_val_decimal>\n")
-            self.logRegisterFile(log)
 
             self.clk.setCycle()
 
 
 if __name__ == '__main__':
-
+    PROGRAM_BINARY = "test_binary.txt"
     cpu = CPU()
     
     delay = int(input('Enter Instruction Memory Delay (in clock cyles): '))
@@ -187,7 +197,7 @@ if __name__ == '__main__':
     
     data_mem = DataMemory.DataMemory(delay)
 
-    file = open('test_binary.txt', 'r')
+    file = open(PROGRAM_BINARY, 'r')
     program = []
 
     for instn in file:
@@ -199,7 +209,9 @@ if __name__ == '__main__':
     log = open('log.txt', "w")
     
     print("\nStarting Simulation...")
+    
     cpu.simulate(program, log, instn_mem, data_mem)
+
     log.write("\n---------------------------------------------------------------------------"+
     "\nProgram execution completed in " + str(cpu.clk.getCycle()+1) + 
     " cycles.\n---------------------------------------------------------------------------")
@@ -213,3 +225,7 @@ if __name__ == '__main__':
 
     print("\nSimulation successful.\nLog file generated: log.txt.")
     log.close()
+    
+    GraphPlotter.plot_num_reg_and_mem_instns(PROGRAM_BINARY)
+    GraphPlotter.plot_instruction_and_data_mem_access_pattern("log.txt")
+    

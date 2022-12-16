@@ -28,11 +28,9 @@ class Memory:
             return -1
     
     def Load(self, addr, dataMem): # assuming addr is a string
-        # sleep(self.clock_cycle_time * self.delay)
         return dataMem.memory[addr] 
         
 
     def Store(self, addr, data, dataMem): # for SW instruction
         self.Data_write = data
         dataMem.memory[addr] = self.Data_write
-        # sleep(self.clock_cycle_time * self.delay)
