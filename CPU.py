@@ -104,6 +104,7 @@ class CPU:
             log.write("\n-------------------------------------------------------------------------------\n")
             # log.write("PC value "+ str(int(self.PC.getValue(), 2)) + "\n")
             # Fetch
+            flag = False
             fetchList = self.F.fetch(instn_mem, self.PC)
             # log.write("PC value after fetch "+ str(int(self.PC.getValue(), 2)) + "\n")
 
@@ -115,6 +116,7 @@ class CPU:
                  if fetchList[2] == -1:
                     log.write("FETCH:     Inst " + str(fetchList[1]) + ": " + fetchList[3] + "\n")
                     fetchList = None
+                    flag = True
             else:
                 log.write("FETCH:     Inst " + str(fetchList[1]) + ": " + fetchList[0] + "\n")
             
@@ -185,7 +187,13 @@ class CPU:
             log.write("\nRegister File after2 cycle " + str(self.clk.getCycle())+ ":\n")
             self.logRegisterFile(log)
 
-            if self.clk.getCycle() + 1 == (4 + (len(program))*(self.F.delay) - bto):
+            # if self.clk.getCycle() + 1 == (4 + (len(program))*(self.F.delay) - bto):
+            if (fetchList is None and
+                flag is False and
+               decode_input is None and
+               execute_input is None and
+               memory_input is None and
+               writeback_input is None) : 
                 break
 
             self.clk.setCycle()
@@ -200,7 +208,7 @@ if __name__ == '__main__':
     instn_mem = InstructionMemory.InstructionMemory(delay)
 
     delay = int(input('Enter Data Memory Delay (in clock cyles): '))
-    
+    cpu.M.setDelay(delay)
     data_mem = DataMemory.DataMemory(delay)
 
     file = open(PROGRAM_BINARY, 'r')
