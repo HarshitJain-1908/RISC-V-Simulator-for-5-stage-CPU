@@ -21,7 +21,6 @@ class CPU:
         self.PC = Register.Register("100000", "0"*32)
 
         self.clk = Clock.Clock()
-
         # Pipeline elements
         self.F = Fetch.Fetch()
         self.D = Decode.Decode()
@@ -153,7 +152,7 @@ class CPU:
             else:
                 log.write("WRITEBACK: -\n")
             
-            if (self.clk.getCycle() < len(program)):
+            if (self.clk.getCycle() < (len(program))*(self.F.delay)):
                 if decodeDict != None and decodeDict[0]["instruction"] == "BEQ" and decodeDict[0]["BranchTaken?"] == "YES":
                     decode_input = None
                 else:
@@ -161,26 +160,26 @@ class CPU:
             else:
                 decode_input = None
             
-            if (self.clk.getCycle() < len(program) + 1):
+            if (self.clk.getCycle() < (len(program))*(self.F.delay) + 1):
                 execute_input = decodeDict
             else:
                 execute_input = None
             
-            if (self.clk.getCycle() < len(program) + 2):
+            if (self.clk.getCycle() < (len(program))*(self.F.delay) + 2):
                 memory_input = executeDict
             else:
                 memory_input = None
 
-            if (self.clk.getCycle() < len(program) + 3):
+            if (self.clk.getCycle() < (len(program))*(self.F.delay) + 3):
                 writeback_input = memoryDict
             else:
                 writeback_input = None
             
             log.write("\n-------------------------------------------------------------------------------")
-            log.write("\nRegister File after cycle " + str(self.clk.getCycle())+ ":\n")
+            log.write("\nRegister File after2 cycle " + str(self.clk.getCycle())+ ":\n")
             self.logRegisterFile(log)
 
-            if self.clk.getCycle() + 1 == (4 + len(program) - bto):
+            if self.clk.getCycle() + 1 == (4 + (len(program))*(self.F.delay) - bto):
                 break
 
             self.clk.setCycle()
@@ -191,6 +190,7 @@ if __name__ == '__main__':
     cpu = CPU()
     
     delay = int(input('Enter Instruction Memory Delay (in clock cyles): '))
+    cpu.F.setdelay(delay)
     instn_mem = InstructionMemory.InstructionMemory(delay)
 
     delay = int(input('Enter Data Memory Delay (in clock cyles): '))
