@@ -30,6 +30,8 @@ class Decode:
 
         elif opcode == '0000001':
             return self.LOADNOC(inst[ : -7], RegisterFile)
+        
+        return None
 
     def R_type(self, inst, RegisterFile):
         Dict = {}

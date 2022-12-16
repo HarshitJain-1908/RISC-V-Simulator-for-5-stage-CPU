@@ -102,13 +102,19 @@ class CPU:
             log.write("\n-------------------------------------------------------------------------------\n")
             log.write("Cycle " + str(self.clk.getCycle()) )
             log.write("\n-------------------------------------------------------------------------------\n")
-
+            # log.write("PC value "+ str(int(self.PC.getValue(), 2)) + "\n")
             # Fetch
             fetchList = self.F.fetch(instn_mem, self.PC)
+            # log.write("PC value after fetch "+ str(int(self.PC.getValue(), 2)) + "\n")
 
             if (int(fetchList[0], 2) == 0):
-                fetchList = None
-                log.write("FETCH:     -\n")
+                    fetchList = None
+                    log.write("FETCH:     -\n")
+            
+            elif(fetchList[0] == "1"*32):
+                 if fetchList[2] == -1:
+                    log.write("FETCH:     Inst " + str(fetchList[1]) + ": " + fetchList[3] + "\n")
+                    fetchList = None
             else:
                 log.write("FETCH:     Inst " + str(fetchList[1]) + ": " + fetchList[0] + "\n")
             
@@ -119,7 +125,7 @@ class CPU:
                 self.log_write(log, "DECODE", str(decode_input[1]), decodeDict[0])
                 if decodeDict[0]["instruction"] == "BEQ" and decodeDict[0]["BranchTaken?"] == "YES":
                     self.PC.setValue(format(int(self.PC.getValue(), 2) + int(decodeDict[0]["BranchOffset"], 2), "032b"))
-                    bto = bto + int(decodeDict[0]["BranchOffset"], 2)
+                    bto = bto + (int(decodeDict[0]["BranchOffset"], 2) * self.F.delay)
             else:
                 decodeDict = None
                 log.write("DECODE:    -\n")

@@ -14,5 +14,5 @@ class Fetch:
         
         else:
             self.currentDelay += 1
-            return ["0"*32,int(PC.getValue(), 2)]
+            return ["1"*32 ,int(PC.getValue(), 2), -1, InstructionMemory.read_block(PC)]
         
