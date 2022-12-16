@@ -41,17 +41,17 @@ def plot_instruction_and_data_mem_access_pattern(log):
             else:
                 imem_accesses.append(-1)
         
-        elif line[0:6] == "MEMORY":
+        """elif line[0:6] == "MEMORY":
             line = line.split()
             if (len(line) > 2):
-                if line[3] in ["SW", "LW", "LOADNOC"]:
+                if line[3] in ["SW", "LW", "LOADNOC"]: #INCOMPLETE
                     dmem_accesses.append(int(line[11]))
                 elif line[3] =="STORENOC":
                     dmem_accesses.append(16388) #16388 is the decimal of 0x4004
                 else:
                     dmem_accesses.append(-9999)
             else:
-                dmem_accesses.append(-9999)
+                dmem_accesses.append(-9999)"""
 
     f2 = plt.figure()
     plt.scatter(cycles, imem_accesses, color="orange")
@@ -62,8 +62,8 @@ def plot_instruction_and_data_mem_access_pattern(log):
     plt.xticks(range(0, len(cycles) + 1))
     plt.yticks(range(0, len(cycles) + 1))
     plt.ylim(0, len(cycles) + 1)
-    
-    f3 = plt.figure()
+    plt.show()
+    """f3 = plt.figure()
     plt.scatter(cycles, dmem_accesses, color="red")
     plt.xlabel("Cycle")
     plt.ylabel("Data memory address(base 10)")
@@ -71,7 +71,7 @@ def plot_instruction_and_data_mem_access_pattern(log):
     plt.xticks(range(0, len(cycles) + 1))
     plt.ylim(0, 2**14+5)
     file.close()
-    plt.show()
+    plt.show()"""
 
             
 
