@@ -125,8 +125,8 @@ class Decode:
         Dict["BranchOffset"] = inst[0] + inst[-1] + inst[1:7]  + inst[-5:-1] +'0'
         if Dict["rs1"] == Dict["rs2"]:
             #branch_target should change the PC value to [(current PC) +  Dict["BranchOffset"]]
-            Dict["BranchTaken?"] = "YES";
+            Dict["BranchTaken?"] = "YES"
         else:
-            Dict["BranchTaken?"] = "NO";
+            Dict["BranchTaken?"] = "NO"
         
         return Dict

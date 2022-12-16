@@ -184,7 +184,7 @@ class CPU:
                 writeback_input = None
             
             log.write("\n-------------------------------------------------------------------------------")
-            log.write("\nRegister File after2 cycle " + str(self.clk.getCycle())+ ":\n")
+            log.write("\nRegister File after cycle " + str(self.clk.getCycle())+ ":\n")
             self.logRegisterFile(log)
 
             # if self.clk.getCycle() + 1 == (4 + (len(program))*(self.F.delay) - bto):
