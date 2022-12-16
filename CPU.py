@@ -77,123 +77,88 @@ class CPU:
                     else:
                         log.write(key + ": " + str(int(dict[key], 2)) + "    ")
         log.write("\n")
-    
+
+
+    def dump(self, log, fetchList, decode_input, decodeDict, execute_input, executeDict, memory_input, memoryDict, writeback_input):
+        log.write("\n-------------------------------------------------------------------------------\n")
+        log.write("Cycle " + str(self.clk.getCycle()) )
+        log.write("\n-------------------------------------------------------------------------------\n")
+        # log.write("PC value "+ str(int(self.PC.getValue(), 2)) + "\n")
+        if (fetchList[0] == "1"*32):
+            if (fetchList[2] != "0"*32):
+                log.write("FETCH:     Inst " + str(fetchList[1]) + ": " + fetchList[2] + "\n")
+            else:
+                log.write("FETCH:     -\n")
+        elif (fetchList[0] ==  "0" * 32):
+            log.write("FETCH:     -\n")
+        else:
+            log.write("FETCH:     Inst " + str(fetchList[1]) + ": " + fetchList[0] + "\n")
+        
+        if decode_input[0] != "0"*32 and decodeDict[0] != None:
+            self.log_write(log, "DECODE", str(decode_input[1]), decodeDict[0])
+        else:
+            log.write("DECODE:    -\n")
+        
+        if execute_input[0] == None:
+            log.write("EXECUTE:   -\n")
+        else:
+            self.log_write(log, "EXECUTE", str(execute_input[1]), executeDict[0])
+        
+        if memory_input[0] != None:
+            self.log_write(log, "MEMORY", str(memory_input[1]), memoryDict[0])
+        else:
+            log.write("MEMORY:    -\n")
+
+        if writeback_input[0] != None:
+            self.log_write(log, "WRITEBACK", str(writeback_input[1]), writeback_input[0])
+        else:
+            log.write("WRITEBACK: -\n")
+
 
     def simulate(self, program, log, instn_mem, data_mem):
-        log.write("""Instructions:
-        \tRegisters are numbered from 0 to 31.
-        \trd gives the destination register in an instruction that uses it.
-        \tresult field gives the output after the EXECUTE unit executes the given instruction.
-        \tFormat of register file printing is <reg_name>: <reg_val_base10>\n""")
         decodeDict = []
         executeDict = []
-        memoryDict = []
+        memoryDict = [None, None]
 
-        #storing program in instruction memory
-        instn_mem.put_data(program)
-        
-        bto = 0 #This will eventually store the cumulative sum of all branch target offsets in the program
+        decode_input = [None, None]
+        execute_input = [None, None]
+        memory_input = [None, None]
+        writeback_input = [None, None]
+
+        instn_mem.put_data(program)   #storing program in instruction memory
         
         log.write("\nRegister File before cycle 0:\n")
         self.logRegisterFile(log)
 
-        while True:
+        while True:         
+            fetchList = self.F.fetch(instn_mem, self.PC)                                          #FETCH STAGE     
+            decodeDict = [self.D.decode(decode_input[0], self.RegisterFile), decode_input[1]]     #DECODE STAGE      
+            executeDict = [self.X.execute(execute_input[0]), execute_input[1]]                    #EXECUTE STAGE
+            memoryDict = self.M.Memory(memory_input, data_mem)                                    #MEMORY STAGE
+            self.W.writeback(self.RegisterFile, writeback_input[0])                               #WRITEBACK STAGE
+            
+            self.dump(log, fetchList, decode_input, decodeDict, execute_input, executeDict, memory_input, memoryDict, writeback_input)
 
-            log.write("\n-------------------------------------------------------------------------------\n")
-            log.write("Cycle " + str(self.clk.getCycle()) )
-            log.write("\n-------------------------------------------------------------------------------\n")
-            # log.write("PC value "+ str(int(self.PC.getValue(), 2)) + "\n")
-            # Fetch
-            flag = False
-            fetchList = self.F.fetch(instn_mem, self.PC)
-            # log.write("PC value after fetch "+ str(int(self.PC.getValue(), 2)) + "\n")
-
-            if (int(fetchList[0], 2) == 0):
-                    fetchList = None
-                    log.write("FETCH:     -\n")
+            if decodeDict[0] != None and decodeDict[0]["instruction"] == "BEQ" and decodeDict[0]["BranchTaken?"] == "YES": 
+                self.PC.setValue(format(int(self.PC.getValue(), 2) + int(decodeDict[0]["BranchOffset"], 2), "032b"))
+                self.F.currentDelay = 1
+                decode_input[0] = None
+            else: 
+                decode_input = fetchList
             
-            elif(fetchList[0] == "1"*32):
-                 if fetchList[2] == -1:
-                    log.write("FETCH:     Inst " + str(fetchList[1]) + ": " + fetchList[3] + "\n")
-                    fetchList = None
-                    flag = True
-            else:
-                log.write("FETCH:     Inst " + str(fetchList[1]) + ": " + fetchList[0] + "\n")
-            
-            # Decode
-            if (self.clk.getCycle() > 0 and decode_input != None):
-                decodeDict = self.D.decode(decode_input[0], self.RegisterFile)
-                decodeDict = [decodeDict, decode_input[1]]
-                self.log_write(log, "DECODE", str(decode_input[1]), decodeDict[0])
-                if decodeDict[0]["instruction"] == "BEQ" and decodeDict[0]["BranchTaken?"] == "YES":
-                    self.PC.setValue(format(int(self.PC.getValue(), 2) + int(decodeDict[0]["BranchOffset"], 2), "032b"))
-                    bto = bto + (int(decodeDict[0]["BranchOffset"], 2) * self.F.delay)
-            else:
-                decodeDict = None
-                log.write("DECODE:    -\n")
-                
-            # Execute
-            if (self.clk.getCycle() > 1 and execute_input != None):
-                executeDict = self.X.execute(execute_input[0])
-                executeDict = [executeDict, execute_input[1]]
-                self.log_write(log, "EXECUTE", str(execute_input[1]), executeDict[0])
-            else:
-                executeDict = None
-                log.write("EXECUTE:   -\n")
-                
-            # Memory
-            if (self.clk.getCycle() > 2 and memory_input != None):
-                value = self.M.Memory(memory_input[0], data_mem)
-                memoryDict = memory_input
-                
-                if (value != -1):
-                    memoryDict[0]["memValue"] = value
-                self.log_write(log, "MEMORY", str(memory_input[1]), memoryDict[0])
-            else:
-                memoryDict = None
-                log.write("MEMORY:    -\n")
-
-            # Writeback
-            if (self.clk.getCycle() > 3 and writeback_input != None):
-                self.W.writeback(self.RegisterFile, writeback_input[0])
-                self.log_write(log, "WRITEBACK", str(writeback_input[1]), writeback_input[0])
-            else:
-                log.write("WRITEBACK: -\n")
-            
-            if (self.clk.getCycle() < (len(program))*(self.F.delay)):
-                if decodeDict != None and decodeDict[0]["instruction"] == "BEQ" and decodeDict[0]["BranchTaken?"] == "YES":
-                    decode_input = None
-                else:
-                    decode_input = fetchList
-            else:
-                decode_input = None
-            
-            if (self.clk.getCycle() < (len(program))*(self.F.delay) + 1):
-                execute_input = decodeDict
-            else:
-                execute_input = None
-            
-            if (self.clk.getCycle() < (len(program))*(self.F.delay) + 2):
-                memory_input = executeDict
-            else:
-                memory_input = None
-
-            if (self.clk.getCycle() < (len(program))*(self.F.delay) + 3):
-                writeback_input = memoryDict
-            else:
-                writeback_input = None
+            execute_input = decodeDict
+            memory_input = executeDict 
+            writeback_input = memoryDict
             
             log.write("\n-------------------------------------------------------------------------------")
-            log.write("\nRegister File after2 cycle " + str(self.clk.getCycle())+ ":\n")
+            log.write("\nRegister File after cycle " + str(self.clk.getCycle())+ ":\n")
             self.logRegisterFile(log)
-
-            # if self.clk.getCycle() + 1 == (4 + (len(program))*(self.F.delay) - bto):
-            if (fetchList is None and
-                flag is False and
-               decode_input is None and
-               execute_input is None and
-               memory_input is None and
-               writeback_input is None) : 
+            
+            if (fetchList[0] == "0"*32 and
+                decode_input[0] == "0"*32 and
+                execute_input[0] is None and
+                memory_input[0] is None and
+                writeback_input[0] is None): 
                 break
 
             self.clk.setCycle()
@@ -223,6 +188,12 @@ if __name__ == '__main__':
     log = open('log.txt', "w")
     
     print("\nStarting Simulation...")
+    
+    log.write("""Instructions:
+        \tRegisters are numbered from 0 to 31.
+        \trd gives the destination register in an instruction that uses it.
+        \tresult field gives the output after the EXECUTE unit executes the given instruction.
+        \tFormat of register file printing is <reg_name>: <reg_val_base10>\n""")
     
     cpu.simulate(program, log, instn_mem, data_mem)
 

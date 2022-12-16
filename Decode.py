@@ -8,7 +8,7 @@
 class Decode: 
 
     def decode(self, inst, RegisterFile):
-        if inst == "0"*32 :
+        if inst == "0"*32 or inst == None:
             return None
         
         opcode = inst[-7 : ]

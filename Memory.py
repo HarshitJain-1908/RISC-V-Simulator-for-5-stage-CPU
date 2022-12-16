@@ -2,37 +2,42 @@ class Memory:
     operations = ["LW", "LOADNOC", "SW", "STORENOC"]
     currDelay = 1
     def Memory(self, set, dataMem):
-        if set is None:
-            return -1
+        if set[0] is None:
+            return [None, None]
 
         # if (set["instruction"] in self.operations):
         #     if self.currDelay == self.delay :
-
-        if (set["instruction"] == "LW"):
+        memoryDict = set.copy()
+        if (set[0]["instruction"] == "LW"):
             # Load operation
-            addr = set["result"]
-            return self.Load(addr, dataMem)
+            addr = set[0]["result"]
+            memoryDict[0]["memValue"] = self.Load(addr, dataMem)
+            #return self.Load(addr, dataMem)
+            return memoryDict
 
-        if (set["instruction"] == "LOADNOC"):
-            if set["result"] == "invalid":
-                return -1
-            addr = set["result"]
-            data = set["rs2"]
+        if (set[0]["instruction"] == "LOADNOC"):
+            if set[0]["result"] == "invalid":
+                return memoryDict
+            addr = set[0]["result"]
+            data = set[0]["rs2"]
             self.Store(addr, data, dataMem)
-            return -1 
+            #return -1
+            return memoryDict
 
-        elif (set["instruction"] == "SW" or set["instruction"] == "STORENOC"):
+        elif (set[0]["instruction"] == "SW" or set[0]["instruction"] == "STORENOC"):
             # Store operation
-            addr = set["result"]
-            data = set["rs2"]
+            addr = set[0]["result"]
+            data = set[0]["rs2"]
             self.Store(addr, data, dataMem)
-            return -1
+            #return -1
+            return memoryDict
             # else:
             #     self.currDelay += 1
             #     return -1
 
         else:
-            return -1
+            #return -1
+            return memoryDict
     
     def Load(self, addr, dataMem): # assuming addr is a string
         return dataMem.memory[addr] 

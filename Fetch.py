@@ -5,6 +5,7 @@ class Fetch:
         self.delay = delay
     
     def fetch(self, InstructionMemory, PC):
+        
         if self.currentDelay == self.delay:
             inst = InstructionMemory.read_block(PC)
             old_PC = int(PC.getValue(), 2)
@@ -14,5 +15,5 @@ class Fetch:
         
         else:
             self.currentDelay += 1
-            return ["1"*32 ,int(PC.getValue(), 2), -1, InstructionMemory.read_block(PC)]
+            return ["1"*32 , int(PC.getValue(), 2), InstructionMemory.read_block(PC)]
         
