@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 
+len_program = 0
+
 def plot_num_reg_and_mem_instns(program_binary):
     y = [0, 0]
     file = open(program_binary, "r")
@@ -19,6 +21,7 @@ def plot_num_reg_and_mem_instns(program_binary):
     plt.bar(["Num Memory Instructions", "Num Register Instructions"], y)
     plt.title("Number of memory and register instructions in the program")
     plt.yticks(range(0, n + 1))
+    len_program = n
     file.close()
     #plt.show()
 

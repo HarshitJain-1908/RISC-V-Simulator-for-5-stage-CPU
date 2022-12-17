@@ -8,8 +8,11 @@
 class Decode: 
 
     def decode(self, inst, RegisterFile):
-        if inst == "0"*32 or inst == None:
+        if inst == "0"*32 or inst == None or len(inst) == 3:
             return None
+        
+        if isinstance(inst, dict): #Happens in stalling
+            return inst
         
         opcode = inst[-7 : ]
         
