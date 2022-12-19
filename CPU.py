@@ -132,7 +132,8 @@ class CPU:
 
     def cleanScoreboard(self, reg):
         # print("reg",reg)
-        del self.scoreboard[reg]
+        if len(self.scoreboard[reg]) > 1:
+            del self.scoreboard[reg]
 
     def simulate(self, log, instn_mem, data_mem):
         decode_input = [None, None]
