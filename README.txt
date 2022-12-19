@@ -12,7 +12,8 @@ SW rs1, rs2, imm        (stores 32 bit value to mem)(mem addr = [rs1] + imm(12 b
 SLL rd, rs1, rs2        (Shift logical left: performs logical shift left on the value in rs1 by the shift amount held in the lower 5 bits of rs2.)
 SRA rd, rs1, rs2        (Shift Right Arithmetic: performs arithmetic shift right on the value in rs1 by the shift amount held in the lower 5 bits of rs2.)
 LOADNOC rs2, rs1, imm
-STORENOC rs2, rs1, imm  (will always be = 00000000000000000100000000100011 )
+STORENOC                (will always be = 00000000000000000100000000100011)
+
 All these instructions are 32 bit each.
 
 _7bits_      |_5bts|5bts_|_3bts|5bts       |_7bits_

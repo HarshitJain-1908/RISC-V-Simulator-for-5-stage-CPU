@@ -27,7 +27,7 @@ class CPU:
         self.X = Execute.Execute()
         self.M = Memory.Memory()
         self.W = WriteBack.WriteBack()
-
+        self.isCPUstalled = False
 
     def logRegisterFile(self, log):
         for i in range(len(self.RegisterFile)):
@@ -113,24 +113,19 @@ class CPU:
             self.log_write(log, "WRITEBACK", str(writeback_input[1]), writeback_input[0])
         else:
             log.write("WRITEBACK: -\n")
+        log.write("\nIs CPU stalled during this cycle? " + str(self.isCPUstalled))
+        log.write("\n-------------------------------------------------------------------------------")
+        log.write("\nRegister File after cycle " + str(self.clk.getCycle())+ ":\n")
+        self.logRegisterFile(log)
 
 
-    def simulate(self, program, log, instn_mem, data_mem):
-        decodeDict = []
-        executeDict = []
-        memoryDict = [None, None]
-
+    def simulate(self, log, instn_mem, data_mem):
         decode_input = [None, None]
         execute_input = [None, None]
         memory_input = [None, None]
         writeback_input = [None, None]
-
-        instn_mem.put_data(program)   #storing program in instruction memory
-        
-        log.write("\nRegister File before cycle 0:\n")
-        self.logRegisterFile(log)
-
-        while True:         
+        dm_stage_temp = 1
+        while True:
             fetchList = self.F.fetch(instn_mem, self.PC)                                          #FETCH STAGE     
             decodeDict = [self.D.decode(decode_input[0], self.RegisterFile), decode_input[1]]     #DECODE STAGE      
             executeDict = [self.X.execute(execute_input[0]), execute_input[1]]                    #EXECUTE STAGE
@@ -138,30 +133,59 @@ class CPU:
             self.W.writeback(self.RegisterFile, writeback_input[0])                               #WRITEBACK STAGE
             
             self.dump(log, fetchList, decode_input, decodeDict, execute_input, executeDict, memory_input, memoryDict, writeback_input)
+                 
+            if memoryDict[0] != None and dm_stage_temp < self.M.delay: #handling data memory delay
+                dm_stage_temp = dm_stage_temp + 1
+                memory_input = memoryDict
+                
+                if executeDict[0] is None:
+                    execute_input = decodeDict
+                    if decodeDict[0] != None and decodeDict[0]["instruction"] == "BEQ" and decodeDict[0]["BranchTaken?"] == "YES": #Handling a taken branch
+                        self.PC.setValue(format(int(self.PC.getValue(), 2) + int(decodeDict[0]["BranchOffset"], 2), "032b"))
+                        self.F.currentDelay = 1
+                        decode_input[0] = None
+                    else: 
+                        decode_input = fetchList
+                else:
+                    execute_input = executeDict
+                    if decodeDict[0] == None:
+                        decode_input = fetchList
+                    else:
+                        decode_input = decodeDict
+                        self.isCPUstalled = True
+                writeback_input = [None, None]
+                
+                if self.F.currentDelay == 1 and self.isCPUstalled == True:
+                    self.PC.setValue(format(int(self.PC.getValue(), 2) - 1, "032b"))
+            
+            else:
+                dm_stage_temp = 1
+                self.isCPUstalled = False
+            
+                if decodeDict[0] != None and decodeDict[0]["instruction"] == "BEQ" and decodeDict[0]["BranchTaken?"] == "YES": #Handling a taken branch
+                    self.PC.setValue(format(int(self.PC.getValue(), 2) + int(decodeDict[0]["BranchOffset"], 2), "032b"))
+                    self.F.currentDelay = 1
+                    decode_input[0] = None
+                else: 
+                    decode_input = fetchList
 
-            if decodeDict[0] != None and decodeDict[0]["instruction"] == "BEQ" and decodeDict[0]["BranchTaken?"] == "YES": 
-                self.PC.setValue(format(int(self.PC.getValue(), 2) + int(decodeDict[0]["BranchOffset"], 2), "032b"))
-                self.F.currentDelay = 1
-                decode_input[0] = None
-            else: 
-                decode_input = fetchList
+                execute_input = decodeDict
+                memory_input = executeDict 
+                writeback_input = memoryDict
             
-            execute_input = decodeDict
-            memory_input = executeDict 
-            writeback_input = memoryDict
-            
-            log.write("\n-------------------------------------------------------------------------------")
-            log.write("\nRegister File after cycle " + str(self.clk.getCycle())+ ":\n")
-            self.logRegisterFile(log)
             
             if (fetchList[0] == "0"*32 and
                 decode_input[0] == "0"*32 and
+                #fetchList[0] in ["0"*32, "1"*32]  and
+                #fetchList[1] != 0 and
+                #decode_input[0] in ["0"*32, "1"*32] and
                 execute_input[0] is None and
                 memory_input[0] is None and
                 writeback_input[0] is None): 
                 break
 
             self.clk.setCycle()
+
 
 
 if __name__ == '__main__':
@@ -185,6 +209,8 @@ if __name__ == '__main__':
         else:
             program.append(instn)
 
+    instn_mem.put_data(program)   #storing program in instruction memory
+
     log = open('log.txt', "w")
     
     print("\nStarting Simulation...")
@@ -194,8 +220,11 @@ if __name__ == '__main__':
         \trd gives the destination register in an instruction that uses it.
         \tresult field gives the output after the EXECUTE unit executes the given instruction.
         \tFormat of register file printing is <reg_name>: <reg_val_base10>\n""")
+                
+    log.write("\nRegister File before cycle 0:\n")
+    cpu.logRegisterFile(log)
     
-    cpu.simulate(program, log, instn_mem, data_mem)
+    cpu.simulate(log, instn_mem, data_mem)
 
     log.write("\n---------------------------------------------------------------------------"+
     "\nProgram execution completed in " + str(cpu.clk.getCycle()+1) + 

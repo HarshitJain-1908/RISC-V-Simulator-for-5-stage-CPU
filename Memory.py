@@ -1,12 +1,12 @@
 class Memory:
     operations = ["LW", "LOADNOC", "SW", "STORENOC"]
-    currDelay = 1
+    currentDelay = 1
     def Memory(self, set, dataMem):
         if set[0] is None:
             return [None, None]
 
         # if (set["instruction"] in self.operations):
-        #     if self.currDelay == self.delay :
+        #     if self.currentDelay == self.delay :
         memoryDict = set.copy()
         if (set[0]["instruction"] == "LW"):
             # Load operation
@@ -32,7 +32,7 @@ class Memory:
             #return -1
             return memoryDict
             # else:
-            #     self.currDelay += 1
+            #     self.currentDelay += 1
             #     return -1
 
         else:
