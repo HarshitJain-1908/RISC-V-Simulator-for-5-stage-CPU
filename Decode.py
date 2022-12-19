@@ -8,7 +8,6 @@
 class Decode: 
 
     def decode(self, mem_delay, inst, RegisterFile, scoreboard):
-        # print("hello#", inst)
         if inst == "0"*32 or inst == None or len(inst) == 3:
             return None
         
@@ -198,8 +197,7 @@ class Decode:
         Dict['rs2'] = RegisterFile[int(inst[-18:-13], 2)].getValue()
         # Dict["BranchOffset"] = inst[0] + inst[-1] + inst[1:7]  + inst[-5:-1]
         Dict["BranchOffset"] = inst[0:7] + inst[-5:]
-        
-        print("asasasas2", Dict["BranchOffset"])
+    
 
         if Dict["BranchOffset"][0] == "0":
             Dict["BranchOffset"] = int(Dict["BranchOffset"], 2)
@@ -214,9 +212,8 @@ class Decode:
             int_val = -1*(int(ones_comp, 2) + 1)
             Dict["BranchOffset"] = int_val
         if (len(Dict["rs1"]) > 0 and len(Dict["rs2"]) > 0) and Dict["rs1"] == Dict["rs2"]:
-            #branch_target should change the PC value to [(current PC) +  Dict["BranchOffset"]]
+
             Dict["BranchTaken?"] = "YES"
         else:
             Dict["BranchTaken?"] = "NO"
-        # print("asasasas", Dict["BranchOffset"])
         return Dict

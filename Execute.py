@@ -37,7 +37,6 @@ class Execute:
             return set
     
         elif (set["instruction"] in self.Rtype):
-            print(set)
             rs1 = set["rs1"]
             val1 = int(rs1 , 2)
             rs2 = set["rs2"]
@@ -62,7 +61,6 @@ class Execute:
             return set                           #result in string 32 bit binary 
         
         elif (set["instruction"] in self.Stype):
-            print("%",set)
             rs1 = set["rs1"]
             rs2 = set["rs2"]
             imm = int(set["imm"], 2)

@@ -31,20 +31,18 @@ def plot_instruction_and_data_mem_access_pattern(log):
     cycles = []
     imem_accesses = []
     dmem_accesses = []
+    data_stall = []
     for line in file:
         if line[0:5] == "FETCH":
             cycles.append(len(cycles))
             line = line.split()
             if (len(line) > 2):
                 line = int(line[2][:-1])
-                if (len(imem_accesses) == 0 or imem_accesses[-1] != line): #check for stalls
-                    imem_accesses.append(line)
-                else:
-                    imem_accesses.append(-1)
+                imem_accesses.append(line)
             else:
                 imem_accesses.append(-1)
         
-        """elif line[0:6] == "MEMORY":
+        elif line[0:6] == "MEMORY":
             line = line.split()
             if (len(line) > 2):
                 if line[3] in ["SW", "LW", "LOADNOC"]: #INCOMPLETE
@@ -54,21 +52,29 @@ def plot_instruction_and_data_mem_access_pattern(log):
                 else:
                     dmem_accesses.append(-9999)
             else:
-                dmem_accesses.append(-9999)"""
+                dmem_accesses.append(-9999)
+        
+        elif line[0:6]=="Is CPU":
+            line=line.split()
+            if(line[-1]=="True"):
+                data_stall.append(1)
+            else:
+                data_stall.append(0)
+                
+            
 
     f2 = plt.figure()
     plt.scatter(cycles, imem_accesses, color="orange")
     plt.xlabel("Cycle")
     plt.ylabel("Instruction memory address(base 10)")
-    # plt.xlim(0, 50)
-    # plt.ylim(0, 30)
     plt.title("Instruction Memory Accesses")
     
     plt.xticks(range(0, len(cycles) + 1))
     plt.yticks(range(0, len(cycles) + 1))
     plt.ylim(0, len(cycles) + 1)
     plt.show()
-    """f3 = plt.figure()
+    
+    f3 = plt.figure()
     plt.scatter(cycles, dmem_accesses, color="red")
     plt.xlabel("Cycle")
     plt.ylabel("Data memory address(base 10)")
@@ -76,7 +82,18 @@ def plot_instruction_and_data_mem_access_pattern(log):
     plt.xticks(range(0, len(cycles) + 1))
     plt.ylim(0, 2**14+5)
     file.close()
-    plt.show()"""
+    plt.show()
+
+
+        
+    f4=plt.figure()
+
+    plt.scatter(cycles, data_stall, color = 'red')
+    plt.xlabel("Cycles")
+    plt.ylabel("Stall/ Not Stall")
+    plt.title("Data Stalls | 1 : Stall | 0 : Not Stall")
+    plt.show()
+
 
             
 
