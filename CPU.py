@@ -127,21 +127,21 @@ class CPU:
     def bypassing(self, decodeDict, executeDict):
         # if executeDict != None:
         #     self.updateScoreboard(executeDict)
-        print("*********************")
+        # print("*********************")
         print(self.scoreboard)
         if '_rs1' in decodeDict.keys():
             decodeDict['rs1'] = self.scoreboard[decodeDict['_rs1']][1]
         if '_rs2' in decodeDict.keys():
             decodeDict['rs2'] = self.scoreboard[decodeDict['_rs2']][1]
-        if 'BranchTaken?' in decodeDict.keys() :
+        # if 'BranchTaken?' in decodeDict.keys() :
         
-            if decodeDict["rs1"] == decodeDict["rs2"]:
-                #branch_target should change the PC value to [(current PC) +  Dict["BranchOffset"]]
-                print("yessssssss")
-                decodeDict["BranchTaken?"] = "YES"
-            else:
-                print("noooooooooo")
-                decodeDict["BranchTaken?"] = "NO"
+        #     if decodeDict["rs1"] == decodeDict["rs2"]:
+        #         #branch_target should change the PC value to [(current PC) +  Dict["BranchOffset"]]
+        #         print("yessssssss")
+        #         decodeDict["BranchTaken?"] = "YES"
+        #     else:
+        #         print("noooooooooo")
+        #         decodeDict["BranchTaken?"] = "NO"
         # print("abxdsasda", decodeDict["_rs1"], decodeDict["_rs2"])
 
     def updateScoreboard(self, executeDict):
@@ -180,12 +180,15 @@ class CPU:
                 self.updateScoreboard(executeDict[0])
             # print("good",self.scoreboard)
             if decodeDict[0] != None and decodeDict[0]["bypassing"] == True:
-                print("999999999")
+                # print("999999999")
                 self.bypassing(decodeDict[0], executeDict[0])
             print("#################", decodeDict)
                         
             # print("------------------------------------------------------") 
-            memoryDict = self.M.Memory(memory_input, data_mem)                                    #MEMORY STAGE
+            memoryDict = self.M.Memory(memory_input, data_mem)
+            if decodeDict[0] != None and decodeDict[0]["bypassing"] == True:
+                print("999999999")
+                self.bypassing(decodeDict[0], memoryDict[0])                                    #MEMORY STAGE
             self.W.writeback(self.RegisterFile, writeback_input[0])       
             if writeback_input[0] != None:
                 if "rd" in writeback_input[0]:

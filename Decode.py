@@ -184,16 +184,16 @@ class Decode:
         Dict["_rs1"] = "R" + str(int(RegisterFile[int(inst[-13:-8], 2)].name, 2))
         Dict['_rs2'] = "R" + str(int(RegisterFile[int(inst[-18:-13], 2)].name, 2))
 
-        if (Dict['_rs1'] in scoreboard.keys()):
-            Dict['bypassing'] = True
-        else:
-            Dict['bypassing'] = False
+        # if (Dict['_rs1'] in scoreboard.keys()):
+        #     Dict['bypassing'] = True
+        # else:
+        #     Dict['bypassing'] = False
         Dict['rs1'] = RegisterFile[int(inst[-13: -8], 2)].getValue()
 
-        if (Dict['_rs2'] in scoreboard.keys()):
-            Dict['bypassing'] = Dict['bypassing'] or True
-        else:
-            Dict['bypassing'] = Dict['bypassing'] or False
+        # if (Dict['_rs2'] in scoreboard.keys()):
+        #     Dict['bypassing'] = Dict['bypassing'] or True
+        # else:
+        Dict['bypassing'] = False
 
         Dict['rs2'] = RegisterFile[int(inst[-18:-13], 2)].getValue()
         # Dict["BranchOffset"] = inst[0] + inst[-1] + inst[1:7]  + inst[-5:-1]
