@@ -127,9 +127,9 @@ class CPU:
     def bypassing(self, decodeDict, executeDict):
         # if executeDict != None:
         #     self.updateScoreboard(executeDict)
-        if '_rs1' in decodeDict.keys() and len(decodeDict['_rs1']) == 0:
+        if '_rs1' in decodeDict.keys():
             decodeDict['rs1'] = self.scoreboard[decodeDict['_rs1']][1]
-        if '_rs2' in decodeDict.keys() and len(decodeDict['_rs2']) == 0:
+        if '_rs2' in decodeDict.keys():
             decodeDict['rs2'] = self.scoreboard[decodeDict['_rs2']][1]
         if 'BranchTaken?' in decodeDict.keys() :
         
