@@ -28,6 +28,7 @@ class CPU:
         self.M = Memory.Memory()
         self.W = WriteBack.WriteBack()
         self.isCPUstalled = False
+        self.scoreboard = dict()
 
     def logRegisterFile(self, log):
         for i in range(len(self.RegisterFile)):
@@ -118,20 +119,43 @@ class CPU:
         log.write("\nRegister File after cycle " + str(self.clk.getCycle())+ ":\n")
         self.logRegisterFile(log)
 
+    def updateScoreboard(self, executeDict):
+        # if (self.clk.getCycle() > 15):
+        #     print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
+        #     print(executeDict)
+        # print(executeDict)
+        if "_rd" in executeDict[0]:
+            rd = executeDict[0]["_rd"]
+            entry = self.scoreboard[rd]
+            entry[0] = entry[0] - 1
+            entry.append(executeDict[0]["result"])
+
+    def cleanScoreboard(self, reg):
+        # print("reg",reg)
+        del self.scoreboard[reg]
 
     def simulate(self, log, instn_mem, data_mem):
         decode_input = [None, None]
         execute_input = [None, None]
         memory_input = [None, None]
         writeback_input = [None, None]
+        input_scoreboard = dict()
         dm_stage_temp = 1
         while True:
             fetchList = self.F.fetch(instn_mem, self.PC)                                          #FETCH STAGE     
-            decodeDict = [self.D.decode(decode_input[0], self.RegisterFile), decode_input[1]]     #DECODE STAGE      
-            executeDict = [self.X.execute(execute_input[0]), execute_input[1]]                    #EXECUTE STAGE
+            decodeDict = [self.D.decode(decode_input[0], self.RegisterFile, self.scoreboard), decode_input[1]]     #DECODE STAGE      
+            executeDict = [self.X.execute(execute_input[0], input_scoreboard), execute_input[1]]   #EXECUTE STAGE
+            # print(executeDict)
+            if executeDict[0] != None:
+                self.updateScoreboard(executeDict)
+            print("-------------------- Cycle", self.clk.getCycle(), "----------------------------------")             
+            # print("------------------------------------------------------") 
             memoryDict = self.M.Memory(memory_input, data_mem)                                    #MEMORY STAGE
-            self.W.writeback(self.RegisterFile, writeback_input[0])                               #WRITEBACK STAGE
-            
+            self.W.writeback(self.RegisterFile, writeback_input[0])       
+            if writeback_input[0] != None:
+                if "rd" in writeback_input[0]:
+                    self.cleanScoreboard("R"+str(int(writeback_input[0]["rd"], 2)))                            #WRITEBACK STAGE
+            print(self.scoreboard)  
             self.dump(log, fetchList, decode_input, decodeDict, execute_input, executeDict, memory_input, memoryDict, writeback_input)
                  
             if memoryDict[0] != None and dm_stage_temp < self.M.delay: #handling data memory delay
@@ -170,6 +194,7 @@ class CPU:
                     decode_input = fetchList
 
                 execute_input = decodeDict
+                input_scoreboard = self.scoreboard.copy()
                 memory_input = executeDict 
                 writeback_input = memoryDict
             
@@ -190,6 +215,7 @@ class CPU:
 
 if __name__ == '__main__':
     PROGRAM_BINARY = "test_binary.txt"
+    # PROGRAM_BINARY = "temp.txt"
     cpu = CPU()
     
     delay = int(input('Enter Instruction Memory Delay (in clock cyles): '))

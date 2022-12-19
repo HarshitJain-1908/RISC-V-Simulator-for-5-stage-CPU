@@ -7,7 +7,7 @@
 
 class Decode: 
 
-    def decode(self, inst, RegisterFile):
+    def decode(self, inst, RegisterFile, scoreboard):
         if inst == "0"*32 or inst == None or len(inst) == 3:
             return None
         
@@ -17,13 +17,13 @@ class Decode:
         opcode = inst[-7 : ]
         
         if opcode == '0110011':
-            return self.R_type(inst[ : -7], RegisterFile)
+            return self.R_type(inst[ : -7], RegisterFile, scoreboard)
         
         elif opcode == '0010011':
-            return self.ADDI(inst[ : -7], RegisterFile)
+            return self.ADDI(inst[ : -7], RegisterFile, scoreboard)
         
         elif opcode == '0000011':
-            return self.LW(inst[ : -7], RegisterFile)
+            return self.LW(inst[ : -7], RegisterFile, scoreboard)
         
         elif opcode == '0100011':
             return self.SW(inst[ : -7], RegisterFile)
@@ -36,7 +36,7 @@ class Decode:
         
         return None
 
-    def R_type(self, inst, RegisterFile):
+    def R_type(self, inst, RegisterFile, scoreboard):
         Dict = {}
 
         funct3 = inst[-8 : -5]
@@ -66,9 +66,10 @@ class Decode:
         Dict['_rs2'] = "R" + str(int(RegisterFile[int(inst[-18:-13], 2)].name, 2))
         Dict ["_rd"] = "R" + str(int(RegisterFile[int(inst[-5 : ], 2)].name, 2))
         
+        scoreboard[Dict["_rd"]] = [1]
         return Dict
 
-    def ADDI(self, inst, RegisterFile):
+    def ADDI(self, inst, RegisterFile, scoreboard):
         Dict = {}
         Dict["instruction"] = "ADDI"
         Dict["rd"] = inst[-5:]
@@ -77,9 +78,10 @@ class Decode:
         Dict["_rd"] = "R" + str(int(RegisterFile[int(inst[-5:], 2)].name, 2))
         Dict["_rs1"] = "R" + str(int(RegisterFile[int(inst[-13:-8], 2)].name, 2))
 
+        scoreboard[Dict["_rd"]] = [1]
         return Dict
 
-    def LW(self, inst, RegisterFile):
+    def LW(self, inst, RegisterFile, scoreboard):
         Dict = {}
         Dict["instruction"] = "LW"
         Dict["rd"] = inst[-5:]
@@ -87,6 +89,8 @@ class Decode:
         Dict["imm"] = RegisterFile[int(inst[0:12], 2)].getValue()
         Dict["_rd"] = "R" + str(int(RegisterFile[int(inst[-5:], 2)].name, 2))
         Dict["_rs1"] = "R" + str(int(RegisterFile[int(inst[-13:-8], 2)].name, 2))
+
+        scoreboard[Dict["_rd"]] = [1]
         return Dict
 
     def SW(self, inst, RegisterFile):
