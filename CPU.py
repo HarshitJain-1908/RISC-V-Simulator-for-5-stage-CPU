@@ -127,6 +127,8 @@ class CPU:
     def bypassing(self, decodeDict, executeDict):
         # if executeDict != None:
         #     self.updateScoreboard(executeDict)
+        print("*********************")
+        print(self.scoreboard)
         if '_rs1' in decodeDict.keys():
             decodeDict['rs1'] = self.scoreboard[decodeDict['_rs1']][1]
         if '_rs2' in decodeDict.keys():
@@ -135,10 +137,12 @@ class CPU:
         
             if decodeDict["rs1"] == decodeDict["rs2"]:
                 #branch_target should change the PC value to [(current PC) +  Dict["BranchOffset"]]
+                print("yessssssss")
                 decodeDict["BranchTaken?"] = "YES"
             else:
+                print("noooooooooo")
                 decodeDict["BranchTaken?"] = "NO"
-        print("abxdsasda", decodeDict["_rs1"], decodeDict["_rs2"])
+        # print("abxdsasda", decodeDict["_rs1"], decodeDict["_rs2"])
 
     def updateScoreboard(self, executeDict):
         # if (self.clk.getCycle() > 15):
@@ -170,8 +174,11 @@ class CPU:
             print("-------------------- Cycle", self.clk.getCycle(), "----------------------------------") 
             # print("###############",decodeDict[0])
             executeDict = [self.X.execute(execute_input[0]), execute_input[1]]   #EXECUTE STAGE
+            print("&&&&&&&&&&&&&&&&&&&&&&&&")
+            print(decodeDict)
             if executeDict[0] != None:
                 self.updateScoreboard(executeDict[0])
+            # print("good",self.scoreboard)
             if decodeDict[0] != None and decodeDict[0]["bypassing"] == True:
                 print("999999999")
                 self.bypassing(decodeDict[0], executeDict[0])

@@ -456,7 +456,7 @@ Register File after cycle 21:
 -------------------------------------------------------------------------------
 Cycle 22
 -------------------------------------------------------------------------------
-FETCH:     Inst 24: 11111111101111100000111111100011
+FETCH:     Inst 24: 11111111101111100000111011100011
 DECODE:    Inst 23: ADDI    rd: R27    R27: 0    imm: 1    
 EXECUTE:   Inst 22: ADDI    rd: R28    R28: 0    imm: 1    result: 1    
 MEMORY:    Inst 21: LW    rd: R12    R14: 4    imm: 15    result: 19    memValue: 0    
@@ -477,7 +477,7 @@ Register File after cycle 22:
 Cycle 23
 -------------------------------------------------------------------------------
 FETCH:     Inst 25: 01111111100101110111111110000001
-DECODE:    Inst 24: BEQ    R28: 1    R27: 1    BranchOffset: -2    BranchTaken?: YES
+DECODE:    Inst 24: BEQ    R28: 1    R27: 1    BranchOffset: -3    BranchTaken?: YES
 EXECUTE:   Inst 23: ADDI    rd: R27    R27: 0    imm: 1    result: 1    
 MEMORY:    Inst 22: ADDI    rd: R28    R28: 0    imm: 1    result: 1    
 WRITEBACK: Inst 21: LW    rd: R12    R14: 4    imm: 15    result: 19    memValue: 0    
@@ -496,9 +496,9 @@ Register File after cycle 23:
 -------------------------------------------------------------------------------
 Cycle 24
 -------------------------------------------------------------------------------
-FETCH:     Inst 24: 11111111101111100000111111100011
+FETCH:     Inst 23: 00000000000111011000110110010011
 DECODE:    -
-EXECUTE:   Inst 24: BEQ    R28: 1    R27: 1    BranchOffset: -2    BranchTaken?: YES
+EXECUTE:   Inst 24: BEQ    R28: 1    R27: 1    BranchOffset: -3    BranchTaken?: YES
 MEMORY:    Inst 23: ADDI    rd: R27    R27: 0    imm: 1    result: 1    
 WRITEBACK: Inst 22: ADDI    rd: R28    R28: 0    imm: 1    result: 1    
 
@@ -511,4 +511,84 @@ Register File after cycle 24:
 		R15: 21  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
 		R20: 20480  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
 		R25: 23  		R26: 0  		R27: 0  		R28: 1  		R29: 0  
+		R30: 0  		R31: 0  
+
+-------------------------------------------------------------------------------
+Cycle 25
+-------------------------------------------------------------------------------
+FETCH:     Inst 24: 11111111101111100000111011100011
+DECODE:    Inst 23: ADDI    rd: R27    R27: 1    imm: 1    
+EXECUTE:   -
+MEMORY:    Inst 24: BEQ    R28: 1    R27: 1    BranchOffset: -3    BranchTaken?: YES
+WRITEBACK: Inst 23: ADDI    rd: R27    R27: 0    imm: 1    result: 1    
+
+Is CPU stalled during this cycle? False
+-------------------------------------------------------------------------------
+Register File after cycle 25:
+		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
+		R5:  16  		R6:  0  		R7:  2  		R8:  0  		R9:  0  
+		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 4  
+		R15: 21  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
+		R20: 20480  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
+		R25: 23  		R26: 0  		R27: 1  		R28: 1  		R29: 0  
+		R30: 0  		R31: 0  
+
+-------------------------------------------------------------------------------
+Cycle 26
+-------------------------------------------------------------------------------
+FETCH:     Inst 25: 01111111100101110111111110000001
+DECODE:    Inst 24: BEQ    R28: 1    R27: 1    BranchOffset: -3    BranchTaken?: YES
+EXECUTE:   Inst 23: ADDI    rd: R27    R27: 1    imm: 1    result: 2    
+MEMORY:    -
+WRITEBACK: Inst 24: BEQ    R28: 1    R27: 1    BranchOffset: -3    BranchTaken?: YES
+
+Is CPU stalled during this cycle? False
+-------------------------------------------------------------------------------
+Register File after cycle 26:
+		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
+		R5:  16  		R6:  0  		R7:  2  		R8:  0  		R9:  0  
+		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 4  
+		R15: 21  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
+		R20: 20480  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
+		R25: 23  		R26: 0  		R27: 1  		R28: 1  		R29: 0  
+		R30: 0  		R31: 0  
+
+-------------------------------------------------------------------------------
+Cycle 27
+-------------------------------------------------------------------------------
+FETCH:     Inst 23: 00000000000111011000110110010011
+DECODE:    -
+EXECUTE:   Inst 24: BEQ    R28: 1    R27: 1    BranchOffset: -3    BranchTaken?: YES
+MEMORY:    Inst 23: ADDI    rd: R27    R27: 1    imm: 1    result: 2    
+WRITEBACK: -
+
+Is CPU stalled during this cycle? False
+-------------------------------------------------------------------------------
+Register File after cycle 27:
+		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
+		R5:  16  		R6:  0  		R7:  2  		R8:  0  		R9:  0  
+		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 4  
+		R15: 21  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
+		R20: 20480  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
+		R25: 23  		R26: 0  		R27: 1  		R28: 1  		R29: 0  
+		R30: 0  		R31: 0  
+
+-------------------------------------------------------------------------------
+Cycle 28
+-------------------------------------------------------------------------------
+FETCH:     Inst 24: 11111111101111100000111011100011
+DECODE:    Inst 23: ADDI    rd: R27    R27: 1    imm: 1    
+EXECUTE:   -
+MEMORY:    Inst 24: BEQ    R28: 1    R27: 1    BranchOffset: -3    BranchTaken?: YES
+WRITEBACK: Inst 23: ADDI    rd: R27    R27: 1    imm: 1    result: 2    
+
+Is CPU stalled during this cycle? False
+-------------------------------------------------------------------------------
+Register File after cycle 28:
+		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
+		R5:  16  		R6:  0  		R7:  2  		R8:  0  		R9:  0  
+		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 4  
+		R15: 21  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
+		R20: 20480  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
+		R25: 23  		R26: 0  		R27: 2  		R28: 1  		R29: 0  
 		R30: 0  		R31: 0  
