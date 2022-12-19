@@ -36,8 +36,8 @@ Register File after cycle 0:
 -------------------------------------------------------------------------------
 Cycle 1
 -------------------------------------------------------------------------------
-FETCH:     Inst 0: 00000000001000010000000110010011
-DECODE:    -
+FETCH:     Inst 1: 00000000010100001000000010010011
+DECODE:    Inst 0: ADDI    rd: R3    R2: 0    imm: 2    
 EXECUTE:   -
 MEMORY:    -
 WRITEBACK: -
@@ -56,9 +56,9 @@ Register File after cycle 1:
 -------------------------------------------------------------------------------
 Cycle 2
 -------------------------------------------------------------------------------
-FETCH:     Inst 1: 00000000010100001000000010010011
-DECODE:    Inst 0: ADDI    rd: R3    R2: 0    imm: 2    
-EXECUTE:   -
+FETCH:     Inst 2: 00000000011100010000000100010011
+DECODE:    Inst 1: ADDI    rd: R1    R1: 0    imm: 5    
+EXECUTE:   Inst 0: ADDI    rd: R3    R2: 0    imm: 2    result: 2    
 MEMORY:    -
 WRITEBACK: -
 
@@ -76,10 +76,10 @@ Register File after cycle 2:
 -------------------------------------------------------------------------------
 Cycle 3
 -------------------------------------------------------------------------------
-FETCH:     Inst 1: 00000000010100001000000010010011
-DECODE:    -
-EXECUTE:   Inst 0: ADDI    rd: R3    R2: 0    imm: 2    result: 2    
-MEMORY:    -
+FETCH:     Inst 3: 00000000001000001000000110110011
+DECODE:    Inst 2: ADDI    rd: R2    R2: 0    imm: 7    
+EXECUTE:   Inst 1: ADDI    rd: R1    R1: 0    imm: 5    result: 5    
+MEMORY:    Inst 0: ADDI    rd: R3    R2: 0    imm: 2    result: 2    
 WRITEBACK: -
 
 Is CPU stalled during this cycle? False
@@ -96,16 +96,16 @@ Register File after cycle 3:
 -------------------------------------------------------------------------------
 Cycle 4
 -------------------------------------------------------------------------------
-FETCH:     Inst 2: 00000000011100010000000100010011
-DECODE:    Inst 1: ADDI    rd: R1    R1: 0    imm: 5    
-EXECUTE:   -
-MEMORY:    Inst 0: ADDI    rd: R3    R2: 0    imm: 2    result: 2    
-WRITEBACK: -
+FETCH:     Inst 4: 00000000111100100000001000010011
+DECODE:    Inst 3: ADD    rd: R3    R1: 0    R2: 0    
+EXECUTE:   Inst 2: ADDI    rd: R2    R2: 0    imm: 7    result: 7    
+MEMORY:    Inst 1: ADDI    rd: R1    R1: 0    imm: 5    result: 5    
+WRITEBACK: Inst 0: ADDI    rd: R3    R2: 0    imm: 2    result: 2    
 
 Is CPU stalled during this cycle? False
 -------------------------------------------------------------------------------
 Register File after cycle 4:
-		R0:  0  		R1:  0  		R2:  0  		R3:  0  		R4:  0  
+		R0:  0  		R1:  0  		R2:  0  		R3:  2  		R4:  0  
 		R5:  0  		R6:  0  		R7:  0  		R8:  0  		R9:  0  
 		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 0  
 		R15: 0  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
@@ -116,16 +116,16 @@ Register File after cycle 4:
 -------------------------------------------------------------------------------
 Cycle 5
 -------------------------------------------------------------------------------
-FETCH:     Inst 2: 00000000011100010000000100010011
-DECODE:    -
-EXECUTE:   Inst 1: ADDI    rd: R1    R1: 0    imm: 5    result: 5    
-MEMORY:    Inst 0: ADDI    rd: R3    R2: 0    imm: 2    result: 2    
-WRITEBACK: -
+FETCH:     Inst 5: 00000001000000101000001010010011
+DECODE:    Inst 4: ADDI    rd: R4    R4: 0    imm: 15    
+EXECUTE:   Inst 3: ADD    rd: R3    R1: 0    R2: 0    result: 0    
+MEMORY:    Inst 2: ADDI    rd: R2    R2: 0    imm: 7    result: 7    
+WRITEBACK: Inst 1: ADDI    rd: R1    R1: 0    imm: 5    result: 5    
 
 Is CPU stalled during this cycle? False
 -------------------------------------------------------------------------------
 Register File after cycle 5:
-		R0:  0  		R1:  0  		R2:  0  		R3:  0  		R4:  0  
+		R0:  0  		R1:  5  		R2:  0  		R3:  2  		R4:  0  
 		R5:  0  		R6:  0  		R7:  0  		R8:  0  		R9:  0  
 		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 0  
 		R15: 0  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
@@ -136,16 +136,16 @@ Register File after cycle 5:
 -------------------------------------------------------------------------------
 Cycle 6
 -------------------------------------------------------------------------------
-FETCH:     Inst 3: 00000000001000001000000110110011
-DECODE:    Inst 2: ADDI    rd: R2    R2: 0    imm: 7    
-EXECUTE:   -
-MEMORY:    Inst 1: ADDI    rd: R1    R1: 0    imm: 5    result: 5    
-WRITEBACK: Inst 0: ADDI    rd: R3    R2: 0    imm: 2    result: 2    
+FETCH:     Inst 6: 00000000010001110000011100010011
+DECODE:    Inst 5: ADDI    rd: R5    R5: 0    imm: 16    
+EXECUTE:   Inst 4: ADDI    rd: R4    R4: 0    imm: 15    result: 15    
+MEMORY:    Inst 3: ADD    rd: R3    R1: 0    R2: 0    result: 0    
+WRITEBACK: Inst 2: ADDI    rd: R2    R2: 0    imm: 7    result: 7    
 
 Is CPU stalled during this cycle? False
 -------------------------------------------------------------------------------
 Register File after cycle 6:
-		R0:  0  		R1:  0  		R2:  0  		R3:  2  		R4:  0  
+		R0:  0  		R1:  5  		R2:  7  		R3:  2  		R4:  0  
 		R5:  0  		R6:  0  		R7:  0  		R8:  0  		R9:  0  
 		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 0  
 		R15: 0  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
@@ -156,16 +156,16 @@ Register File after cycle 6:
 -------------------------------------------------------------------------------
 Cycle 7
 -------------------------------------------------------------------------------
-FETCH:     Inst 3: 00000000001000001000000110110011
-DECODE:    -
-EXECUTE:   Inst 2: ADDI    rd: R2    R2: 0    imm: 7    result: 7    
-MEMORY:    Inst 1: ADDI    rd: R1    R1: 0    imm: 5    result: 5    
-WRITEBACK: -
+FETCH:     Inst 7: 00000001011111001000110010010011
+DECODE:    Inst 6: ADDI    rd: R14    R14: 0    imm: 4    
+EXECUTE:   Inst 5: ADDI    rd: R5    R5: 0    imm: 16    result: 16    
+MEMORY:    Inst 4: ADDI    rd: R4    R4: 0    imm: 15    result: 15    
+WRITEBACK: Inst 3: ADD    rd: R3    R1: 0    R2: 0    result: 0    
 
 Is CPU stalled during this cycle? False
 -------------------------------------------------------------------------------
 Register File after cycle 7:
-		R0:  0  		R1:  0  		R2:  0  		R3:  2  		R4:  0  
+		R0:  0  		R1:  5  		R2:  7  		R3:  0  		R4:  0  
 		R5:  0  		R6:  0  		R7:  0  		R8:  0  		R9:  0  
 		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 0  
 		R15: 0  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
@@ -176,16 +176,16 @@ Register File after cycle 7:
 -------------------------------------------------------------------------------
 Cycle 8
 -------------------------------------------------------------------------------
-FETCH:     Inst 4: 00000000111100100000001000010011
-DECODE:    Inst 3: ADD    rd: R3    R1: 0    R2: 0    
-EXECUTE:   -
-MEMORY:    Inst 2: ADDI    rd: R2    R2: 0    imm: 7    result: 7    
-WRITEBACK: Inst 1: ADDI    rd: R1    R1: 0    imm: 5    result: 5    
+FETCH:     Inst 8: 00000000001000001010010000100011
+DECODE:    Inst 7: ADDI    rd: R25    R25: 0    imm: 23    
+EXECUTE:   Inst 6: ADDI    rd: R14    R14: 0    imm: 4    result: 4    
+MEMORY:    Inst 5: ADDI    rd: R5    R5: 0    imm: 16    result: 16    
+WRITEBACK: Inst 4: ADDI    rd: R4    R4: 0    imm: 15    result: 15    
 
 Is CPU stalled during this cycle? False
 -------------------------------------------------------------------------------
 Register File after cycle 8:
-		R0:  0  		R1:  5  		R2:  0  		R3:  2  		R4:  0  
+		R0:  0  		R1:  5  		R2:  7  		R3:  0  		R4:  15  
 		R5:  0  		R6:  0  		R7:  0  		R8:  0  		R9:  0  
 		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 0  
 		R15: 0  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
@@ -196,17 +196,17 @@ Register File after cycle 8:
 -------------------------------------------------------------------------------
 Cycle 9
 -------------------------------------------------------------------------------
-FETCH:     Inst 4: 00000000111100100000001000010011
-DECODE:    -
-EXECUTE:   Inst 3: ADD    rd: R3    R1: 0    R2: 0    result: 0    
-MEMORY:    Inst 2: ADDI    rd: R2    R2: 0    imm: 7    result: 7    
-WRITEBACK: -
+FETCH:     Inst 9: 00000000001100001001101000110011
+DECODE:    Inst 8: SW    imm: 8    R1: 5    R2: 7    
+EXECUTE:   Inst 7: ADDI    rd: R25    R25: 0    imm: 23    result: 23    
+MEMORY:    Inst 6: ADDI    rd: R14    R14: 0    imm: 4    result: 4    
+WRITEBACK: Inst 5: ADDI    rd: R5    R5: 0    imm: 16    result: 16    
 
 Is CPU stalled during this cycle? False
 -------------------------------------------------------------------------------
 Register File after cycle 9:
-		R0:  0  		R1:  5  		R2:  0  		R3:  2  		R4:  0  
-		R5:  0  		R6:  0  		R7:  0  		R8:  0  		R9:  0  
+		R0:  0  		R1:  5  		R2:  7  		R3:  0  		R4:  15  
+		R5:  16  		R6:  0  		R7:  0  		R8:  0  		R9:  0  
 		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 0  
 		R15: 0  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
 		R20: 0  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
@@ -216,18 +216,18 @@ Register File after cycle 9:
 -------------------------------------------------------------------------------
 Cycle 10
 -------------------------------------------------------------------------------
-FETCH:     Inst 5: 00000001000000101000001010010011
-DECODE:    Inst 4: ADDI    rd: R4    R4: 0    imm: 15    
-EXECUTE:   -
-MEMORY:    Inst 3: ADD    rd: R3    R1: 0    R2: 0    result: 0    
-WRITEBACK: Inst 2: ADDI    rd: R2    R2: 0    imm: 7    result: 7    
+FETCH:     Inst 10: 01000000000100010000001110110011
+DECODE:    Inst 9: SLL    rd: R20    R1: 5    R3: 0    
+EXECUTE:   Inst 8: SW    imm: 8    R1: 5    R2: 7    result: 13    
+MEMORY:    Inst 7: ADDI    rd: R25    R25: 0    imm: 23    result: 23    
+WRITEBACK: Inst 6: ADDI    rd: R14    R14: 0    imm: 4    result: 4    
 
 Is CPU stalled during this cycle? False
 -------------------------------------------------------------------------------
 Register File after cycle 10:
-		R0:  0  		R1:  5  		R2:  7  		R3:  2  		R4:  0  
-		R5:  0  		R6:  0  		R7:  0  		R8:  0  		R9:  0  
-		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 0  
+		R0:  0  		R1:  5  		R2:  7  		R3:  0  		R4:  15  
+		R5:  16  		R6:  0  		R7:  0  		R8:  0  		R9:  0  
+		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 4  
 		R15: 0  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
 		R20: 0  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
 		R25: 0  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
@@ -236,351 +236,351 @@ Register File after cycle 10:
 -------------------------------------------------------------------------------
 Cycle 11
 -------------------------------------------------------------------------------
-FETCH:     Inst 5: 00000001000000101000001010010011
-DECODE:    -
-EXECUTE:   Inst 4: ADDI    rd: R4    R4: 0    imm: 15    result: 15    
-MEMORY:    Inst 3: ADD    rd: R3    R1: 0    R2: 0    result: 0    
-WRITEBACK: -
-
-Is CPU stalled during this cycle? False
--------------------------------------------------------------------------------
-Register File after cycle 11:
-		R0:  0  		R1:  5  		R2:  7  		R3:  2  		R4:  0  
-		R5:  0  		R6:  0  		R7:  0  		R8:  0  		R9:  0  
-		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 0  
-		R15: 0  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
-		R20: 0  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
-		R25: 0  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
-		R30: 0  		R31: 0  
-
--------------------------------------------------------------------------------
-Cycle 12
--------------------------------------------------------------------------------
-FETCH:     Inst 6: 00000000010001110000011100010011
-DECODE:    Inst 5: ADDI    rd: R5    R5: 0    imm: 16    
-EXECUTE:   -
-MEMORY:    Inst 4: ADDI    rd: R4    R4: 0    imm: 15    result: 15    
-WRITEBACK: Inst 3: ADD    rd: R3    R1: 0    R2: 0    result: 0    
-
-Is CPU stalled during this cycle? False
--------------------------------------------------------------------------------
-Register File after cycle 12:
-		R0:  0  		R1:  5  		R2:  7  		R3:  0  		R4:  0  
-		R5:  0  		R6:  0  		R7:  0  		R8:  0  		R9:  0  
-		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 0  
-		R15: 0  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
-		R20: 0  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
-		R25: 0  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
-		R30: 0  		R31: 0  
-
--------------------------------------------------------------------------------
-Cycle 13
--------------------------------------------------------------------------------
-FETCH:     Inst 6: 00000000010001110000011100010011
-DECODE:    -
-EXECUTE:   Inst 5: ADDI    rd: R5    R5: 0    imm: 16    result: 16    
-MEMORY:    Inst 4: ADDI    rd: R4    R4: 0    imm: 15    result: 15    
-WRITEBACK: -
-
-Is CPU stalled during this cycle? False
--------------------------------------------------------------------------------
-Register File after cycle 13:
-		R0:  0  		R1:  5  		R2:  7  		R3:  0  		R4:  0  
-		R5:  0  		R6:  0  		R7:  0  		R8:  0  		R9:  0  
-		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 0  
-		R15: 0  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
-		R20: 0  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
-		R25: 0  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
-		R30: 0  		R31: 0  
-
--------------------------------------------------------------------------------
-Cycle 14
--------------------------------------------------------------------------------
-FETCH:     Inst 7: 00000001011111001000110010010011
-DECODE:    Inst 6: ADDI    rd: R14    R14: 0    imm: 4    
-EXECUTE:   -
-MEMORY:    Inst 5: ADDI    rd: R5    R5: 0    imm: 16    result: 16    
-WRITEBACK: Inst 4: ADDI    rd: R4    R4: 0    imm: 15    result: 15    
-
-Is CPU stalled during this cycle? False
--------------------------------------------------------------------------------
-Register File after cycle 14:
-		R0:  0  		R1:  5  		R2:  7  		R3:  0  		R4:  15  
-		R5:  0  		R6:  0  		R7:  0  		R8:  0  		R9:  0  
-		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 0  
-		R15: 0  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
-		R20: 0  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
-		R25: 0  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
-		R30: 0  		R31: 0  
-
--------------------------------------------------------------------------------
-Cycle 15
--------------------------------------------------------------------------------
-FETCH:     Inst 7: 00000001011111001000110010010011
-DECODE:    -
-EXECUTE:   Inst 6: ADDI    rd: R14    R14: 0    imm: 4    result: 4    
-MEMORY:    Inst 5: ADDI    rd: R5    R5: 0    imm: 16    result: 16    
-WRITEBACK: -
-
-Is CPU stalled during this cycle? False
--------------------------------------------------------------------------------
-Register File after cycle 15:
-		R0:  0  		R1:  5  		R2:  7  		R3:  0  		R4:  15  
-		R5:  0  		R6:  0  		R7:  0  		R8:  0  		R9:  0  
-		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 0  
-		R15: 0  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
-		R20: 0  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
-		R25: 0  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
-		R30: 0  		R31: 0  
-
--------------------------------------------------------------------------------
-Cycle 16
--------------------------------------------------------------------------------
-FETCH:     Inst 8: 00000000001000001010010000100011
-DECODE:    Inst 7: ADDI    rd: R25    R25: 0    imm: 23    
-EXECUTE:   -
-MEMORY:    Inst 6: ADDI    rd: R14    R14: 0    imm: 4    result: 4    
-WRITEBACK: Inst 5: ADDI    rd: R5    R5: 0    imm: 16    result: 16    
-
-Is CPU stalled during this cycle? False
--------------------------------------------------------------------------------
-Register File after cycle 16:
-		R0:  0  		R1:  5  		R2:  7  		R3:  0  		R4:  15  
-		R5:  16  		R6:  0  		R7:  0  		R8:  0  		R9:  0  
-		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 0  
-		R15: 0  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
-		R20: 0  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
-		R25: 0  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
-		R30: 0  		R31: 0  
-
--------------------------------------------------------------------------------
-Cycle 17
--------------------------------------------------------------------------------
-FETCH:     Inst 8: 00000000001000001010010000100011
-DECODE:    -
-EXECUTE:   Inst 7: ADDI    rd: R25    R25: 0    imm: 23    result: 23    
-MEMORY:    Inst 6: ADDI    rd: R14    R14: 0    imm: 4    result: 4    
-WRITEBACK: -
-
-Is CPU stalled during this cycle? False
--------------------------------------------------------------------------------
-Register File after cycle 17:
-		R0:  0  		R1:  5  		R2:  7  		R3:  0  		R4:  15  
-		R5:  16  		R6:  0  		R7:  0  		R8:  0  		R9:  0  
-		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 0  
-		R15: 0  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
-		R20: 0  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
-		R25: 0  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
-		R30: 0  		R31: 0  
-
--------------------------------------------------------------------------------
-Cycle 18
--------------------------------------------------------------------------------
-FETCH:     Inst 9: 00000000001100001001101000110011
-DECODE:    Inst 8: SW    imm: 8    R1: 5    R2: 7    
-EXECUTE:   -
-MEMORY:    Inst 7: ADDI    rd: R25    R25: 0    imm: 23    result: 23    
-WRITEBACK: Inst 6: ADDI    rd: R14    R14: 0    imm: 4    result: 4    
-
-Is CPU stalled during this cycle? False
--------------------------------------------------------------------------------
-Register File after cycle 18:
-		R0:  0  		R1:  5  		R2:  7  		R3:  0  		R4:  15  
-		R5:  16  		R6:  0  		R7:  0  		R8:  0  		R9:  0  
-		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 4  
-		R15: 0  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
-		R20: 0  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
-		R25: 0  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
-		R30: 0  		R31: 0  
-
--------------------------------------------------------------------------------
-Cycle 19
--------------------------------------------------------------------------------
-FETCH:     Inst 9: 00000000001100001001101000110011
-DECODE:    -
-EXECUTE:   Inst 8: SW    imm: 8    R1: 5    R2: 7    result: 13    
-MEMORY:    Inst 7: ADDI    rd: R25    R25: 0    imm: 23    result: 23    
-WRITEBACK: -
-
-Is CPU stalled during this cycle? False
--------------------------------------------------------------------------------
-Register File after cycle 19:
-		R0:  0  		R1:  5  		R2:  7  		R3:  0  		R4:  15  
-		R5:  16  		R6:  0  		R7:  0  		R8:  0  		R9:  0  
-		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 4  
-		R15: 0  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
-		R20: 0  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
-		R25: 0  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
-		R30: 0  		R31: 0  
-
--------------------------------------------------------------------------------
-Cycle 20
--------------------------------------------------------------------------------
-FETCH:     Inst 10: 01000000000100010000001110110011
-DECODE:    Inst 9: SLL    rd: R20    R1: 5    R3: 0    
-EXECUTE:   -
+FETCH:     Inst 11: 00000000001000001000000110110011
+DECODE:    Inst 10: SUB    rd: R7    R2: 7    R1: 5    
+EXECUTE:   Inst 9: SLL    rd: R20    R1: 5    R3: 0    result: 5    
 MEMORY:    Inst 8: SW    imm: 8    R1: 5    R2: 7    result: 13    
 WRITEBACK: Inst 7: ADDI    rd: R25    R25: 0    imm: 23    result: 23    
 
 Is CPU stalled during this cycle? False
 -------------------------------------------------------------------------------
-Register File after cycle 20:
+Register File after cycle 11:
 		R0:  0  		R1:  5  		R2:  7  		R3:  0  		R4:  15  
 		R5:  16  		R6:  0  		R7:  0  		R8:  0  		R9:  0  
 		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 4  
 		R15: 0  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
 		R20: 0  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
+		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
+		R30: 0  		R31: 0  
+
+-------------------------------------------------------------------------------
+Cycle 12
+-------------------------------------------------------------------------------
+FETCH:     Inst 12: 01000000000100010000001100110011
+DECODE:    Inst 11: ADD    rd: R3    R1: 5    R2: 7    
+EXECUTE:   Inst 10: SUB    rd: R7    R2: 7    R1: 5    result: 2    
+MEMORY:    Inst 9: SLL    rd: R20    R1: 5    R3: 0    result: 5    
+WRITEBACK: Inst 8: SW    imm: 8    R1: 5    R2: 7    result: 13    
+
+Is CPU stalled during this cycle? False
+-------------------------------------------------------------------------------
+Register File after cycle 12:
+		R0:  0  		R1:  5  		R2:  7  		R3:  0  		R4:  15  
+		R5:  16  		R6:  0  		R7:  0  		R8:  0  		R9:  0  
+		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 4  
+		R15: 0  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
+		R20: 0  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
+		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
+		R30: 0  		R31: 0  
+
+-------------------------------------------------------------------------------
+Cycle 13
+-------------------------------------------------------------------------------
+FETCH:     Inst 13: 00000000001001110111011110110011
+DECODE:    Inst 12: SUB    rd: R6    R2: 7    R1: 5    
+EXECUTE:   Inst 11: ADD    rd: R3    R1: 5    R2: 7    result: 12    
+MEMORY:    Inst 10: SUB    rd: R7    R2: 7    R1: 5    result: 2    
+WRITEBACK: Inst 9: SLL    rd: R20    R1: 5    R3: 0    result: 5    
+
+Is CPU stalled during this cycle? False
+-------------------------------------------------------------------------------
+Register File after cycle 13:
+		R0:  0  		R1:  5  		R2:  7  		R3:  0  		R4:  15  
+		R5:  16  		R6:  0  		R7:  0  		R8:  0  		R9:  0  
+		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 4  
+		R15: 0  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
+		R20: 5  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
+		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
+		R30: 0  		R31: 0  
+
+-------------------------------------------------------------------------------
+Cycle 14
+-------------------------------------------------------------------------------
+FETCH:     Inst 14: 00000000101000100010001100000011
+DECODE:    Inst 13: AND    rd: R15    R14: 4    R2: 7    
+EXECUTE:   Inst 12: SUB    rd: R6    R2: 7    R1: 5    result: 2    
+MEMORY:    Inst 11: ADD    rd: R3    R1: 5    R2: 7    result: 12    
+WRITEBACK: Inst 10: SUB    rd: R7    R2: 7    R1: 5    result: 2    
+
+Is CPU stalled during this cycle? False
+-------------------------------------------------------------------------------
+Register File after cycle 14:
+		R0:  0  		R1:  5  		R2:  7  		R3:  0  		R4:  15  
+		R5:  16  		R6:  0  		R7:  2  		R8:  0  		R9:  0  
+		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 4  
+		R15: 0  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
+		R20: 5  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
+		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
+		R30: 0  		R31: 0  
+
+-------------------------------------------------------------------------------
+Cycle 15
+-------------------------------------------------------------------------------
+FETCH:     Inst 15: 00000000010100001110011110110011
+DECODE:    Inst 14: LW    rd: R6    R4: 15    imm: 0    
+EXECUTE:   Inst 13: AND    rd: R15    R14: 4    R2: 7    result: 4    
+MEMORY:    Inst 12: SUB    rd: R6    R2: 7    R1: 5    result: 2    
+WRITEBACK: Inst 11: ADD    rd: R3    R1: 5    R2: 7    result: 12    
+
+Is CPU stalled during this cycle? False
+-------------------------------------------------------------------------------
+Register File after cycle 15:
+		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
+		R5:  16  		R6:  0  		R7:  2  		R8:  0  		R9:  0  
+		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 4  
+		R15: 0  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
+		R20: 5  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
+		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
+		R30: 0  		R31: 0  
+
+-------------------------------------------------------------------------------
+Cycle 16
+-------------------------------------------------------------------------------
+FETCH:     Inst 16: 01000000011100011101011000110011
+DECODE:    Inst 15: OR    rd: R15    R1: 5    R5: 16    
+EXECUTE:   Inst 14: LW    rd: R6    R4: 15    imm: 0    result: 15    
+MEMORY:    Inst 13: AND    rd: R15    R14: 4    R2: 7    result: 4    
+WRITEBACK: Inst 12: SUB    rd: R6    R2: 7    R1: 5    result: 2    
+
+Is CPU stalled during this cycle? False
+-------------------------------------------------------------------------------
+Register File after cycle 16:
+		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
+		R5:  16  		R6:  2  		R7:  2  		R8:  0  		R9:  0  
+		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 4  
+		R15: 0  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
+		R20: 5  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
+		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
+		R30: 0  		R31: 0  
+
+-------------------------------------------------------------------------------
+Cycle 17
+-------------------------------------------------------------------------------
+FETCH:     Inst 17: 00000000000010001000000101100011
+DECODE:    Inst 16: SRA    rd: R12    R3: 12    R7: 2    
+EXECUTE:   Inst 15: OR    rd: R15    R1: 5    R5: 16    result: 21    
+MEMORY:    Inst 14: LW    rd: R6    R4: 15    imm: 0    result: 15    memValue: 0    
+WRITEBACK: Inst 13: AND    rd: R15    R14: 4    R2: 7    result: 4    
+
+Is CPU stalled during this cycle? False
+-------------------------------------------------------------------------------
+Register File after cycle 17:
+		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
+		R5:  16  		R6:  2  		R7:  2  		R8:  0  		R9:  0  
+		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 4  
+		R15: 4  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
+		R20: 5  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
+		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
+		R30: 0  		R31: 0  
+
+-------------------------------------------------------------------------------
+Cycle 18
+-------------------------------------------------------------------------------
+FETCH:     Inst 18: 00000001000000100000001010010011
+DECODE:    Inst 17: BEQ    R17: 0    R0: 0    BranchOffset: 2    BranchTaken?: YES
+EXECUTE:   Inst 16: SRA    rd: R12    R3: 12    R7: 2    result: 3    
+MEMORY:    Inst 15: OR    rd: R15    R1: 5    R5: 16    result: 21    
+WRITEBACK: Inst 14: LW    rd: R6    R4: 15    imm: 0    result: 15    memValue: 0    
+
+Is CPU stalled during this cycle? False
+-------------------------------------------------------------------------------
+Register File after cycle 18:
+		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
+		R5:  16  		R6:  0  		R7:  2  		R8:  0  		R9:  0  
+		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 4  
+		R15: 4  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
+		R20: 5  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
+		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
+		R30: 0  		R31: 0  
+
+-------------------------------------------------------------------------------
+Cycle 19
+-------------------------------------------------------------------------------
+FETCH:     Inst 21: 00000000010001110010011000000011
+DECODE:    -
+EXECUTE:   Inst 17: BEQ    R17: 0    R0: 0    BranchOffset: 2    BranchTaken?: YES
+MEMORY:    Inst 16: SRA    rd: R12    R3: 12    R7: 2    result: 3    
+WRITEBACK: Inst 15: OR    rd: R15    R1: 5    R5: 16    result: 21    
+
+Is CPU stalled during this cycle? False
+-------------------------------------------------------------------------------
+Register File after cycle 19:
+		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
+		R5:  16  		R6:  0  		R7:  2  		R8:  0  		R9:  0  
+		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 4  
+		R15: 21  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
+		R20: 5  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
+		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
+		R30: 0  		R31: 0  
+
+-------------------------------------------------------------------------------
+Cycle 20
+-------------------------------------------------------------------------------
+FETCH:     Inst 22: 00000000000111100000111000010011
+DECODE:    Inst 21: LW    rd: R12    R14: 4    imm: 15    
+EXECUTE:   -
+MEMORY:    Inst 17: BEQ    R17: 0    R0: 0    BranchOffset: 2    BranchTaken?: YES
+WRITEBACK: Inst 16: SRA    rd: R12    R3: 12    R7: 2    result: 3    
+
+Is CPU stalled during this cycle? False
+-------------------------------------------------------------------------------
+Register File after cycle 20:
+		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
+		R5:  16  		R6:  0  		R7:  2  		R8:  0  		R9:  0  
+		R10: 0  		R11: 0  		R12: 3  		R13: 0  		R14: 4  
+		R15: 21  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
+		R20: 5  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
 		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
 		R30: 0  		R31: 0  
 
 -------------------------------------------------------------------------------
 Cycle 21
 -------------------------------------------------------------------------------
-FETCH:     Inst 10: 01000000000100010000001110110011
-DECODE:    -
-EXECUTE:   Inst 9: SLL    rd: R20    R1: 5    R3: 0    result: 5    
-MEMORY:    Inst 8: SW    imm: 8    R1: 5    R2: 7    result: 13    
-WRITEBACK: -
+FETCH:     Inst 23: 00000000000111011000110110010011
+DECODE:    Inst 22: ADDI    rd: R28    R28: 0    imm: 1    
+EXECUTE:   Inst 21: LW    rd: R12    R14: 4    imm: 15    result: 19    
+MEMORY:    -
+WRITEBACK: Inst 17: BEQ    R17: 0    R0: 0    BranchOffset: 2    BranchTaken?: YES
 
 Is CPU stalled during this cycle? False
 -------------------------------------------------------------------------------
 Register File after cycle 21:
-		R0:  0  		R1:  5  		R2:  7  		R3:  0  		R4:  15  
-		R5:  16  		R6:  0  		R7:  0  		R8:  0  		R9:  0  
-		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 4  
-		R15: 0  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
-		R20: 0  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
+		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
+		R5:  16  		R6:  0  		R7:  2  		R8:  0  		R9:  0  
+		R10: 0  		R11: 0  		R12: 3  		R13: 0  		R14: 4  
+		R15: 21  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
+		R20: 5  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
 		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
 		R30: 0  		R31: 0  
 
 -------------------------------------------------------------------------------
 Cycle 22
 -------------------------------------------------------------------------------
-FETCH:     Inst 11: 00000000001000001000000110110011
-DECODE:    Inst 10: SUB    rd: R7    R2: 7    R1: 5    
-EXECUTE:   -
-MEMORY:    Inst 9: SLL    rd: R20    R1: 5    R3: 0    result: 5    
-WRITEBACK: Inst 8: SW    imm: 8    R1: 5    R2: 7    result: 13    
+FETCH:     Inst 24: 11111111101111100000111111100011
+DECODE:    Inst 23: ADDI    rd: R27    R27: 0    imm: 1    
+EXECUTE:   Inst 22: ADDI    rd: R28    R28: 0    imm: 1    result: 1    
+MEMORY:    Inst 21: LW    rd: R12    R14: 4    imm: 15    result: 19    memValue: 0    
+WRITEBACK: -
 
 Is CPU stalled during this cycle? False
 -------------------------------------------------------------------------------
 Register File after cycle 22:
-		R0:  0  		R1:  5  		R2:  7  		R3:  0  		R4:  15  
-		R5:  16  		R6:  0  		R7:  0  		R8:  0  		R9:  0  
-		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 4  
-		R15: 0  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
-		R20: 0  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
+		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
+		R5:  16  		R6:  0  		R7:  2  		R8:  0  		R9:  0  
+		R10: 0  		R11: 0  		R12: 3  		R13: 0  		R14: 4  
+		R15: 21  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
+		R20: 5  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
 		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
 		R30: 0  		R31: 0  
 
 -------------------------------------------------------------------------------
 Cycle 23
 -------------------------------------------------------------------------------
-FETCH:     Inst 11: 00000000001000001000000110110011
-DECODE:    -
-EXECUTE:   Inst 10: SUB    rd: R7    R2: 7    R1: 5    result: 2    
-MEMORY:    Inst 9: SLL    rd: R20    R1: 5    R3: 0    result: 5    
-WRITEBACK: -
+FETCH:     Inst 25: 01111111100101110111111110000001
+DECODE:    Inst 24: BEQ    R28: 0    R27: 0    BranchOffset: -2    BranchTaken?: YES
+EXECUTE:   Inst 23: ADDI    rd: R27    R27: 0    imm: 1    result: 1    
+MEMORY:    Inst 22: ADDI    rd: R28    R28: 0    imm: 1    result: 1    
+WRITEBACK: Inst 21: LW    rd: R12    R14: 4    imm: 15    result: 19    memValue: 0    
 
 Is CPU stalled during this cycle? False
 -------------------------------------------------------------------------------
 Register File after cycle 23:
-		R0:  0  		R1:  5  		R2:  7  		R3:  0  		R4:  15  
-		R5:  16  		R6:  0  		R7:  0  		R8:  0  		R9:  0  
+		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
+		R5:  16  		R6:  0  		R7:  2  		R8:  0  		R9:  0  
 		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 4  
-		R15: 0  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
-		R20: 0  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
+		R15: 21  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
+		R20: 5  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
 		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
 		R30: 0  		R31: 0  
 
 -------------------------------------------------------------------------------
 Cycle 24
 -------------------------------------------------------------------------------
-FETCH:     Inst 12: 01000000000100010000001100110011
-DECODE:    Inst 11: ADD    rd: R3    R1: 5    R2: 7    
-EXECUTE:   -
-MEMORY:    Inst 10: SUB    rd: R7    R2: 7    R1: 5    result: 2    
-WRITEBACK: Inst 9: SLL    rd: R20    R1: 5    R3: 0    result: 5    
+FETCH:     Inst 24: 11111111101111100000111111100011
+DECODE:    -
+EXECUTE:   Inst 24: BEQ    R28: 0    R27: 0    BranchOffset: -2    BranchTaken?: YES
+MEMORY:    Inst 23: ADDI    rd: R27    R27: 0    imm: 1    result: 1    
+WRITEBACK: Inst 22: ADDI    rd: R28    R28: 0    imm: 1    result: 1    
 
 Is CPU stalled during this cycle? False
 -------------------------------------------------------------------------------
 Register File after cycle 24:
-		R0:  0  		R1:  5  		R2:  7  		R3:  0  		R4:  15  
-		R5:  16  		R6:  0  		R7:  0  		R8:  0  		R9:  0  
+		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
+		R5:  16  		R6:  0  		R7:  2  		R8:  0  		R9:  0  
 		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 4  
-		R15: 0  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
+		R15: 21  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
 		R20: 5  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
-		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
+		R25: 23  		R26: 0  		R27: 0  		R28: 1  		R29: 0  
 		R30: 0  		R31: 0  
 
 -------------------------------------------------------------------------------
 Cycle 25
 -------------------------------------------------------------------------------
-FETCH:     Inst 12: 01000000000100010000001100110011
-DECODE:    -
-EXECUTE:   Inst 11: ADD    rd: R3    R1: 5    R2: 7    result: 12    
-MEMORY:    Inst 10: SUB    rd: R7    R2: 7    R1: 5    result: 2    
-WRITEBACK: -
+FETCH:     Inst 25: 01111111100101110111111110000001
+DECODE:    Inst 24: BEQ    R28: 1    R27: 0    BranchOffset: -2    BranchTaken?: NO
+EXECUTE:   -
+MEMORY:    Inst 24: BEQ    R28: 0    R27: 0    BranchOffset: -2    BranchTaken?: YES
+WRITEBACK: Inst 23: ADDI    rd: R27    R27: 0    imm: 1    result: 1    
 
 Is CPU stalled during this cycle? False
 -------------------------------------------------------------------------------
 Register File after cycle 25:
-		R0:  0  		R1:  5  		R2:  7  		R3:  0  		R4:  15  
-		R5:  16  		R6:  0  		R7:  0  		R8:  0  		R9:  0  
+		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
+		R5:  16  		R6:  0  		R7:  2  		R8:  0  		R9:  0  
 		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 4  
-		R15: 0  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
+		R15: 21  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
 		R20: 5  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
-		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
+		R25: 23  		R26: 0  		R27: 1  		R28: 1  		R29: 0  
 		R30: 0  		R31: 0  
 
 -------------------------------------------------------------------------------
 Cycle 26
 -------------------------------------------------------------------------------
-FETCH:     Inst 13: 00000000001001110111011110110011
-DECODE:    Inst 12: SUB    rd: R6    R2: 7    R1: 5    
-EXECUTE:   -
-MEMORY:    Inst 11: ADD    rd: R3    R1: 5    R2: 7    result: 12    
-WRITEBACK: Inst 10: SUB    rd: R7    R2: 7    R1: 5    result: 2    
+FETCH:     Inst 26: 00000000000000000100000000100011
+DECODE:    Inst 25: LOADNOC    imm: 16383    R14: 4    R25: 23    
+EXECUTE:   Inst 24: BEQ    R28: 1    R27: 0    BranchOffset: -2    BranchTaken?: NO
+MEMORY:    -
+WRITEBACK: Inst 24: BEQ    R28: 0    R27: 0    BranchOffset: -2    BranchTaken?: YES
 
 Is CPU stalled during this cycle? False
 -------------------------------------------------------------------------------
 Register File after cycle 26:
-		R0:  0  		R1:  5  		R2:  7  		R3:  0  		R4:  15  
+		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
 		R5:  16  		R6:  0  		R7:  2  		R8:  0  		R9:  0  
 		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 4  
-		R15: 0  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
+		R15: 21  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
 		R20: 5  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
-		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
+		R25: 23  		R26: 0  		R27: 1  		R28: 1  		R29: 0  
 		R30: 0  		R31: 0  
 
 -------------------------------------------------------------------------------
 Cycle 27
 -------------------------------------------------------------------------------
-FETCH:     Inst 13: 00000000001001110111011110110011
-DECODE:    -
-EXECUTE:   Inst 12: SUB    rd: R6    R2: 7    R1: 5    result: 2    
-MEMORY:    Inst 11: ADD    rd: R3    R1: 5    R2: 7    result: 12    
+FETCH:     -
+DECODE:    Inst 26: STORENOC   store 1 in (0x4004)MMR4
+EXECUTE:   Inst 25: LOADNOC    imm: 16383    R14: 4    R25: 23    result: 16387    
+MEMORY:    Inst 24: BEQ    R28: 1    R27: 0    BranchOffset: -2    BranchTaken?: NO
 WRITEBACK: -
 
 Is CPU stalled during this cycle? False
 -------------------------------------------------------------------------------
 Register File after cycle 27:
-		R0:  0  		R1:  5  		R2:  7  		R3:  0  		R4:  15  
+		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
 		R5:  16  		R6:  0  		R7:  2  		R8:  0  		R9:  0  
 		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 4  
-		R15: 0  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
+		R15: 21  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
 		R20: 5  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
-		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
+		R25: 23  		R26: 0  		R27: 1  		R28: 1  		R29: 0  
 		R30: 0  		R31: 0  
 
 -------------------------------------------------------------------------------
 Cycle 28
 -------------------------------------------------------------------------------
-FETCH:     Inst 14: 00000000101000100010001100000011
-DECODE:    Inst 13: AND    rd: R15    R14: 4    R2: 7    
-EXECUTE:   -
-MEMORY:    Inst 12: SUB    rd: R6    R2: 7    R1: 5    result: 2    
-WRITEBACK: Inst 11: ADD    rd: R3    R1: 5    R2: 7    result: 12    
+FETCH:     -
+DECODE:    -
+EXECUTE:   Inst 26: STORENOC   store 1 in (0x4004)MMR4
+MEMORY:    Inst 25: LOADNOC    imm: 16383    R14: 4    R25: 23    result: 16387    
+WRITEBACK: Inst 24: BEQ    R28: 1    R27: 0    BranchOffset: -2    BranchTaken?: NO
 
 Is CPU stalled during this cycle? False
 -------------------------------------------------------------------------------
@@ -588,19 +588,19 @@ Register File after cycle 28:
 		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
 		R5:  16  		R6:  0  		R7:  2  		R8:  0  		R9:  0  
 		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 4  
-		R15: 0  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
+		R15: 21  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
 		R20: 5  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
-		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
+		R25: 23  		R26: 0  		R27: 1  		R28: 1  		R29: 0  
 		R30: 0  		R31: 0  
 
 -------------------------------------------------------------------------------
 Cycle 29
 -------------------------------------------------------------------------------
-FETCH:     Inst 14: 00000000101000100010001100000011
+FETCH:     -
 DECODE:    -
-EXECUTE:   Inst 13: AND    rd: R15    R14: 4    R2: 7    result: 4    
-MEMORY:    Inst 12: SUB    rd: R6    R2: 7    R1: 5    result: 2    
-WRITEBACK: -
+EXECUTE:   -
+MEMORY:    Inst 26: STORENOC   store 1 in (0x4004)MMR4
+WRITEBACK: Inst 25: LOADNOC    imm: 16383    R14: 4    R25: 23    result: 16387    
 
 Is CPU stalled during this cycle? False
 -------------------------------------------------------------------------------
@@ -608,413 +608,33 @@ Register File after cycle 29:
 		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
 		R5:  16  		R6:  0  		R7:  2  		R8:  0  		R9:  0  
 		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 4  
-		R15: 0  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
+		R15: 21  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
 		R20: 5  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
-		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
+		R25: 23  		R26: 0  		R27: 1  		R28: 1  		R29: 0  
 		R30: 0  		R31: 0  
 
 -------------------------------------------------------------------------------
 Cycle 30
 -------------------------------------------------------------------------------
-FETCH:     Inst 15: 00000000010100001110011110110011
-DECODE:    Inst 14: LW    rd: R6    R4: 15    imm: 0    
+FETCH:     -
+DECODE:    -
 EXECUTE:   -
-MEMORY:    Inst 13: AND    rd: R15    R14: 4    R2: 7    result: 4    
-WRITEBACK: Inst 12: SUB    rd: R6    R2: 7    R1: 5    result: 2    
+MEMORY:    -
+WRITEBACK: Inst 26: STORENOC   store 1 in (0x4004)MMR4
 
 Is CPU stalled during this cycle? False
 -------------------------------------------------------------------------------
 Register File after cycle 30:
 		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
-		R5:  16  		R6:  2  		R7:  2  		R8:  0  		R9:  0  
-		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 4  
-		R15: 0  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
-		R20: 5  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
-		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
-		R30: 0  		R31: 0  
-
--------------------------------------------------------------------------------
-Cycle 31
--------------------------------------------------------------------------------
-FETCH:     Inst 15: 00000000010100001110011110110011
-DECODE:    -
-EXECUTE:   Inst 14: LW    rd: R6    R4: 15    imm: 0    result: 15    
-MEMORY:    Inst 13: AND    rd: R15    R14: 4    R2: 7    result: 4    
-WRITEBACK: -
-
-Is CPU stalled during this cycle? False
--------------------------------------------------------------------------------
-Register File after cycle 31:
-		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
-		R5:  16  		R6:  2  		R7:  2  		R8:  0  		R9:  0  
-		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 4  
-		R15: 0  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
-		R20: 5  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
-		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
-		R30: 0  		R31: 0  
-
--------------------------------------------------------------------------------
-Cycle 32
--------------------------------------------------------------------------------
-FETCH:     Inst 16: 01000000011100011101011000110011
-DECODE:    Inst 15: OR    rd: R15    R1: 5    R5: 16    
-EXECUTE:   -
-MEMORY:    Inst 14: LW    rd: R6    R4: 15    imm: 0    result: 15    memValue: 0    
-WRITEBACK: Inst 13: AND    rd: R15    R14: 4    R2: 7    result: 4    
-
-Is CPU stalled during this cycle? False
--------------------------------------------------------------------------------
-Register File after cycle 32:
-		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
-		R5:  16  		R6:  2  		R7:  2  		R8:  0  		R9:  0  
-		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 4  
-		R15: 4  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
-		R20: 5  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
-		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
-		R30: 0  		R31: 0  
-
--------------------------------------------------------------------------------
-Cycle 33
--------------------------------------------------------------------------------
-FETCH:     Inst 16: 01000000011100011101011000110011
-DECODE:    -
-EXECUTE:   Inst 15: OR    rd: R15    R1: 5    R5: 16    result: 21    
-MEMORY:    Inst 14: LW    rd: R6    R4: 15    imm: 0    result: 15    memValue: 0    
-WRITEBACK: -
-
-Is CPU stalled during this cycle? False
--------------------------------------------------------------------------------
-Register File after cycle 33:
-		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
-		R5:  16  		R6:  2  		R7:  2  		R8:  0  		R9:  0  
-		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 4  
-		R15: 4  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
-		R20: 5  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
-		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
-		R30: 0  		R31: 0  
-
--------------------------------------------------------------------------------
-Cycle 34
--------------------------------------------------------------------------------
-FETCH:     Inst 17: 00000000000010001000000101100011
-DECODE:    Inst 16: SRA    rd: R12    R3: 12    R7: 2    
-EXECUTE:   -
-MEMORY:    Inst 15: OR    rd: R15    R1: 5    R5: 16    result: 21    
-WRITEBACK: Inst 14: LW    rd: R6    R4: 15    imm: 0    result: 15    memValue: 0    
-
-Is CPU stalled during this cycle? False
--------------------------------------------------------------------------------
-Register File after cycle 34:
-		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
-		R5:  16  		R6:  0  		R7:  2  		R8:  0  		R9:  0  
-		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 4  
-		R15: 4  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
-		R20: 5  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
-		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
-		R30: 0  		R31: 0  
-
--------------------------------------------------------------------------------
-Cycle 35
--------------------------------------------------------------------------------
-FETCH:     Inst 17: 00000000000010001000000101100011
-DECODE:    -
-EXECUTE:   Inst 16: SRA    rd: R12    R3: 12    R7: 2    result: 3    
-MEMORY:    Inst 15: OR    rd: R15    R1: 5    R5: 16    result: 21    
-WRITEBACK: -
-
-Is CPU stalled during this cycle? False
--------------------------------------------------------------------------------
-Register File after cycle 35:
-		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
-		R5:  16  		R6:  0  		R7:  2  		R8:  0  		R9:  0  
-		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 4  
-		R15: 4  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
-		R20: 5  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
-		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
-		R30: 0  		R31: 0  
-
--------------------------------------------------------------------------------
-Cycle 36
--------------------------------------------------------------------------------
-FETCH:     Inst 18: 00000001000000100000001010010011
-DECODE:    Inst 17: BEQ    R17: 0    R0: 0    BranchOffset: 2    BranchTaken?: YES
-EXECUTE:   -
-MEMORY:    Inst 16: SRA    rd: R12    R3: 12    R7: 2    result: 3    
-WRITEBACK: Inst 15: OR    rd: R15    R1: 5    R5: 16    result: 21    
-
-Is CPU stalled during this cycle? False
--------------------------------------------------------------------------------
-Register File after cycle 36:
-		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
 		R5:  16  		R6:  0  		R7:  2  		R8:  0  		R9:  0  
 		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 4  
 		R15: 21  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
 		R20: 5  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
-		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
-		R30: 0  		R31: 0  
-
--------------------------------------------------------------------------------
-Cycle 37
--------------------------------------------------------------------------------
-FETCH:     Inst 20: 00000000010101111000110000010011
-DECODE:    -
-EXECUTE:   Inst 17: BEQ    R17: 0    R0: 0    BranchOffset: 2    BranchTaken?: YES
-MEMORY:    Inst 16: SRA    rd: R12    R3: 12    R7: 2    result: 3    
-WRITEBACK: -
-
-Is CPU stalled during this cycle? False
--------------------------------------------------------------------------------
-Register File after cycle 37:
-		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
-		R5:  16  		R6:  0  		R7:  2  		R8:  0  		R9:  0  
-		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 4  
-		R15: 21  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
-		R20: 5  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
-		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
-		R30: 0  		R31: 0  
-
--------------------------------------------------------------------------------
-Cycle 38
--------------------------------------------------------------------------------
-FETCH:     Inst 20: 00000000010101111000110000010011
-DECODE:    -
-EXECUTE:   -
-MEMORY:    Inst 17: BEQ    R17: 0    R0: 0    BranchOffset: 2    BranchTaken?: YES
-WRITEBACK: Inst 16: SRA    rd: R12    R3: 12    R7: 2    result: 3    
-
-Is CPU stalled during this cycle? False
--------------------------------------------------------------------------------
-Register File after cycle 38:
-		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
-		R5:  16  		R6:  0  		R7:  2  		R8:  0  		R9:  0  
-		R10: 0  		R11: 0  		R12: 3  		R13: 0  		R14: 4  
-		R15: 21  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
-		R20: 5  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
-		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
-		R30: 0  		R31: 0  
-
--------------------------------------------------------------------------------
-Cycle 39
--------------------------------------------------------------------------------
-FETCH:     Inst 21: 00000000010001110010011000000011
-DECODE:    Inst 20: ADDI    rd: R24    R15: 21    imm: 5    
-EXECUTE:   -
-MEMORY:    Inst 17: BEQ    R17: 0    R0: 0    BranchOffset: 2    BranchTaken?: YES
-WRITEBACK: -
-
-Is CPU stalled during this cycle? False
--------------------------------------------------------------------------------
-Register File after cycle 39:
-		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
-		R5:  16  		R6:  0  		R7:  2  		R8:  0  		R9:  0  
-		R10: 0  		R11: 0  		R12: 3  		R13: 0  		R14: 4  
-		R15: 21  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
-		R20: 5  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
-		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
-		R30: 0  		R31: 0  
-
--------------------------------------------------------------------------------
-Cycle 40
--------------------------------------------------------------------------------
-FETCH:     Inst 21: 00000000010001110010011000000011
-DECODE:    -
-EXECUTE:   Inst 20: ADDI    rd: R24    R15: 21    imm: 5    result: 26    
-MEMORY:    -
-WRITEBACK: Inst 17: BEQ    R17: 0    R0: 0    BranchOffset: 2    BranchTaken?: YES
-
-Is CPU stalled during this cycle? False
--------------------------------------------------------------------------------
-Register File after cycle 40:
-		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
-		R5:  16  		R6:  0  		R7:  2  		R8:  0  		R9:  0  
-		R10: 0  		R11: 0  		R12: 3  		R13: 0  		R14: 4  
-		R15: 21  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
-		R20: 5  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
-		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
-		R30: 0  		R31: 0  
-
--------------------------------------------------------------------------------
-Cycle 41
--------------------------------------------------------------------------------
-FETCH:     Inst 22: 01111111100101110111111110000001
-DECODE:    Inst 21: LW    rd: R12    R14: 4    imm: 15    
-EXECUTE:   -
-MEMORY:    Inst 20: ADDI    rd: R24    R15: 21    imm: 5    result: 26    
-WRITEBACK: -
-
-Is CPU stalled during this cycle? False
--------------------------------------------------------------------------------
-Register File after cycle 41:
-		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
-		R5:  16  		R6:  0  		R7:  2  		R8:  0  		R9:  0  
-		R10: 0  		R11: 0  		R12: 3  		R13: 0  		R14: 4  
-		R15: 21  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
-		R20: 5  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
-		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
-		R30: 0  		R31: 0  
-
--------------------------------------------------------------------------------
-Cycle 42
--------------------------------------------------------------------------------
-FETCH:     Inst 22: 01111111100101110111111110000001
-DECODE:    -
-EXECUTE:   Inst 21: LW    rd: R12    R14: 4    imm: 15    result: 19    
-MEMORY:    Inst 20: ADDI    rd: R24    R15: 21    imm: 5    result: 26    
-WRITEBACK: -
-
-Is CPU stalled during this cycle? False
--------------------------------------------------------------------------------
-Register File after cycle 42:
-		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
-		R5:  16  		R6:  0  		R7:  2  		R8:  0  		R9:  0  
-		R10: 0  		R11: 0  		R12: 3  		R13: 0  		R14: 4  
-		R15: 21  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
-		R20: 5  		R21: 0  		R22: 0  		R23: 0  		R24: 0  
-		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
-		R30: 0  		R31: 0  
-
--------------------------------------------------------------------------------
-Cycle 43
--------------------------------------------------------------------------------
-FETCH:     Inst 23: 00000000000000000100000000100011
-DECODE:    Inst 22: LOADNOC    imm: 16383    R14: 4    R25: 23    
-EXECUTE:   -
-MEMORY:    Inst 21: LW    rd: R12    R14: 4    imm: 15    result: 19    memValue: 0    
-WRITEBACK: Inst 20: ADDI    rd: R24    R15: 21    imm: 5    result: 26    
-
-Is CPU stalled during this cycle? False
--------------------------------------------------------------------------------
-Register File after cycle 43:
-		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
-		R5:  16  		R6:  0  		R7:  2  		R8:  0  		R9:  0  
-		R10: 0  		R11: 0  		R12: 3  		R13: 0  		R14: 4  
-		R15: 21  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
-		R20: 5  		R21: 0  		R22: 0  		R23: 0  		R24: 26  
-		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
-		R30: 0  		R31: 0  
-
--------------------------------------------------------------------------------
-Cycle 44
--------------------------------------------------------------------------------
-FETCH:     Inst 23: 00000000000000000100000000100011
-DECODE:    -
-EXECUTE:   Inst 22: LOADNOC    imm: 16383    R14: 4    R25: 23    result: 16387    
-MEMORY:    Inst 21: LW    rd: R12    R14: 4    imm: 15    result: 19    memValue: 0    
-WRITEBACK: -
-
-Is CPU stalled during this cycle? False
--------------------------------------------------------------------------------
-Register File after cycle 44:
-		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
-		R5:  16  		R6:  0  		R7:  2  		R8:  0  		R9:  0  
-		R10: 0  		R11: 0  		R12: 3  		R13: 0  		R14: 4  
-		R15: 21  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
-		R20: 5  		R21: 0  		R22: 0  		R23: 0  		R24: 26  
-		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
-		R30: 0  		R31: 0  
-
--------------------------------------------------------------------------------
-Cycle 45
--------------------------------------------------------------------------------
-FETCH:     -
-DECODE:    Inst 23: STORENOC   store 1 in (0x4004)MMR4
-EXECUTE:   -
-MEMORY:    Inst 22: LOADNOC    imm: 16383    R14: 4    R25: 23    result: 16387    
-WRITEBACK: Inst 21: LW    rd: R12    R14: 4    imm: 15    result: 19    memValue: 0    
-
-Is CPU stalled during this cycle? False
--------------------------------------------------------------------------------
-Register File after cycle 45:
-		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
-		R5:  16  		R6:  0  		R7:  2  		R8:  0  		R9:  0  
-		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 4  
-		R15: 21  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
-		R20: 5  		R21: 0  		R22: 0  		R23: 0  		R24: 26  
-		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
-		R30: 0  		R31: 0  
-
--------------------------------------------------------------------------------
-Cycle 46
--------------------------------------------------------------------------------
-FETCH:     -
-DECODE:    -
-EXECUTE:   Inst 23: STORENOC   store 1 in (0x4004)MMR4
-MEMORY:    Inst 22: LOADNOC    imm: 16383    R14: 4    R25: 23    result: 16387    
-WRITEBACK: -
-
-Is CPU stalled during this cycle? False
--------------------------------------------------------------------------------
-Register File after cycle 46:
-		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
-		R5:  16  		R6:  0  		R7:  2  		R8:  0  		R9:  0  
-		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 4  
-		R15: 21  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
-		R20: 5  		R21: 0  		R22: 0  		R23: 0  		R24: 26  
-		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
-		R30: 0  		R31: 0  
-
--------------------------------------------------------------------------------
-Cycle 47
--------------------------------------------------------------------------------
-FETCH:     -
-DECODE:    -
-EXECUTE:   -
-MEMORY:    Inst 23: STORENOC   store 1 in (0x4004)MMR4
-WRITEBACK: Inst 22: LOADNOC    imm: 16383    R14: 4    R25: 23    result: 16387    
-
-Is CPU stalled during this cycle? False
--------------------------------------------------------------------------------
-Register File after cycle 47:
-		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
-		R5:  16  		R6:  0  		R7:  2  		R8:  0  		R9:  0  
-		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 4  
-		R15: 21  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
-		R20: 5  		R21: 0  		R22: 0  		R23: 0  		R24: 26  
-		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
-		R30: 0  		R31: 0  
-
--------------------------------------------------------------------------------
-Cycle 48
--------------------------------------------------------------------------------
-FETCH:     -
-DECODE:    -
-EXECUTE:   -
-MEMORY:    Inst 23: STORENOC   store 1 in (0x4004)MMR4
-WRITEBACK: -
-
-Is CPU stalled during this cycle? False
--------------------------------------------------------------------------------
-Register File after cycle 48:
-		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
-		R5:  16  		R6:  0  		R7:  2  		R8:  0  		R9:  0  
-		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 4  
-		R15: 21  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
-		R20: 5  		R21: 0  		R22: 0  		R23: 0  		R24: 26  
-		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
-		R30: 0  		R31: 0  
-
--------------------------------------------------------------------------------
-Cycle 49
--------------------------------------------------------------------------------
-FETCH:     -
-DECODE:    -
-EXECUTE:   -
-MEMORY:    -
-WRITEBACK: Inst 23: STORENOC   store 1 in (0x4004)MMR4
-
-Is CPU stalled during this cycle? False
--------------------------------------------------------------------------------
-Register File after cycle 49:
-		R0:  0  		R1:  5  		R2:  7  		R3:  12  		R4:  15  
-		R5:  16  		R6:  0  		R7:  2  		R8:  0  		R9:  0  
-		R10: 0  		R11: 0  		R12: 0  		R13: 0  		R14: 4  
-		R15: 21  		R16: 0  		R17: 0  		R18: 0  		R19: 0  
-		R20: 5  		R21: 0  		R22: 0  		R23: 0  		R24: 26  
-		R25: 23  		R26: 0  		R27: 0  		R28: 0  		R29: 0  
+		R25: 23  		R26: 0  		R27: 1  		R28: 1  		R29: 0  
 		R30: 0  		R31: 0  
 
 ---------------------------------------------------------------------------
-Program execution completed in 50 cycles.
+Program execution completed in 31 cycles.
 ---------------------------------------------------------------------------
 Memory state after the execution of program; Format <mem_addr_base16>: <mem_val_base10>
 ---------------------------------------------------------------------------

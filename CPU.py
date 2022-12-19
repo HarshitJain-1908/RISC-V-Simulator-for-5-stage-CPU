@@ -125,26 +125,32 @@ class CPU:
         self.logRegisterFile(log)
 
     def bypassing(self, decodeDict, executeDict):
-        if executeDict[0] != None:
-            self.updateScoreboard(executeDict)
-        print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-        print(decodeDict)
-        if '_rs1' in decodeDict and len(decodeDict['_rs1']) == 0:
+        # if executeDict != None:
+        #     self.updateScoreboard(executeDict)
+        if '_rs1' in decodeDict.keys() and len(decodeDict['_rs1']) == 0:
             decodeDict['rs1'] = self.scoreboard[decodeDict['_rs1']][1]
-        if '_rs2' in decodeDict and len(decodeDict['_rs2']) == 0:
+        if '_rs2' in decodeDict.keys() and len(decodeDict['_rs2']) == 0:
             decodeDict['rs2'] = self.scoreboard[decodeDict['_rs2']][1]
+        if 'BranchTaken?' in decodeDict.keys() :
+        
+            if decodeDict["rs1"] == decodeDict["rs2"]:
+                #branch_target should change the PC value to [(current PC) +  Dict["BranchOffset"]]
+                decodeDict["BranchTaken?"] = "YES"
+            else:
+                decodeDict["BranchTaken?"] = "NO"
+        print("abxdsasda", decodeDict["_rs1"], decodeDict["_rs2"])
 
     def updateScoreboard(self, executeDict):
         # if (self.clk.getCycle() > 15):
         #     print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
         #     print(executeDict)
-        print("!!!!!!!!!!!!!!!",executeDict)
-        if "_rd" in executeDict[0]:
-            rd = executeDict[0]["_rd"]
+        # print("!!!!!!!!!!!!!!!",executeDict)
+        if "_rd" in executeDict:
+            rd = executeDict["_rd"]
             if rd in self.scoreboard.keys():
                 entry = self.scoreboard[rd]
                 entry[0] = entry[0] - 1
-                entry.append(executeDict[0]["result"])
+                entry.append(executeDict["result"])
 
     def cleanScoreboard(self, reg):
         # print("reg",reg)
@@ -164,11 +170,12 @@ class CPU:
             print("-------------------- Cycle", self.clk.getCycle(), "----------------------------------") 
             # print("###############",decodeDict[0])
             executeDict = [self.X.execute(execute_input[0]), execute_input[1]]   #EXECUTE STAGE
+            if executeDict[0] != None:
+                self.updateScoreboard(executeDict[0])
             if decodeDict[0] != None and decodeDict[0]["bypassing"] == True:
-                self.bypassing(decodeDict, executeDict)
-            # print("#################",executeDict)
-            # if executeDict[0] != None:
-            #     self.updateScoreboard(executeDict)
+                print("999999999")
+                self.bypassing(decodeDict[0], executeDict[0])
+            print("#################", decodeDict)
                         
             # print("------------------------------------------------------") 
             memoryDict = self.M.Memory(memory_input, data_mem)                                    #MEMORY STAGE
