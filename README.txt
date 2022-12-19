@@ -31,5 +31,7 @@ imm[11:5]    | rs2 | rs1 |    imm[7:0]     |0000001      (LOADNOC)
 imm[11:5]    | rs2 | rs1 | 100 | imm[4:0]  |0100011      (STORENOC)
 
 
+imm[12|10:5] | rs2 | rs1 | 000 |imm[4:1|11]|1100011      (BEQ)
+
 
 There are 2^5 = 32 registers(32 bit each), numbered from 00000 to 11111.
