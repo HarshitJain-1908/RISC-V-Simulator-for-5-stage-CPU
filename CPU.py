@@ -59,6 +59,9 @@ class CPU:
             if (dict[key] == "STORENOC"):
                 log.write("STORENOC   store 1 in (0x4004)MMR4")
                 break
+            if key == "BranchOffset":
+                log.write(key + ": " + str(dict[key]) + "    ")
+                continue
             if dict[key].isdigit() != True:
                 if (key=="BranchTaken?"):
                     log.write(key + ": " + dict[key])
@@ -166,7 +169,7 @@ class CPU:
                 if executeDict[0] is None:
                     execute_input = decodeDict
                     if decodeDict[0] != None and decodeDict[0]["instruction"] == "BEQ" and decodeDict[0]["BranchTaken?"] == "YES": #Handling a taken branch
-                        self.PC.setValue(format(int(self.PC.getValue(), 2) + int(decodeDict[0]["BranchOffset"], 2), "032b"))
+                        self.PC.setValue(format(int(self.PC.getValue(), 2) + decodeDict[0]["BranchOffset"], "032b"))
                         self.F.currentDelay = 1
                         decode_input[0] = None
                     else: 
@@ -188,7 +191,7 @@ class CPU:
                 self.isCPUstalled = False
             
                 if decodeDict[0] != None and decodeDict[0]["instruction"] == "BEQ" and decodeDict[0]["BranchTaken?"] == "YES": #Handling a taken branch
-                    self.PC.setValue(format(int(self.PC.getValue(), 2) + int(decodeDict[0]["BranchOffset"], 2), "032b"))
+                    self.PC.setValue(format(int(self.PC.getValue(), 2) + decodeDict[0]["BranchOffset"], "032b"))
                     self.F.currentDelay = 1
                     decode_input[0] = None
                 else: 
@@ -214,8 +217,8 @@ class CPU:
 
 
 if __name__ == '__main__':
-    # PROGRAM_BINARY = "test_binary.txt"
-    PROGRAM_BINARY = "temp.txt"
+    PROGRAM_BINARY = "test_binary.txt"
+    #PROGRAM_BINARY = "temp.txt"
     cpu = CPU()
     
     delay = int(input('Enter Instruction Memory Delay (in clock cyles): '))

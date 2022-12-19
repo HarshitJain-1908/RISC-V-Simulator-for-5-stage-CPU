@@ -130,6 +130,20 @@ class Decode:
         Dict["_rs1"] = "R" + str(int(RegisterFile[int(inst[-13:-8], 2)].name, 2))
         Dict['_rs2'] = "R" + str(int(RegisterFile[int(inst[-18:-13], 2)].name, 2))
         Dict["BranchOffset"] = inst[0] + inst[-1] + inst[1:7]  + inst[-5:-1] +'0'
+
+        if Dict["BranchOffset"][0] == "0":
+            Dict["BranchOffset"] = int(Dict["BranchOffset"], 2)
+        else:
+            ones_comp = ""
+            for c in Dict["BranchOffset"]:
+                if c == "1":
+                    ones_comp = ones_comp + "0"
+                else:
+                    ones_comp = ones_comp + "1"
+        
+            int_val = -1*(int(ones_comp, 2) + 1)
+            Dict["BranchOffset"] = int_val
+
         if Dict["rs1"] == Dict["rs2"]:
             #branch_target should change the PC value to [(current PC) +  Dict["BranchOffset"]]
             Dict["BranchTaken?"] = "YES"
