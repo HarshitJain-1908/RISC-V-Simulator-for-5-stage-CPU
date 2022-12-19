@@ -17,13 +17,14 @@ class Execute:
         
 
     def execute(self, set, scoreboard):
-
+        print("s", scoreboard)
         if set is None :
             return None
 
         if (set["instruction"] in self.Itype):
         
             if (set["_rs1"] in scoreboard.keys()):
+                print("hello")
                 set["rs1"] = scoreboard[set["_rs1"]][1]
 
             rs1 = set["rs1"]
@@ -84,7 +85,7 @@ class Execute:
             imm = int(set["imm"], 2)
             val1 = int(rs1 , 2)
             val2 = int(rs2 , 2)
-            
+
             if (set["instruction"] == "SW"):
                 result = self.ADDI(val1,imm)
             if (set["instruction"] == "STORENOC"):

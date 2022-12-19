@@ -23,7 +23,7 @@ def plot_num_reg_and_mem_instns(program_binary):
     plt.yticks(range(0, n + 1))
     len_program = n
     file.close()
-    plt.show()
+    # plt.show()
 
 
 def plot_instruction_and_data_mem_access_pattern(log):
@@ -67,7 +67,7 @@ def plot_instruction_and_data_mem_access_pattern(log):
     plt.xticks(range(0, len(cycles) + 1))
     plt.yticks(range(0, len(cycles) + 1))
     plt.ylim(0, len(cycles) + 1)
-    plt.show()
+    # plt.show()
     """f3 = plt.figure()
     plt.scatter(cycles, dmem_accesses, color="red")
     plt.xlabel("Cycle")

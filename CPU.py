@@ -144,7 +144,7 @@ class CPU:
         dm_stage_temp = 1
         while True:
             fetchList = self.F.fetch(instn_mem, self.PC)                                          #FETCH STAGE     
-            decodeDict = [self.D.decode(decode_input[0], self.RegisterFile, self.scoreboard), decode_input[1]]     #DECODE STAGE      
+            decodeDict = [self.D.decode(self.M.delay, decode_input[0], self.RegisterFile, self.scoreboard), decode_input[1]]     #DECODE STAGE      
             executeDict = [self.X.execute(execute_input[0], input_scoreboard), execute_input[1]]   #EXECUTE STAGE
             # print(executeDict)
             if executeDict[0] != None:
@@ -200,11 +200,10 @@ class CPU:
                 writeback_input = memoryDict
             
             
-            if (fetchList[0] == "0"*32 and
-                decode_input[0] == "0"*32 and
-                #fetchList[0] in ["0"*32, "1"*32]  and
-                #fetchList[1] != 0 and
-                #decode_input[0] in ["0"*32, "1"*32] and
+            if ((fetchList[0] == "0"*32 or (fetchList[0] == "1"*32 and fetchList[2] == "0"*32)) 
+                and
+                (decode_input[0] == "0"*32 or (decode_input[0] == "1"*32 and decode_input[2] == "0"*32))
+                and
                 execute_input[0] is None and
                 memory_input[0] is None and
                 writeback_input[0] is None): 
@@ -215,8 +214,8 @@ class CPU:
 
 
 if __name__ == '__main__':
-    PROGRAM_BINARY = "test_binary.txt"
-    # PROGRAM_BINARY = "temp.txt"
+    # PROGRAM_BINARY = "test_binary.txt"
+    PROGRAM_BINARY = "temp.txt"
     cpu = CPU()
     
     delay = int(input('Enter Instruction Memory Delay (in clock cyles): '))

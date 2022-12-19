@@ -7,7 +7,7 @@
 
 class Decode: 
 
-    def decode(self, inst, RegisterFile, scoreboard):
+    def decode(self, mem_delay, inst, RegisterFile, scoreboard):
         if inst == "0"*32 or inst == None or len(inst) == 3:
             return None
         
@@ -23,7 +23,7 @@ class Decode:
             return self.ADDI(inst[ : -7], RegisterFile, scoreboard)
         
         elif opcode == '0000011':
-            return self.LW(inst[ : -7], RegisterFile, scoreboard)
+            return self.LW(inst[ : -7], mem_delay, RegisterFile, scoreboard)
         
         elif opcode == '0100011':
             return self.SW(inst[ : -7], RegisterFile)
@@ -81,7 +81,7 @@ class Decode:
         scoreboard[Dict["_rd"]] = [1]
         return Dict
 
-    def LW(self, inst, RegisterFile, scoreboard):
+    def LW(self, mem_delay, inst, RegisterFile, scoreboard):
         Dict = {}
         Dict["instruction"] = "LW"
         Dict["rd"] = inst[-5:]
@@ -90,7 +90,7 @@ class Decode:
         Dict["_rd"] = "R" + str(int(RegisterFile[int(inst[-5:], 2)].name, 2))
         Dict["_rs1"] = "R" + str(int(RegisterFile[int(inst[-13:-8], 2)].name, 2))
 
-        scoreboard[Dict["_rd"]] = [1]
+        scoreboard[Dict["_rd"]] = [mem_delay]
         return Dict
 
     def SW(self, inst, RegisterFile):
