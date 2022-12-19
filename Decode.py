@@ -8,6 +8,7 @@
 class Decode: 
 
     def decode(self, mem_delay, inst, RegisterFile, scoreboard):
+        # print("hello#", inst)
         if inst == "0"*32 or inst == None or len(inst) == 3:
             return None
         
@@ -26,13 +27,13 @@ class Decode:
             return self.LW(inst[ : -7], mem_delay, RegisterFile, scoreboard)
         
         elif opcode == '0100011':
-            return self.SW(inst[ : -7], RegisterFile)
+            return self.SW(inst[ : -7], RegisterFile, scoreboard)
         
         elif opcode == '1100011':
-            return self.BEQ(inst[ : -7], RegisterFile)
+            return self.BEQ(inst[ : -7], RegisterFile, scoreboard)
 
         elif opcode == '0000001':
-            return self.LOADNOC(inst[ : -7], RegisterFile)
+            return self.LOADNOC(inst[ : -7], RegisterFile, scoreboard)
         
         return None
 
@@ -60,75 +61,139 @@ class Decode:
             Dict["instruction"] = "SRA"
         
         Dict["rd"] = inst[-5 : ]
-        Dict['rs1'] = RegisterFile[int(inst[-13: -8], 2)].getValue()
-        Dict['rs2'] = RegisterFile[int(inst[-18:-13], 2)].getValue()
         Dict['_rs1'] = "R" + str(int(RegisterFile[int(inst[-13: -8], 2)].name, 2))
         Dict['_rs2'] = "R" + str(int(RegisterFile[int(inst[-18:-13], 2)].name, 2))
+
+        if (Dict['_rs1'] in scoreboard.keys()):
+            Dict['bypassing'] = True
+        else:
+            Dict['bypassing'] = False
+        Dict['rs1'] = RegisterFile[int(inst[-13: -8], 2)].getValue()
+
+        if (Dict['_rs2'] in scoreboard.keys()):
+            Dict["bypassing"] = Dict['bypassing'] or True
+        else:
+            Dict['bypassing'] = Dict['bypassing'] or False
+        Dict['rs2'] = RegisterFile[int(inst[-18:-13], 2)].getValue()
+
         Dict ["_rd"] = "R" + str(int(RegisterFile[int(inst[-5 : ], 2)].name, 2))
         
         scoreboard[Dict["_rd"]] = [1]
         return Dict
 
+
     def ADDI(self, inst, RegisterFile, scoreboard):
         Dict = {}
         Dict["instruction"] = "ADDI"
         Dict["rd"] = inst[-5:]
-        Dict["rs1"] = RegisterFile[int(inst[-13:-8], 2)].getValue()
-        Dict["imm"] = inst[0 : 12]
-        Dict["_rd"] = "R" + str(int(RegisterFile[int(inst[-5:], 2)].name, 2))
         Dict["_rs1"] = "R" + str(int(RegisterFile[int(inst[-13:-8], 2)].name, 2))
 
+        if (Dict['_rs1'] in scoreboard.keys()):
+            Dict["bypassing"] = True
+        else:
+            Dict["bypassing"] = False
+        Dict['rs1'] = RegisterFile[int(inst[-13: -8], 2)].getValue()
+
+        Dict["imm"] = inst[0 : 12]
+        Dict["_rd"] = "R" + str(int(RegisterFile[int(inst[-5:], 2)].name, 2))
+    
         scoreboard[Dict["_rd"]] = [1]
         return Dict
 
-    def LW(self, mem_delay, inst, RegisterFile, scoreboard):
+
+    def LW(self, inst, mem_delay, RegisterFile, scoreboard):
         Dict = {}
+        print("hello",inst)
         Dict["instruction"] = "LW"
         Dict["rd"] = inst[-5:]
+        Dict["_rs1"] = "R" + str(int(RegisterFile[int(inst[-13:-8], 2)].name, 2))
+        if Dict['_rs1'] in scoreboard.keys():
+            Dict["bypassing"] = True
+        else:
+            Dict["bypassing"] = False
         Dict["rs1"] = RegisterFile[int(inst[-13:-8], 2)].getValue()
+
         Dict["imm"] = RegisterFile[int(inst[0:12], 2)].getValue()
         Dict["_rd"] = "R" + str(int(RegisterFile[int(inst[-5:], 2)].name, 2))
-        Dict["_rs1"] = "R" + str(int(RegisterFile[int(inst[-13:-8], 2)].name, 2))
-
+        
         scoreboard[Dict["_rd"]] = [mem_delay]
         return Dict
 
-    def SW(self, inst, RegisterFile):
+
+    def SW(self, inst, RegisterFile, scoreboard):
         Dict = {}
         funct3 = inst[-8 : -5]
         if funct3 == "010":
             Dict["instruction"] = "SW"
-            Dict["rs1"] = RegisterFile[int(inst[-13:-8], 2)].getValue()
-            Dict["rs2"] = RegisterFile[int(inst[-18:-13], 2)].getValue()
             Dict["imm"] = inst[0:7] + inst[-5:]
             Dict["_rs1"] = "R" + str(int(RegisterFile[int(inst[-13:-8], 2)].name, 2))
             Dict['_rs2'] = "R" + str(int(RegisterFile[int(inst[-18:-13], 2)].name, 2))
+
+            if (Dict['_rs1'] in scoreboard.keys()):
+                Dict["bypassing"] = True
+            else:
+                Dict["bypassing"] = False
+            Dict['rs1'] = RegisterFile[int(inst[-13: -8], 2)].getValue()
+
+            if (Dict['_rs2'] in scoreboard.keys()):
+                Dict["bypassing"] = Dict["bypassing"] or True
+            else:
+                Dict["bypassing"] = Dict["bypassing"] or False
+            Dict['rs2'] = RegisterFile[int(inst[-18:-13], 2)].getValue()
+
         if funct3 == "100":
-            Dict["instruction"] = "STORENOC"
-            Dict["rs1"] = format(0, "032b")
-            Dict["rs2"] = format(1, "032b")  
+            Dict["instruction"] = "STORENOC" 
             Dict["_rs1"] = "R" + str(int(RegisterFile[int(inst[-13:-8], 2)].name, 2))
             Dict['_rs2'] = "R" + str(int(RegisterFile[int(inst[-18:-13], 2)].name, 2))
+            if (Dict['_rs1'] in scoreboard.keys()):
+                Dict["bypassing"] = True
+            else:
+                Dict["bypassing"] = False
+            
+            Dict["rs1"] = format(0, "032b")
+    
+            if (Dict['_rs2'] in scoreboard.keys()):
+                Dict["bypassing"] = Dict["bypassing"] or True
+            else:
+                Dict["bypassing"] = Dict["bypassing"] or False
+            Dict["rs2"] = format(1, "032b") 
             Dict["imm"] = "0"*12
         return Dict
     
-    def LOADNOC(self, inst, RegisterFile):
+    def LOADNOC(self, inst, RegisterFile, scoreboard):
         Dict = {}
         Dict["instruction"] = "LOADNOC"
-        Dict["rs1"] = RegisterFile[int(inst[-13:-8], 2)].getValue()
-        Dict["rs2"] = RegisterFile[int(inst[-18:-13], 2)].getValue()
         Dict["_rs1"] = "R" + str(int(RegisterFile[int(inst[-13:-8], 2)].name, 2))
         Dict['_rs2'] = "R" + str(int(RegisterFile[int(inst[-18:-13], 2)].name, 2))
         Dict["imm"] = inst[0:7] + inst[-8:]
-        return Dict
 
-    def BEQ(self, inst, RegisterFile):
-        Dict = {}
-        Dict["instruction"] = "BEQ"
+        if Dict['_rs1'] in scoreboard.keys():
+            Dict["bypassing"] = True
+        else:
+            Dict["bypassing"] = False
         Dict["rs1"] = RegisterFile[int(inst[-13:-8], 2)].getValue()
         Dict["rs2"] = RegisterFile[int(inst[-18:-13], 2)].getValue()
+
+        return Dict
+
+    def BEQ(self, inst, RegisterFile, scoreboard):
+        Dict = {}
+        Dict["instruction"] = "BEQ"
         Dict["_rs1"] = "R" + str(int(RegisterFile[int(inst[-13:-8], 2)].name, 2))
         Dict['_rs2'] = "R" + str(int(RegisterFile[int(inst[-18:-13], 2)].name, 2))
+
+        if (Dict['_rs1'] in scoreboard.keys()):
+            Dict['bypassing'] = True
+        else:
+            Dict['bypassing'] = False
+        Dict['rs1'] = RegisterFile[int(inst[-13: -8], 2)].getValue()
+
+        if (Dict['_rs2'] in scoreboard.keys()):
+            Dict['bypassing'] = Dict['bypassing'] or True
+        else:
+            Dict['bypassing'] = Dict['bypassing'] or False
+
+        Dict['rs2'] = RegisterFile[int(inst[-18:-13], 2)].getValue()
         Dict["BranchOffset"] = inst[0] + inst[-1] + inst[1:7]  + inst[-5:-1] +'0'
 
         if Dict["BranchOffset"][0] == "0":

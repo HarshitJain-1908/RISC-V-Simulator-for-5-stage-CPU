@@ -62,7 +62,9 @@ class CPU:
             if key == "BranchOffset":
                 log.write(key + ": " + str(dict[key]) + "    ")
                 continue
-            if dict[key].isdigit() != True:
+            if key == "bypassing":
+                continue
+            if type(dict[key]) != type(True) and dict[key].isdigit() != True:
                 if (key=="BranchTaken?"):
                     log.write(key + ": " + dict[key])
                 else:
@@ -122,20 +124,31 @@ class CPU:
         log.write("\nRegister File after cycle " + str(self.clk.getCycle())+ ":\n")
         self.logRegisterFile(log)
 
+    def bypassing(self, decodeDict, executeDict):
+        if executeDict[0] != None:
+            self.updateScoreboard(executeDict)
+        print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+        print(decodeDict)
+        if '_rs1' in decodeDict and len(decodeDict['_rs1']) == 0:
+            decodeDict['rs1'] = self.scoreboard[decodeDict['_rs1']][1]
+        if '_rs2' in decodeDict and len(decodeDict['_rs2']) == 0:
+            decodeDict['rs2'] = self.scoreboard[decodeDict['_rs2']][1]
+
     def updateScoreboard(self, executeDict):
         # if (self.clk.getCycle() > 15):
         #     print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
         #     print(executeDict)
-        # print(executeDict)
+        print("!!!!!!!!!!!!!!!",executeDict)
         if "_rd" in executeDict[0]:
             rd = executeDict[0]["_rd"]
-            entry = self.scoreboard[rd]
-            entry[0] = entry[0] - 1
-            entry.append(executeDict[0]["result"])
+            if rd in self.scoreboard.keys():
+                entry = self.scoreboard[rd]
+                entry[0] = entry[0] - 1
+                entry.append(executeDict[0]["result"])
 
     def cleanScoreboard(self, reg):
         # print("reg",reg)
-        if len(self.scoreboard[reg]) > 1:
+        if reg in self.scoreboard.keys() and len(self.scoreboard[reg]) > 1:
             del self.scoreboard[reg]
 
     def simulate(self, log, instn_mem, data_mem):
@@ -143,16 +156,20 @@ class CPU:
         execute_input = [None, None]
         memory_input = [None, None]
         writeback_input = [None, None]
-        input_scoreboard = dict()
+        # input_scoreboard = dict()
         dm_stage_temp = 1
         while True:
             fetchList = self.F.fetch(instn_mem, self.PC)                                          #FETCH STAGE     
             decodeDict = [self.D.decode(self.M.delay, decode_input[0], self.RegisterFile, self.scoreboard), decode_input[1]]     #DECODE STAGE      
-            executeDict = [self.X.execute(execute_input[0], input_scoreboard), execute_input[1]]   #EXECUTE STAGE
-            # print(executeDict)
-            if executeDict[0] != None:
-                self.updateScoreboard(executeDict)
-            print("-------------------- Cycle", self.clk.getCycle(), "----------------------------------")             
+            print("-------------------- Cycle", self.clk.getCycle(), "----------------------------------") 
+            # print("###############",decodeDict[0])
+            executeDict = [self.X.execute(execute_input[0]), execute_input[1]]   #EXECUTE STAGE
+            if decodeDict[0] != None and decodeDict[0]["bypassing"] == True:
+                self.bypassing(decodeDict, executeDict)
+            # print("#################",executeDict)
+            # if executeDict[0] != None:
+            #     self.updateScoreboard(executeDict)
+                        
             # print("------------------------------------------------------") 
             memoryDict = self.M.Memory(memory_input, data_mem)                                    #MEMORY STAGE
             self.W.writeback(self.RegisterFile, writeback_input[0])       
@@ -198,7 +215,7 @@ class CPU:
                     decode_input = fetchList
 
                 execute_input = decodeDict
-                input_scoreboard = self.scoreboard.copy()
+                # input_scoreboard = self.scoreboard.copy()
                 memory_input = executeDict 
                 writeback_input = memoryDict
             
@@ -218,7 +235,7 @@ class CPU:
 
 if __name__ == '__main__':
     PROGRAM_BINARY = "test_binary.txt"
-    #PROGRAM_BINARY = "temp.txt"
+    # PROGRAM_BINARY = "temp.txt"
     cpu = CPU()
     
     delay = int(input('Enter Instruction Memory Delay (in clock cyles): '))

@@ -16,22 +16,18 @@ class Execute:
     Btype = ["BEQ"]
         
 
-    def execute(self, set, scoreboard):
-        print("s", scoreboard)
+    def execute(self, set):
+        
         if set is None :
             return None
 
         if (set["instruction"] in self.Itype):
-        
-            if (set["_rs1"] in scoreboard.keys()):
-                print("hello")
-                set["rs1"] = scoreboard[set["_rs1"]][1]
 
             rs1 = set["rs1"]
             imm = set["imm"]
-            val1 = int(rs1 , 2)
-                
+            val1 = int(rs1 , 2)  
             val2 = int(imm, 2)
+
             if (set["instruction"] == "ADDI"):
                 result = self.ADDI(val1, val2)
             if (set["instruction"] == "LW"):
@@ -41,16 +37,9 @@ class Execute:
             return set
     
         elif (set["instruction"] in self.Rtype):
-            # print("set is",set)
-            if (set["_rs1"] in scoreboard.keys()):
-                set["rs1"] = scoreboard[set["_rs1"]][1]
-
+            print(set)
             rs1 = set["rs1"]
             val1 = int(rs1 , 2)
-            
-            if (set["_rs2"] in scoreboard.keys()):
-                set["rs2"] = scoreboard[set["_rs2"]][1]
-
             rs2 = set["rs2"]
             val2 = int(rs2 , 2)
             
@@ -73,13 +62,7 @@ class Execute:
             return set                           #result in string 32 bit binary 
         
         elif (set["instruction"] in self.Stype):
-            
-            if (set["_rs1"] in scoreboard.keys()):
-                set["rs1"] = scoreboard[set["_rs1"]][1]
-            
-            if (set["_rs2"] in scoreboard.keys()):
-                set["rs2"] = int(scoreboard[set["_rs2"]][1], 2)
-
+            print("%",set)
             rs1 = set["rs1"]
             rs2 = set["rs2"]
             imm = int(set["imm"], 2)
