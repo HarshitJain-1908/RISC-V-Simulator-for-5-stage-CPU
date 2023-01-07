@@ -1,6 +1,13 @@
-Run 'cpu.py' to run the simulator and a file named 'log.txt' is created 
-containing the required contents of log file. Test file is in 'test_binary.txt'.
+This was a group project in the Computer Architecture course offered in IIIT Delhi. The group project consist of 4 members. The detailed description can be found in the document titled 'Computer Architecture Projects Description'. We have implemented 'Project4 - Cycle accurate simulator for 5-stage CPU'.
 
+Steps to run the Simulator:-
+1. Download all the files. (Test file is in 'test_binary.txt')
+2. Run 'cpu.py' to run the simulator.
+Consequences:-
+A file named 'log.txt' is created containing the required contents of log file (refer to Project descrition to know the exact type of content). 
+
+General information about the RISC-V ISA:-
+Instructions with their encoding-
 AND rd, rs1, rs2
 OR rd, rs1, rs2
 ADD rd, rs1, rs2
@@ -29,7 +36,5 @@ imm[11:5]    | rs2 | rs1 | 010 | imm[4:0]  |0100011      (SW)
 0100000      | rs2 | rs1 | 101 | rd        |0110011      (SRA)
 imm[11:5]    | rs2 | rs1 |    imm[7:0]     |0000001      (LOADNOC)
 0000000      |00000|00000| 100 | 00000     |0100011      (STORENOC)
-
-
 
 There are 2^5 = 32 registers(32 bit each), numbered from 00000 to 11111.
