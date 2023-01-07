@@ -1,4 +1,4 @@
-This was a group project in the Computer Architecture course offered in IIIT Delhi. The group project consist of 4 members. The detailed description can be found in the document titled 'Computer Architecture Projects Description'. We have implemented 'Project4 - Cycle accurate simulator for 5-stage CPU'.
+This was a group project in the Computer Architecture course offered in IIIT Delhi. The group project consist of 4 members. The detailed description can be found in the document titled 'Computer Architecture Projects Description'. We have implemented 'Project4 - Cycle accurate simulator for 5-stage CPU' in Python.
 
 Steps to run the Simulator:-
 1. Download all the files. (Test file is in 'test_binary.txt')
