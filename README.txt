@@ -1,10 +1,12 @@
 This was a group project in the Computer Architecture course offered in IIIT Delhi. The group project consist of 4 members. The detailed description can be found in the document titled 'Computer Architecture Projects Description'. We have implemented 'Project4 - Cycle accurate simulator for 5-stage CPU' in Python.
 
 Steps to run the Simulator:-
-1. Download all the files. (Test file is in 'test_binary.txt')
+1. Download all the files. (Input file to the simulator is in 'test_binary.txt' and the corresponding assembly code is in 'AssemblyCode.txt')
 2. Run 'cpu.py' to run the simulator.
-Consequences:-
-A file named 'log.txt' is created containing the required contents of log file (refer to Project descrition to know the exact type of content). 
+3. Enter custom defined instruction memory and data memory delay.
+
+Consequently, a file named 'log.txt' is created. And, relevant graphs would pop up. All the information about data stalls, number of 
+memory instructions and data instructions are stored in the log file (refer to Project descrition to know the exact type of content, graphs etc.). 
 
 General information about the RISC-V ISA:-
 Instructions with their encoding-
