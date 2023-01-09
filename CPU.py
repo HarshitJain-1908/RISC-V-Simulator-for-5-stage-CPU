@@ -10,7 +10,7 @@ import DataMemory
 import GraphPlotter
 
 class CPU:
-    def __init__(self):
+    def __init__(self, instn_delay, mem_delay):
         self.RegisterFile = []
         
         for i in range(32):
@@ -22,12 +22,13 @@ class CPU:
 
         self.clk = Clock.Clock()
         # Pipeline elements
-        self.F = Fetch.Fetch()
+        self.F = Fetch.Fetch(instn_delay)
         self.D = Decode.Decode()
         self.X = Execute.Execute()
-        self.M = Memory.Memory()
+        self.M = Memory.Memory(mem_delay)
         self.W = WriteBack.WriteBack()
         self.isCPUstalled = False
+        self.stallLogic = False
         self.scoreboard = dict()
 
     def logRegisterFile(self, log):
@@ -62,7 +63,11 @@ class CPU:
             if key == "BranchOffset":
                 log.write(key + ": " + str(dict[key]) + "    ")
                 continue
+            if key == "delay":
+                continue
             if key == "bypassing":
+                continue
+            if key == "bypassed":
                 continue
             if type(dict[key]) != type(True) and dict[key].isdigit() != True:
                 if (key=="BranchTaken?"):
@@ -119,66 +124,149 @@ class CPU:
             self.log_write(log, "WRITEBACK", str(writeback_input[1]), writeback_input[0])
         else:
             log.write("WRITEBACK: -\n")
-        log.write("\nIs CPU stalled during this cycle? " + str(self.isCPUstalled))
+        log.write("\nWill CPU stall in the next cycle? " + str(self.isCPUstalled or self.stallLogic))
         log.write("\n-------------------------------------------------------------------------------")
         log.write("\nRegister File after cycle " + str(self.clk.getCycle())+ ":\n")
         self.logRegisterFile(log)
 
-    def bypassing(self, decodeDict, executeDict):
-        if '_rs1' in decodeDict.keys():
-            decodeDict['rs1'] = self.scoreboard[decodeDict['_rs1']][1]
-        if '_rs2' in decodeDict.keys():
-            decodeDict['rs2'] = self.scoreboard[decodeDict['_rs2']][1]
+    def bypassing(self, decodeDict):
+        # print(decodeDict)
+        if '_rs1' in decodeDict.keys() and decodeDict['_rs1'] in self.scoreboard.keys():
+            rs1 = decodeDict['_rs1']
+            if '_rd' in decodeDict.keys() and decodeDict['_rs1'] == decodeDict['_rd']:
+                if len(self.scoreboard[rs1]) > 1:
+                    # print("cool")
+                    entry = self.scoreboard[rs1][-2]
+                else:
+                    entry = [0, decodeDict['rs1']]
+            else:
+                entry = self.scoreboard[rs1][-1]
+            if entry[0] == 0:
+                # print("hmm1")
+                decodeDict['rs1'] = entry[1]
+                decodeDict['bypassed'] = True
+            else:
+                decodeDict['bypassed'] = False
 
-    def updateScoreboard(self, executeDict):
+        if '_rs2' in decodeDict.keys() and decodeDict['_rs2'] in self.scoreboard.keys():
+            # print("ok")
+            rs2 = decodeDict['_rs2']
+            if '_rd' in decodeDict.keys() and decodeDict['_rs2'] == decodeDict['_rd']:
+                if len(self.scoreboard[rs2]) > 1:
+                    # print("cool")
+                    entry = self.scoreboard[rs2][-2]
+                else:
+                    entry = [0, decodeDict['rs2']]
+            else:
+                entry = self.scoreboard[rs2][-1]
+            if entry[0] == 0:
+                # print("hmm2")
+                decodeDict['rs2'] = entry[1]
+                if 'bypassed' in decodeDict.keys():
+                    decodeDict['bypassed'] = True and decodeDict['bypassed']
+                else:
+                    decodeDict['bypassed'] = True
+            else:
+                decodeDict['bypassed'] = False
 
-        if "_rd" in executeDict:
+        if decodeDict['instruction'] == 'BEQ':
+                # print("aao", decodeDict["rs1"], decodeDict["rs2"], )
+                if ('_rs2' in decodeDict.keys() and '_rs1' in decodeDict.keys() 
+                    and len(decodeDict["rs1"]) > 0 and len(decodeDict["rs2"]) > 0 
+                    and decodeDict["rs1"] == decodeDict["rs2"]):
+                    decodeDict["BranchTaken?"] = "YES"
+                else:
+                    decodeDict["BranchTaken?"] = "NO"
+                # print(decodeDict["BranchTaken?"])
+
+    def execute2executeFeedback(self, executeDict, decodeDict):
+
+        if executeDict['instruction'] != 'LW' and '_rd' in executeDict:
             rd = executeDict["_rd"]
             if rd in self.scoreboard.keys():
-                entry = self.scoreboard[rd]
+                # print("*******",decodeDict["_rd"])
+                if (decodeDict != None and "_rd" in decodeDict.keys() and rd == decodeDict["_rd"]):
+                    entry = self.scoreboard[rd][-2]
+                else:
+                    entry = self.scoreboard[rd][-1]
                 entry[0] = entry[0] - 1
-                entry.append(executeDict["result"])
+                entry[0] = max(entry[0], 0)
+                if entry[0] == 0:
+                    if len(entry) == 1:
+                        entry.append(executeDict["result"])
+
+    def memory2executeFeedback(self, memoryDict, decodeDict):
+        
+        if memoryDict['instruction'] == 'LW' and "_rd" in memoryDict:
+            rd = memoryDict["_rd"]
+            if rd in self.scoreboard.keys():
+                if (decodeDict != None and "_rd" in decodeDict.keys() and rd == decodeDict["_rd"]):
+                    entry = self.scoreboard[rd][-2]
+                else:
+                    entry = self.scoreboard[rd][-1]
+                entry[0] = entry[0] - 1
+                entry[0] = max(entry[0], 0)
+                if entry[0] == 0:
+                    if len(entry) == 1:
+                        entry.append(memoryDict["memValue"])
 
     def cleanScoreboard(self, reg):
-
-        if reg in self.scoreboard.keys() and len(self.scoreboard[reg]) > 1:
-            del self.scoreboard[reg]
+        if reg in self.scoreboard.keys() and len(self.scoreboard[reg][0]) > 1 and self.scoreboard[reg][0][0] == 0:
+            # print("^^^^^^^^^^^^^^^^^^^^^", reg, self.scoreboard[reg])
+            del self.scoreboard[reg][0]
+            if len(self.scoreboard[reg]) == 0:
+                del self.scoreboard[reg]
 
     def simulate(self, log, instn_mem, data_mem):
         decode_input = [None, None]
         execute_input = [None, None]
         memory_input = [None, None]
         writeback_input = [None, None]
-
         dm_stage_temp = 1
+
         while True:
-            fetchList = self.F.fetch(instn_mem, self.PC)                                          #FETCH STAGE     
-            decodeDict = [self.D.decode(self.M.delay, decode_input[0], self.RegisterFile, self.scoreboard), decode_input[1]]     #DECODE STAGE      
-            executeDict = [self.X.execute(execute_input[0]), execute_input[1]]   #EXECUTE STAGE
+            print("---------------Cycle", self.clk.getCycle(), "------------------")
+            #FETCH STAGE 
+            fetchList = self.F.fetch(instn_mem, self.PC)    
+            #DECODE STAGE                                           
+            decodeDict = [self.D.decode(self.M.delay, decode_input[0], self.RegisterFile, self.scoreboard), decode_input[1]]          
+            #EXECUTE STAGE
+            executeDict = [self.X.execute(execute_input[0]), execute_input[1]]   
+            #MEMORY STAGE
+            memoryDict = self.M.Memory(memory_input, data_mem)        
+            #WRITEBACK STAGE
+            self.W.writeback(self.RegisterFile, writeback_input[0]) 
+
             if executeDict[0] != None:
-                self.updateScoreboard(executeDict[0])
-
+                self.execute2executeFeedback(executeDict[0], decodeDict[0])
+            if memoryDict[0] != None:
+                self.memory2executeFeedback(memoryDict[0], decodeDict[0])
             if decodeDict[0] != None and decodeDict[0]["bypassing"] == True:
-
-                self.bypassing(decodeDict[0], executeDict[0])
-
-            memoryDict = self.M.Memory(memory_input, data_mem)
-            if decodeDict[0] != None and decodeDict[0]["bypassing"] == True:
-
-                self.bypassing(decodeDict[0], memoryDict[0])                                    #MEMORY STAGE
-            self.W.writeback(self.RegisterFile, writeback_input[0])       
+                self.bypassing(decodeDict[0])     
             if writeback_input[0] != None:
                 if "rd" in writeback_input[0]:
-                    self.cleanScoreboard("R"+str(int(writeback_input[0]["rd"], 2)))                            #WRITEBACK STAGE
+                    self.cleanScoreboard("R"+str(int(writeback_input[0]["rd"], 2))) 
+            
+            
+            print(self.scoreboard)            
+            if decodeDict[0] != None:
+                if 'bypassed' in decodeDict[0].keys() and decodeDict[0]['bypassed'] == False:
+                    self.stallLogic = True
+                else:
+                    self.stallLogic = False
             self.dump(log, fetchList, decode_input, decodeDict, execute_input, executeDict, memory_input, memoryDict, writeback_input)
-                 
+            
             if memoryDict[0] != None and dm_stage_temp < self.M.delay: #handling data memory delay
                 dm_stage_temp = dm_stage_temp + 1
                 memory_input = memoryDict
-                
                 if executeDict[0] is None:
-                    execute_input = decodeDict
+                    if self.stallLogic == False:
+                         execute_input = decodeDict
+                    else:
+                        execute_input[0] = None
                     if decodeDict[0] != None and decodeDict[0]["instruction"] == "BEQ" and decodeDict[0]["BranchTaken?"] == "YES": #Handling a taken branch
+                        if self.F.getDelay() > 1:
+                            self.PC.setValue(format(int(self.PC.getValue(), 2) + 1, "032b"))
                         self.PC.setValue(format(int(self.PC.getValue(), 2) + decodeDict[0]["BranchOffset"], "032b"))
                         self.F.currentDelay = 1
                         decode_input[0] = None
@@ -201,17 +289,25 @@ class CPU:
                 self.isCPUstalled = False
             
                 if decodeDict[0] != None and decodeDict[0]["instruction"] == "BEQ" and decodeDict[0]["BranchTaken?"] == "YES": #Handling a taken branch
+                    if self.F.getDelay() > 1:
+                        self.PC.setValue(format(int(self.PC.getValue(), 2) + 1, "032b"))
                     self.PC.setValue(format(int(self.PC.getValue(), 2) + decodeDict[0]["BranchOffset"], "032b"))
                     self.F.currentDelay = 1
                     decode_input[0] = None
                 else: 
                     decode_input = fetchList
 
-                execute_input = decodeDict
+                if self.stallLogic == False:
+                    execute_input = decodeDict
+                else:
+                    execute_input[0] = None
                 memory_input = executeDict 
                 writeback_input = memoryDict
             
-            
+            if self.stallLogic == True:
+                self.PC.setValue(self.PC.getValue())
+                decode_input = decodeDict
+        
             if ((fetchList[0] == "0"*32 or (fetchList[0] == "1"*32 and fetchList[2] == "0"*32)) 
                 and
                 (decode_input[0] == "0"*32 or (decode_input[0] == "1"*32 and decode_input[2] == "0"*32))
@@ -224,18 +320,18 @@ class CPU:
             self.clk.setCycle()
 
 
-
 if __name__ == '__main__':
-    PROGRAM_BINARY = "test_binary.txt"
-    cpu = CPU()
-    
-    delay = int(input('Enter Instruction Memory Delay (in clock cyles): '))
-    cpu.F.setdelay(delay)
-    instn_mem = InstructionMemory.InstructionMemory(delay)
 
-    delay = int(input('Enter Data Memory Delay (in clock cyles): '))
-    cpu.M.setDelay(delay)
-    data_mem = DataMemory.DataMemory(delay)
+    PROGRAM_BINARY = "test_binary.txt"
+    # PROGRAM_BINARY = "temp.txt"
+    
+    instn_delay = int(input('Enter Instruction Memory Delay (in clock cyles): '))
+    instn_mem = InstructionMemory.InstructionMemory()
+
+    mem_delay = int(input('Enter Data Memory Delay (in clock cyles): '))
+    data_mem = DataMemory.DataMemory()
+
+    cpu = CPU(instn_delay, mem_delay)
 
     file = open(PROGRAM_BINARY, 'r')
     program = []
@@ -253,10 +349,17 @@ if __name__ == '__main__':
     print("\nStarting Simulation...")
     
     log.write("""Instructions:
-        \tRegisters are numbered from 0 to 31.
-        \trd gives the destination register in an instruction that uses it.
-        \tresult field gives the output after the EXECUTE unit executes the given instruction.
-        \tFormat of register file printing is <reg_name>: <reg_val_base10>\n""")
+        \t1. Registers are numbered from 0 to 31.
+        \t------------------------------------------------------------------------------------
+        \t2. rd gives the destination register in an instruction that uses it.
+        \t------------------------------------------------------------------------------------
+        \t3. result field gives the output after the EXECUTE unit executes the given instruction.
+        \t------------------------------------------------------------------------------------
+        \t4. Format of register file printing is <reg_name>: <reg_val_base10>
+        \t------------------------------------------------------------------------------------
+        \t5. The decoded values of source register for an instruction reflects the execution till 
+        \tthe end of the current cycle in which it's decoded.
+        \t------------------------------------------------------------------------------------\n""")
                 
     log.write("\nRegister File before cycle 0:\n")
     cpu.logRegisterFile(log)
@@ -279,4 +382,3 @@ if __name__ == '__main__':
     
     GraphPlotter.plot_num_reg_and_mem_instns(PROGRAM_BINARY)
     GraphPlotter.plot_instruction_and_data_mem_access_pattern("log.txt")
-    

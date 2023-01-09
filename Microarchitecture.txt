@@ -2,10 +2,9 @@ Microarchitecture Decisions:
 
 1. Branches are resolved in the Decode stage itself. This decision is taken to reduce the branch penalty 
    from 2 instruction to only 1 instruction.
-
-2. run cpu.py using python3 cpu.py and enter custom defined instrcution memory and data memory delay.
-   And, relevant graphs would pop up. All the information about data stalls, number of memory instructions
-   and data instructions are stored in the log file.
+   
+2. In case instruction memory has more than one delay, the new instruction from the target is fetched
+   as soon the branch is resolved.
 
 3. Except from memory instructions(LW, SW, LOADNOC, STORENOC) all other instructions are considered as 
    register type instructions.

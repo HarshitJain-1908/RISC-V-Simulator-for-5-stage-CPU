@@ -2,7 +2,7 @@ class Fetch:
     currentDelay = 1
     done = False
 
-    def setdelay(self, delay):
+    def __init__(self, delay):
         self.delay = delay
     
     def fetch(self, InstructionMemory, PC):
@@ -19,4 +19,6 @@ class Fetch:
             self.done = False
             self.currentDelay += 1 #handling instruction memory delay
             return ["1"*32 , int(PC.getValue(), 2), InstructionMemory.read_block(PC)]
-        
+            
+    def getDelay(self):
+        return self.delay

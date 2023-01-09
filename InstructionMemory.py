@@ -2,10 +2,9 @@
 
 class InstructionMemory:
 
-    def __init__(self, delay):
+    def __init__(self):
         self.num_blocks = pow(2, 14) 
         self.memory = ['0' * 32] * self.num_blocks
-        self.delay = delay
 
     def read_block(self, PC):
         # assuming (PC)program_counter is a binary address in string form.

@@ -1,18 +1,23 @@
 class Memory:
+
     operations = ["LW", "LOADNOC", "SW", "STORENOC"]
-    currentDelay = 1
+
+    def __init__(self, delay):
+        self.delay = delay
+     
     def Memory(self, set, dataMem):
         if set[0] is None:
             return [None, None]
 
-        # if (set["instruction"] in self.operations):
-        #     if self.currentDelay == self.delay :
         memoryDict = set.copy()
         if (set[0]["instruction"] == "LW"):
             # Load operation
             addr = set[0]["result"]
-            memoryDict[0]["memValue"] = self.Load(addr, dataMem)
-            #return self.Load(addr, dataMem)
+            if "delay" not in memoryDict[0]:
+                memoryDict[0]["delay"] = 1
+            else:
+                memoryDict[0]["delay"] += 1
+            memoryDict[0]["memValue"] = self.Load(addr, dataMem, memoryDict)
             return memoryDict
 
         if (set[0]["instruction"] == "LOADNOC"):
@@ -21,7 +26,6 @@ class Memory:
             addr = set[0]["result"]
             data = set[0]["rs2"]
             self.Store(addr, data, dataMem)
-            #return -1
             return memoryDict
 
         elif (set[0]["instruction"] == "SW" or set[0]["instruction"] == "STORENOC"):
@@ -29,19 +33,19 @@ class Memory:
             addr = set[0]["result"]
             data = set[0]["rs2"]
             self.Store(addr, data, dataMem)
-            #return -1
             return memoryDict
-            # else:
-            #     self.currentDelay += 1
-            #     return -1
 
         else:
-            #return -1
             return memoryDict
     
-    def Load(self, addr, dataMem): # assuming addr is a string
-        return dataMem.memory[addr] 
-        
+    def getDelay(self):
+        return self.delay
+
+    def Load(self, addr, dataMem, memoryDict): # assuming addr is a string
+        if memoryDict[0]["delay"] == self.delay:
+            return dataMem.memory[addr]
+        else:
+            return "0" 
 
     def Store(self, addr, data, dataMem): # for SW instruction
         self.Data_write = data

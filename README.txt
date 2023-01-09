@@ -1,5 +1,8 @@
-Run 'cpu.py' to run the simulator and a file named 'log.txt' is created 
-containing the required contents of log file. Test file is in 'test_binary.txt'.
+Run 'cpu.py' to run the simulator, enter custom defined instruction memory and data memory delay
+and a file named 'log.txt' is created containing the required contents of log file. And, relevant 
+graphs would pop up. All the information about data stalls, number of memory instructions
+and data instructions are stored in the log file. Input file to the simulator is in 'test_binary.txt'
+and the corresponding assembly code is in 'AssemblyCode.txt'.
 
 AND rd, rs1, rs2
 OR rd, rs1, rs2
@@ -29,7 +32,5 @@ imm[11:5]    | rs2 | rs1 | 010 | imm[4:0]  |0100011      (SW)
 0100000      | rs2 | rs1 | 101 | rd        |0110011      (SRA)
 imm[11:5]    | rs2 | rs1 |    imm[7:0]     |0000001      (LOADNOC)
 0000000      |00000|00000| 100 | 00000     |0100011      (STORENOC)
-
-
 
 There are 2^5 = 32 registers(32 bit each), numbered from 00000 to 11111.

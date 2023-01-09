@@ -113,6 +113,7 @@ class Execute:
         return result
     
     def SRA(self,val1,val2):
+        print(val1, val2)
         result = val1 >> val2 #int result
         result = format(result, "032b")
         return result

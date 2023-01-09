@@ -21,7 +21,6 @@ def plot_num_reg_and_mem_instns(program_binary):
     plt.bar(["Num Memory Instructions", "Num Register Instructions"], y)
     plt.title("Number of memory and register instructions in the program")
     plt.yticks(range(0, n + 1))
-    len_program = n
     file.close()
     plt.show()
 
@@ -54,15 +53,13 @@ def plot_instruction_and_data_mem_access_pattern(log):
             else:
                 dmem_accesses.append(-9999)
         
-        elif line[0:6]=="Is CPU":
+        elif line[0:8]=="Will CPU":
             line=line.split()
             if(line[-1]=="True"):
                 data_stall.append(1)
             else:
                 data_stall.append(0)
                 
-            
-
     f2 = plt.figure()
     plt.scatter(cycles, imem_accesses, color="orange")
     plt.xlabel("Cycle")
@@ -83,17 +80,10 @@ def plot_instruction_and_data_mem_access_pattern(log):
     plt.ylim(0, 2**14+5)
     file.close()
     plt.show()
-
-
         
     f4=plt.figure()
-
     plt.scatter(cycles, data_stall, color = 'red')
     plt.xlabel("Cycles")
     plt.ylabel("Stall/ Not Stall")
     plt.title("Data Stalls | 1 : Stall | 0 : Not Stall")
     plt.show()
-
-
-            
-
