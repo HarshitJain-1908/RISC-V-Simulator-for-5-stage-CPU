@@ -53,13 +53,13 @@ def plot_instruction_and_data_mem_access_pattern(log):
             else:
                 dmem_accesses.append(-9999)
         
-        elif line[0:8]=="Will CPU":
+        elif line[0:7]=="Did CPU":
             line=line.split()
             if(line[-1]=="True"):
                 data_stall.append(1)
             else:
                 data_stall.append(0)
-                
+  
     f2 = plt.figure()
     plt.scatter(cycles, imem_accesses, color="orange")
     plt.xlabel("Cycle")

@@ -24,9 +24,15 @@ class Execute:
         if (set["instruction"] in self.Itype):
 
             rs1 = set["rs1"]
+            print("rs1", rs1)
             imm = set["imm"]
             val1 = int(rs1 , 2)  
             val2 = int(imm, 2)
+            if (rs1[0] == 1):
+                val1 -= 2**32
+                print("let's see", val1) 
+            if (imm[0] == 1):
+                val2 -= 2**32 
 
             if (set["instruction"] == "ADDI"):
                 result = self.ADDI(val1, val2)
@@ -41,7 +47,11 @@ class Execute:
             val1 = int(rs1 , 2)
             rs2 = set["rs2"]
             val2 = int(rs2 , 2)
-            
+            if (rs1[0] == 1):
+                val1 -= 2**32 
+            if (rs2[0] == 1):
+                val2 -= 2**32 
+
             if (set["instruction"] == "AND"):
                 result = self.AND(val1, val2)
             elif (set["instruction"] == "OR"):
@@ -66,6 +76,10 @@ class Execute:
             imm = int(set["imm"], 2)
             val1 = int(rs1 , 2)
             val2 = int(rs2 , 2)
+            if (rs1[0] == 1):
+                val1 -= 2**32 
+            if (rs2[0] == 1):
+                val2 -= 2**32 
 
             if (set["instruction"] == "SW"):
                 result = self.ADDI(val1,imm)
@@ -94,7 +108,10 @@ class Execute:
     
     def SUB(self,val1, val2): 
         result = val1 - val2 #int result
-        result = format(result, "032b")
+        if (result >= 0):
+            result = format(result, "032b")
+        else:
+            result = format(2**32 - abs(result), "032b")
         return result
 
     def AND(self,val1, val2): 
@@ -124,9 +141,4 @@ class Execute:
         result = format(result, "032b")
         if len(result) > 32:                    #overflow check
             result = result[-32:] 
-        return result                           #result in string 32 bit binary 
-    
-    
-        
-
-
+        return result                           #result in string 32 bit binary

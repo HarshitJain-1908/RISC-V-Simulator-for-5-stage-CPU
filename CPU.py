@@ -37,9 +37,15 @@ class CPU:
                 log.write("\n")
             reg = "R" + str(int(self.RegisterFile[i].name, 2))
             if (i >=0 and i <= 9):
-                log.write("\t\t"+ reg + ":  "+  str(int(self.RegisterFile[i].getValue(), 2)) + "  ")
+                val = int(self.RegisterFile[i].getValue(), 2)
+                if (self.RegisterFile[i].getValue()[0] == 1):
+                    val -= 2**32 
+                log.write("\t\t"+ reg + ":  "+  str(val) + "  ")
             else:
-                log.write("\t\t"+ reg + ": "+  str(int(self.RegisterFile[i].getValue(), 2)) + "  ")
+                val = int(self.RegisterFile[i].getValue(), 2) 
+                if (self.RegisterFile[i].getValue()[0] == 1):
+                    val -= 2**32 
+                log.write("\t\t"+ reg + ": "+  str(val) + "  ")
         log.write("\n")
     
 
@@ -124,7 +130,7 @@ class CPU:
             self.log_write(log, "WRITEBACK", str(writeback_input[1]), writeback_input[0])
         else:
             log.write("WRITEBACK: -\n")
-        log.write("\nWill CPU stall in the next cycle? " + str(self.isCPUstalled or self.stallLogic))
+        log.write("\nDid CPU stalled during this cycle (aka Stall logic)? " + str(self.isCPUstalled or self.stallLogic))
         log.write("\n-------------------------------------------------------------------------------")
         log.write("\nRegister File after cycle " + str(self.clk.getCycle())+ ":\n")
         self.logRegisterFile(log)
@@ -247,15 +253,17 @@ class CPU:
                 if "rd" in writeback_input[0]:
                     self.cleanScoreboard("R"+str(int(writeback_input[0]["rd"], 2))) 
             
-            
+            print(decodeDict)
             print(self.scoreboard)            
+            
+            self.dump(log, fetchList, decode_input, decodeDict, execute_input, executeDict, memory_input, memoryDict, writeback_input)
+            
             if decodeDict[0] != None:
                 if 'bypassed' in decodeDict[0].keys() and decodeDict[0]['bypassed'] == False:
                     self.stallLogic = True
                 else:
                     self.stallLogic = False
-            self.dump(log, fetchList, decode_input, decodeDict, execute_input, executeDict, memory_input, memoryDict, writeback_input)
-            
+
             if memoryDict[0] != None and dm_stage_temp < self.M.delay: #handling data memory delay
                 dm_stage_temp = dm_stage_temp + 1
                 memory_input = memoryDict
@@ -305,7 +313,8 @@ class CPU:
                 writeback_input = memoryDict
             
             if self.stallLogic == True:
-                self.PC.setValue(self.PC.getValue())
+                if not self.isCPUstalled:
+                    self.PC.setValue(format(int(self.PC.getValue(), 2) - 1, "032b"))
                 decode_input = decodeDict
         
             if ((fetchList[0] == "0"*32 or (fetchList[0] == "1"*32 and fetchList[2] == "0"*32)) 
@@ -380,5 +389,5 @@ if __name__ == '__main__':
     print("\nSimulation successful.\nLog file generated: log.txt.")
     log.close()
     
-    GraphPlotter.plot_num_reg_and_mem_instns(PROGRAM_BINARY)
-    GraphPlotter.plot_instruction_and_data_mem_access_pattern("log.txt")
+    # GraphPlotter.plot_num_reg_and_mem_instns(PROGRAM_BINARY)
+    # GraphPlotter.plot_instruction_and_data_mem_access_pattern("log.txt")
